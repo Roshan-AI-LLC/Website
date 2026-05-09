@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="55%" stop-color="#3b82f6"/>
-      <stop offset="100%" stop-color="#8b5cf6"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <path d="M20 44 V20 h12 a8 8 0 0 1 0 16 h-6 l10 8" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <style>
+    .fg { fill: #0b1120; }
+    @media (prefers-color-scheme: dark) {
+      .fg { fill: #ffffff; }
+    }
+  </style>
+  <!-- Lower facet (foreground, flips with system theme) -->
+  <path d="M26 34 L22 60 L56 26 L38 26 Z" class="fg"/>
+  <!-- Upper facet (teal, constant) -->
+  <path d="M42 4 L8 34 L26 34 L38 26 Z" fill="#4ecdc4"/>
+  <!-- Hairline edge for crispness at small sizes -->
+  <path d="M42 4 L8 34 L26 34 L22 60 L56 26 L38 26 Z"
+        fill="none" stroke="#4ecdc4" stroke-opacity="0.7" stroke-width="1.2" stroke-linejoin="miter"/>
 </svg>

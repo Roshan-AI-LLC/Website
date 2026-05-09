@@ -128,17 +128,39 @@ export function Nav() {
 function Logo() {
   return (
     <span
-      className="relative inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-[10px] text-white"
       aria-hidden
+      className="relative inline-flex h-8 w-7 items-center justify-center"
     >
-      <span
-        className="absolute inset-0"
+      <svg
+        viewBox="0 0 32 32"
+        width="28"
+        height="32"
+        className="block"
         style={{
-          background:
-            'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
+          filter:
+            'drop-shadow(0 0 6px color-mix(in oklab, var(--accent) 45%, transparent))',
         }}
-      />
-      <span className="relative font-semibold leading-none">R</span>
+      >
+        {/* Lower facet: white in dark / near-black in light */}
+        <path
+          d="M13 17 L11 30 L28 13 L19 13 Z"
+          fill="var(--logo-fg)"
+        />
+        {/* Upper facet: teal */}
+        <path
+          d="M21 2 L4 17 L13 17 L19 13 Z"
+          fill="var(--accent)"
+        />
+        {/* Hairline outline for crisp edges */}
+        <path
+          d="M21 2 L4 17 L13 17 L11 30 L28 13 L19 13 Z"
+          fill="none"
+          stroke="var(--accent)"
+          strokeOpacity="0.6"
+          strokeWidth="0.6"
+          strokeLinejoin="miter"
+        />
+      </svg>
     </span>
   );
 }
