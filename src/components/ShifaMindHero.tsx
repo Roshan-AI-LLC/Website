@@ -28,12 +28,12 @@ export function ShifaMindHero() {
 
               <div className="mt-4 flex items-center gap-3">
                 <ShifaMindLogo size={44} />
-                <span className="text-[1.6rem] font-semibold tracking-[-0.03em] sm:text-[2rem]">
+                <span className="font-display text-[1.6rem] font-semibold tracking-[-0.025em] sm:text-[2rem]">
                   ShifaMind
                 </span>
               </div>
 
-              <h2 className="mt-3 text-balance text-[2rem] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[2.8rem]">
+              <h2 className="mt-3 text-balance font-display text-[2rem] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-[2.8rem]">
                 Clinical AI that{' '}
                 <span className="gradient-text">explains itself.</span>
               </h2>

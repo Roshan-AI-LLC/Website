@@ -44,7 +44,7 @@ export function Hero() {
         <motion.h1
           {...fadeUp}
           transition={{ ...fadeUp.transition, delay: 0.05 }}
-          className="mt-6 max-w-4xl text-balance font-sans text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[4rem] lg:text-[4.6rem]"
+          className="mt-6 max-w-4xl text-balance font-display text-[2.6rem] font-bold leading-[1.02] tracking-[-0.035em] sm:text-[4rem] lg:text-[4.6rem]"
         >
           Clinical AI that
           <br className="hidden sm:block" />{' '}

@@ -17,7 +17,7 @@ export function CTA() {
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
                 Partners · clinicians · investors
               </div>
-              <h2 className="mt-3 text-balance text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
+              <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
                 Want a closer look at{' '}
                 <span className="gradient-text-warm">ShifaMind</span>?
               </h2>

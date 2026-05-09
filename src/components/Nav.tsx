@@ -38,7 +38,7 @@ export function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
         <a
           href="#top"
-          className="group inline-flex items-center gap-2.5 text-[0.95rem] font-semibold tracking-tight"
+          className="group inline-flex items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em]"
         >
           <Logo />
           <span>
