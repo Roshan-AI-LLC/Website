@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Brain, Cpu } from 'lucide-react';
+import { ArrowUpRight, Network, Workflow } from 'lucide-react';
 import { SectionHeader } from './About';
+import { ShifaMindLogo } from './ShifaMindLogo';
 
 export function Projects() {
   return (
@@ -10,30 +11,38 @@ export function Projects() {
           eyebrow="Roadmap"
           title={
             <>
-              One bet at a time.{' '}
-              <span className="gradient-text-warm">Built to last.</span>
+              The road ahead for{' '}
+              <span className="gradient-text-warm">ShifaMind.</span>
             </>
           }
-          desc="We commit to a problem only when interpretability and accessibility can both be solved together. Healthcare today, robotics next."
+          desc="Shipping today. Compounding tomorrow. Each milestone deepens the system clinicians already trust."
         />
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-2">
-          <ProjectCard
+        <div className="mt-12 grid gap-4 lg:grid-cols-3">
+          <RoadmapCard
             tag="Live · v2.1"
             tone="live"
-            icon={Brain}
-            title="ShifaMind"
-            desc="Concept-grounded clinical AI for ICD-10 coding and explainable diagnostic support. Shipping to clinicians and researchers today."
+            visual={<ShifaMindLogo size={44} />}
+            title="ShifaMind Core"
+            desc="Concept-grounded ICD-10 coding from discharge summaries with full causal trails. Available to clinicians and researchers today."
             href="https://shifamind.me"
             cta="Visit shifamind.me"
           />
-          <ProjectCard
+          <RoadmapCard
             tag="In R&D · 2026"
-            tone="soon"
-            icon={Cpu}
-            title="HardwareAI"
-            desc="Reasoning models embedded in physical hardware. Interpretable intelligence for robotics, edge devices, and on-prem systems."
-            cta="Coming soon"
+            tone="next"
+            icon={Network}
+            title="EHR Integration"
+            desc="Native plugins for Epic, Cerner, and FHIR-compliant systems. ShifaMind reads structured records alongside notes, with concept activations surfaced inside the clinician's existing workflow."
+            cta="On the roadmap"
+          />
+          <RoadmapCard
+            tag="Planned · 2026"
+            tone="planned"
+            icon={Workflow}
+            title="Multi-Agent Specialists"
+            desc="Domain-specialised agents (cardiology, pulmonology, oncology, ED) coordinated by an orchestrator. Each agent reasons over the same shared concept layer for consistent, auditable cross-specialty decisions."
+            cta="On the roadmap"
           />
         </div>
       </div>
@@ -41,18 +50,20 @@ export function Projects() {
   );
 }
 
-function ProjectCard({
+function RoadmapCard({
   tag,
   tone,
   icon: Icon,
+  visual,
   title,
   desc,
   href,
   cta,
 }: {
   tag: string;
-  tone: 'live' | 'soon';
-  icon: React.ElementType;
+  tone: 'live' | 'next' | 'planned';
+  icon?: React.ElementType;
+  visual?: React.ReactNode;
   title: string;
   desc: string;
   href?: string;
@@ -64,6 +75,20 @@ function ProjectCard({
     ? { href, target: '_blank', rel: 'noopener noreferrer' }
     : {};
 
+  const tagStyles =
+    tone === 'live'
+      ? 'bg-accent-soft text-accent'
+      : tone === 'next'
+        ? 'bg-accent-soft text-accent'
+        : '';
+  const tagInline =
+    tone === 'planned'
+      ? {
+          background: 'rgba(120, 145, 170, 0.12)',
+          color: 'var(--color-violet-500)',
+        }
+      : undefined;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -74,21 +99,12 @@ function ProjectCard({
       <Wrap
         {...wrapProps}
         data-cursor="hover"
-        className="glass group relative block overflow-hidden rounded-3xl p-7 transition will-change-transform hover:-translate-y-1 hover:border-strong"
+        className="glass group relative block h-full overflow-hidden rounded-3xl p-7 transition will-change-transform hover:-translate-y-1 hover:border-strong"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between">
           <span
-            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] ${
-              isLive ? 'bg-accent-soft text-accent' : 'text-muted'
-            }`}
-            style={
-              isLive
-                ? undefined
-                : {
-                    background: 'color-mix(in oklab, #f59e0b 10%, transparent)',
-                    color: '#f59e0b',
-                  }
-            }
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] ${tagStyles}`}
+            style={tagInline}
           >
             <span
               className={`inline-block h-1.5 w-1.5 rounded-full bg-current ${
@@ -97,22 +113,25 @@ function ProjectCard({
             />
             {tag}
           </span>
-          <div
-            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl"
-            style={{
-              background:
-                'linear-gradient(135deg, var(--accent-soft), color-mix(in oklab, var(--color-violet-500) 12%, transparent))',
-              color: 'var(--accent)',
-            }}
-          >
-            <Icon size={20} strokeWidth={1.6} />
-          </div>
+          {visual ? (
+            visual
+          ) : Icon ? (
+            <div
+              className="inline-flex h-11 w-11 items-center justify-center rounded-2xl"
+              style={{
+                background: 'var(--accent-soft)',
+                color: 'var(--accent)',
+              }}
+            >
+              <Icon size={20} strokeWidth={1.6} />
+            </div>
+          ) : null}
         </div>
 
-        <h3 className="mt-7 text-[1.45rem] font-semibold tracking-[-0.02em]">
+        <h3 className="mt-7 text-[1.3rem] font-semibold tracking-[-0.02em]">
           {title}
         </h3>
-        <p className="mt-2 max-w-md text-[0.94rem] font-light leading-relaxed text-secondary">
+        <p className="mt-2 text-[0.92rem] font-light leading-relaxed text-secondary">
           {desc}
         </p>
 
@@ -138,3 +157,4 @@ function ProjectCard({
     </motion.div>
   );
 }
+
