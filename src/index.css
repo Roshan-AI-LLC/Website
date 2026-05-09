@@ -20,10 +20,10 @@
   --color-iris-500: #7de8e1;
   --color-iris-600: #4ecdc4;
 
-  /* Kept as warm gradient endpoint: coral */
-  --color-violet-400: #ff8a8a;
-  --color-violet-500: #ff6b6b;
-  --color-violet-600: #ef4444;
+  /* Cool slate-blue, no warm tones */
+  --color-violet-400: #95a8c0;
+  --color-violet-500: #7891aa;
+  --color-violet-600: #5b7595;
 
   --color-gold-400: #ffe66d;
   --color-gold-500: #ffd93d;
@@ -179,8 +179,8 @@ html.dark {
   .aurora {
     background:
       radial-gradient(60% 50% at 20% 20%, color-mix(in oklab, var(--accent) 38%, transparent) 0%, transparent 60%),
-      radial-gradient(50% 50% at 80% 30%, color-mix(in oklab, var(--accent-warm) 22%, transparent) 0%, transparent 60%),
-      radial-gradient(40% 40% at 50% 80%, color-mix(in oklab, var(--color-iris-500) 28%, transparent) 0%, transparent 60%);
+      radial-gradient(50% 50% at 80% 30%, color-mix(in oklab, var(--color-iris-500) 30%, transparent) 0%, transparent 60%),
+      radial-gradient(40% 40% at 50% 80%, color-mix(in oklab, var(--color-violet-500) 22%, transparent) 0%, transparent 60%);
     filter: blur(60px);
   }
 
