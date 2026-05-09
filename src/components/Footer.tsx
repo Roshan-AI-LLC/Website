@@ -7,8 +7,7 @@ export function Footer() {
           · Arizona, USA
         </div>
         <div>
-          © {new Date().getFullYear()} Roshan AI · Building the future, one
-          problem at a time.
+          © {new Date().getFullYear()} Roshan AI. Building the future.
         </div>
       </div>
     </footer>

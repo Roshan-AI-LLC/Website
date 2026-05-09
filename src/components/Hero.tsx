@@ -46,9 +46,9 @@ export function Hero() {
           transition={{ ...fadeUp.transition, delay: 0.05 }}
           className="mt-6 max-w-4xl text-balance font-sans text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.04em] sm:text-[4rem] lg:text-[4.6rem]"
         >
-          Production AI for the
+          Clinical AI that
           <br className="hidden sm:block" />{' '}
-          <span className="gradient-text">real world.</span>
+          <span className="gradient-text">earns the room.</span>
         </motion.h1>
 
         <motion.p
@@ -56,10 +56,10 @@ export function Hero() {
           transition={{ ...fadeUp.transition, delay: 0.12 }}
           className="mt-6 max-w-xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]"
         >
-          Roshan AI builds research-grade systems that ship. Our flagship product,{' '}
-          <span className="text-primary">ShifaMind</span>, brings interpretable
-          clinical reasoning to healthcare. Accuracy that matches the state of
-          the art, with explanations clinicians can verify.
+          <span className="text-primary">ShifaMind</span> predicts ICD-10
+          diagnoses from clinical notes and surfaces every concept behind every
+          decision. Concept-grounded interpretability, enforced by architecture.
+          A Roshan AI product.
         </motion.p>
 
         <motion.div
