@@ -74,7 +74,7 @@ export function Hero() {
             className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-medium text-white transition will-change-transform hover:-translate-y-0.5"
             style={{
               background:
-                'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 60%, var(--color-violet-500) 110%)',
+                'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
               boxShadow: 'var(--shadow-glow)',
             }}
           >

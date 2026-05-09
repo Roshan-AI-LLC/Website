@@ -135,7 +135,7 @@ function Logo() {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 55%, var(--color-violet-500) 100%)',
+            'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
         }}
       />
       <span className="relative font-semibold leading-none">R</span>

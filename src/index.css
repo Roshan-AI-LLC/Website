@@ -6,62 +6,72 @@
   --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
 
-  --color-brand-50:  #ecfeff;
-  --color-brand-100: #cffafe;
-  --color-brand-200: #a5f3fc;
-  --color-brand-300: #67e8f9;
-  --color-brand-400: #22d3ee;
-  --color-brand-500: #06b6d4;
-  --color-brand-600: #0891b2;
-  --color-brand-700: #0e7490;
+  /* ShifaMind palette — teal + coral + gold on deep navy */
+  --color-brand-100: #d6f7f4;
+  --color-brand-200: #b1efea;
+  --color-brand-300: #7de8e1;
+  --color-brand-400: #4ecdc4;
+  --color-brand-500: #2bb3aa;
+  --color-brand-600: #1f8c85;
+  --color-brand-700: #186b66;
 
-  --color-iris-400: #818cf8;
-  --color-iris-500: #6366f1;
-  --color-iris-600: #4f46e5;
+  /* Kept as gradient mid-tone — lighter teal */
+  --color-iris-400: #9deee8;
+  --color-iris-500: #7de8e1;
+  --color-iris-600: #4ecdc4;
 
-  --color-violet-400: #a78bfa;
-  --color-violet-500: #8b5cf6;
-  --color-violet-600: #7c3aed;
+  /* Kept as warm gradient endpoint — coral */
+  --color-violet-400: #ff8a8a;
+  --color-violet-500: #ff6b6b;
+  --color-violet-600: #ef4444;
+
+  --color-gold-400: #ffe66d;
+  --color-gold-500: #ffd93d;
 
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :root {
-  /* Light theme tokens */
-  --bg-base: #fafbfd;
+  /* Light theme — soft teal-tinted off-white */
+  --bg-base: #f6fbfa;
   --bg-elev: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.65);
-  --bg-glass-strong: rgba(255, 255, 255, 0.82);
-  --border-subtle: rgba(15, 23, 42, 0.08);
-  --border-strong: rgba(15, 23, 42, 0.14);
-  --text-primary: #0b1220;
-  --text-secondary: rgba(11, 18, 32, 0.62);
-  --text-muted: rgba(11, 18, 32, 0.42);
-  --accent: #0891b2;
-  --accent-soft: rgba(8, 145, 178, 0.1);
-  --accent-strong: #0e7490;
-  --shadow-glow: 0 0 80px -10px rgba(8, 145, 178, 0.18);
-  --grid-color: rgba(15, 23, 42, 0.06);
-  --noise-opacity: 0.025;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-strong: rgba(255, 255, 255, 0.86);
+  --border-subtle: rgba(11, 17, 32, 0.08);
+  --border-strong: rgba(11, 17, 32, 0.14);
+  --text-primary: #0b1120;
+  --text-secondary: rgba(11, 17, 32, 0.62);
+  --text-muted: rgba(11, 17, 32, 0.42);
+  --accent: #1f8c85;
+  --accent-soft: rgba(78, 205, 196, 0.16);
+  --accent-strong: #186b66;
+  --accent-warm: #ff6b6b;
+  --accent-gold: #b58d12;
+  --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.32);
+  --grid-color: rgba(11, 17, 32, 0.06);
+  --noise-opacity: 0.02;
   color-scheme: light;
 }
 
 html.dark {
-  --bg-base: #06080f;
-  --bg-elev: #0b1020;
-  --bg-glass: rgba(15, 22, 40, 0.45);
-  --bg-glass-strong: rgba(15, 22, 40, 0.7);
+  /* Dark theme — ShifaMind deep navy + teal */
+  --bg-base: #060a13;
+  --bg-elev: #0b1120;
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --bg-glass-strong: rgba(11, 17, 32, 0.7);
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.14);
-  --text-primary: rgba(255, 255, 255, 0.94);
-  --text-secondary: rgba(255, 255, 255, 0.62);
-  --text-muted: rgba(255, 255, 255, 0.38);
-  --accent: #22d3ee;
-  --accent-soft: rgba(34, 211, 238, 0.12);
-  --accent-strong: #67e8f9;
-  --shadow-glow: 0 0 80px -10px rgba(34, 211, 238, 0.25);
+  --text-primary: rgba(255, 255, 255, 0.92);
+  --text-secondary: rgba(255, 255, 255, 0.55);
+  --text-muted: rgba(255, 255, 255, 0.3);
+  --accent: #4ecdc4;
+  --accent-soft: rgba(78, 205, 196, 0.15);
+  --accent-strong: #7de8e1;
+  --accent-warm: #ff6b6b;
+  --accent-gold: #ffd93d;
+  --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.3);
   --grid-color: rgba(255, 255, 255, 0.05);
-  --noise-opacity: 0.05;
+  --noise-opacity: 0.04;
   color-scheme: dark;
 }
 
@@ -147,7 +157,7 @@ html.dark {
   }
 
   .gradient-text {
-    background: linear-gradient(120deg, var(--accent) 0%, var(--color-iris-500) 50%, var(--color-violet-500) 100%);
+    background: linear-gradient(120deg, var(--accent) 0%, var(--accent-strong) 55%, var(--color-iris-500) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -155,7 +165,7 @@ html.dark {
   }
 
   .gradient-text-warm {
-    background: linear-gradient(120deg, var(--accent) 0%, #5eead4 100%);
+    background: linear-gradient(120deg, var(--accent) 0%, var(--accent-warm) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -173,9 +183,9 @@ html.dark {
   /* Subtle moving conic gradient for hero accents */
   .aurora {
     background:
-      radial-gradient(60% 50% at 20% 20%, color-mix(in oklab, var(--accent) 35%, transparent) 0%, transparent 60%),
-      radial-gradient(50% 50% at 80% 30%, color-mix(in oklab, var(--color-violet-500) 30%, transparent) 0%, transparent 60%),
-      radial-gradient(40% 40% at 50% 80%, color-mix(in oklab, var(--color-iris-500) 30%, transparent) 0%, transparent 60%);
+      radial-gradient(60% 50% at 20% 20%, color-mix(in oklab, var(--accent) 38%, transparent) 0%, transparent 60%),
+      radial-gradient(50% 50% at 80% 30%, color-mix(in oklab, var(--accent-warm) 22%, transparent) 0%, transparent 60%),
+      radial-gradient(40% 40% at 50% 80%, color-mix(in oklab, var(--color-iris-500) 28%, transparent) 0%, transparent 60%);
     filter: blur(60px);
   }
 
