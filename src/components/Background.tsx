@@ -59,7 +59,7 @@ export function Background() {
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       {/* Base wash */}
       <div
-        className="absolute inset-0"
+        className="bg-base-wash absolute inset-0"
         style={{
           background:
             'radial-gradient(ellipse 80% 60% at 50% -10%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%)',
@@ -67,12 +67,12 @@ export function Background() {
       />
 
       {/* Grid */}
-      <div className="absolute inset-0 grid-bg opacity-70" />
+      <div className="bg-grid-layer absolute inset-0 grid-bg opacity-70" />
 
       {/* Orbs */}
       <div
         ref={orb1}
-        className="absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full opacity-70 will-change-transform"
+        className="bg-orb-1 absolute -top-40 -left-40 h-[640px] w-[640px] rounded-full opacity-70 will-change-transform"
         style={{
           background:
             'radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--accent) 60%, transparent), transparent 60%)',
@@ -81,7 +81,7 @@ export function Background() {
       />
       <div
         ref={orb2}
-        className="absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full opacity-60 will-change-transform"
+        className="bg-orb-2 absolute -bottom-40 -right-40 h-[600px] w-[600px] rounded-full opacity-60 will-change-transform"
         style={{
           background:
             'radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--color-violet-500) 60%, transparent), transparent 60%)',
@@ -90,7 +90,7 @@ export function Background() {
       />
       <div
         ref={orb3}
-        className="absolute top-1/2 left-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 will-change-transform"
+        className="bg-orb-3 absolute top-1/2 left-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50 will-change-transform"
         style={{
           background:
             'radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--color-iris-500) 50%, transparent), transparent 60%)',

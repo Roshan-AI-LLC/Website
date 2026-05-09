@@ -44,11 +44,13 @@ export function Hero() {
         <motion.h1
           {...fadeUp}
           transition={{ ...fadeUp.transition, delay: 0.05 }}
-          className="mt-6 max-w-4xl text-balance font-display text-[2.6rem] font-bold leading-[1.02] tracking-[-0.035em] sm:text-[4rem] lg:text-[4.6rem]"
+          className="mt-6 max-w-5xl text-balance font-display text-[2.1rem] font-bold leading-[1.08] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.6rem]"
         >
-          Clinical AI that
-          <br className="hidden sm:block" />{' '}
-          <span className="gradient-text">earns the room.</span>
+          Clinical AI That Is Simultaneously{' '}
+          <span className="gradient-text">
+            Accurate, Interpretable, and HIPAA-Safe
+          </span>
+          .
         </motion.h1>
 
         <motion.p
@@ -71,11 +73,12 @@ export function Hero() {
             href="https://shifamind.me"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-medium text-white transition will-change-transform hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
             style={{
               background:
                 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
               boxShadow: 'var(--shadow-glow)',
+              color: 'var(--on-accent)',
             }}
           >
             Try ShifaMind

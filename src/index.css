@@ -96,6 +96,7 @@
   --accent-warm: #ff6b6b;
   --accent-gold: #b58d12;
   --logo-fg: #0b1120;
+  --on-accent: #03070a;
   --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.32);
   --grid-color: rgba(11, 17, 32, 0.06);
   --noise-opacity: 0.02;
@@ -103,26 +104,52 @@
 }
 
 html.dark {
-  /* Dark theme: ShifaMind deep navy + teal */
-  --bg-base: #060a13;
-  --bg-elev: #0b1120;
-  --bg-glass: rgba(255, 255, 255, 0.04);
-  --bg-glass-strong: rgba(11, 17, 32, 0.7);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  /* Dark theme: pure black */
+  --bg-base: #000000;
+  --bg-elev: #050608;
+  --bg-glass: rgba(255, 255, 255, 0.045);
+  --bg-glass-strong: rgba(10, 12, 16, 0.75);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.13);
   --text-primary: rgba(255, 255, 255, 0.92);
-  --text-secondary: rgba(255, 255, 255, 0.55);
-  --text-muted: rgba(255, 255, 255, 0.3);
+  --text-secondary: rgba(255, 255, 255, 0.58);
+  --text-muted: rgba(255, 255, 255, 0.32);
   --accent: #4ecdc4;
-  --accent-soft: rgba(78, 205, 196, 0.15);
+  --accent-soft: rgba(78, 205, 196, 0.14);
   --accent-strong: #7de8e1;
   --accent-warm: #ff6b6b;
   --accent-gold: #ffd93d;
   --logo-fg: #ffffff;
-  --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.3);
-  --grid-color: rgba(255, 255, 255, 0.05);
-  --noise-opacity: 0.04;
+  --on-accent: #03070a;
+  --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.28);
+  --grid-color: rgba(255, 255, 255, 0.04);
+  --noise-opacity: 0.03;
   color-scheme: dark;
+}
+
+/* Strip background atmosphere in pure-black dark mode: hide secondary orbs,
+   knock down the remaining ones, simplify the aurora to a single faint teal
+   wash so the canvas stays clean. */
+html.dark .bg-orb-2,
+html.dark .bg-orb-3,
+html.dark .bg-base-wash {
+  display: none;
+}
+html.dark .bg-orb-1 {
+  opacity: 0.18;
+  filter: blur(140px);
+}
+html.dark .bg-grid-layer {
+  opacity: 0.35;
+}
+html.dark .aurora {
+  background: radial-gradient(
+    55% 45% at 50% 30%,
+    color-mix(in oklab, var(--accent) 22%, transparent) 0%,
+    transparent 65%
+  );
+  opacity: 0.5;
+  filter: blur(80px);
 }
 
 @layer base {
