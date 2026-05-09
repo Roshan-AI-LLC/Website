@@ -164,11 +164,16 @@ function BarRow({ name, value, width, tone, highlight, delay }: Row & { delay: n
           whileInView={{ width: `${width}%` }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 1.1, delay, ease: [0.22, 1, 0.36, 1] }}
-          className="flex h-full items-center justify-end rounded-md pr-2 font-mono text-[0.72rem] text-white"
+          className="h-full rounded-md"
           style={{ background: grad[tone] }}
-        >
-          {value.toFixed(4)}
-        </motion.div>
+        />
+      </div>
+      <div
+        className={`w-14 text-right font-mono text-[0.78rem] ${
+          highlight ? 'text-accent' : 'text-secondary'
+        }`}
+      >
+        {value.toFixed(4)}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Check, ShieldAlert } from 'lucide-react';
+import { ArrowUpRight, Check } from 'lucide-react';
+import { ShifaMindLogo } from './ShifaMindLogo';
 
 const traits = [
   'Concept-grounded predictions',
@@ -24,8 +25,16 @@ export function ShifaMindHero() {
                 <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
                 Flagship product
               </div>
-              <h2 className="mt-4 text-balance text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[3.2rem]">
-                ShifaMind: clinical AI that{' '}
+
+              <div className="mt-4 flex items-center gap-3">
+                <ShifaMindLogo size={44} />
+                <span className="font-display text-[1.6rem] font-semibold tracking-[-0.025em] sm:text-[2rem]">
+                  ShifaMind
+                </span>
+              </div>
+
+              <h2 className="mt-3 text-balance font-display text-[2rem] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-[2.8rem]">
+                Clinical AI that{' '}
                 <span className="gradient-text">explains itself.</span>
               </h2>
               <p className="mt-5 max-w-xl text-[1rem] font-light leading-relaxed text-secondary">
@@ -58,11 +67,12 @@ export function ShifaMindHero() {
                   href="https://shifamind.me"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.88rem] font-medium text-white transition will-change-transform hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                   style={{
                     background:
                       'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
                     boxShadow: 'var(--shadow-glow)',
+                    color: 'var(--on-accent)',
                   }}
                 >
                   Visit shifamind.me
@@ -87,11 +97,6 @@ export function ShifaMindHero() {
           <div className="relative">
             <ConceptVisual />
           </div>
-        </div>
-
-        <div className="mt-10 inline-flex items-center gap-2 rounded-full border border-subtle px-3 py-1.5 text-[0.74rem] text-muted">
-          <ShieldAlert size={12} />
-          Research preview · Not a substitute for medical judgement.
         </div>
       </div>
     </section>
@@ -122,7 +127,10 @@ function ConceptVisual() {
       className="glass relative overflow-hidden rounded-3xl p-5 sm:p-6"
     >
       <div className="flex items-center justify-between text-[0.72rem] uppercase tracking-[0.14em] text-muted">
-        <span className="font-mono">patient #48201</span>
+        <span className="inline-flex items-center gap-2 normal-case tracking-normal">
+          <ShifaMindLogo size={20} />
+          <span className="font-mono uppercase tracking-[0.14em]">patient #48201</span>
+        </span>
         <span className="inline-flex items-center gap-1 text-accent">
           <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
           live inference

@@ -17,7 +17,7 @@ export function Founder() {
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
                 Founder &amp; CEO
               </div>
-              <h3 className="mt-2 text-[1.7rem] font-semibold tracking-[-0.025em] sm:text-[2rem]">
+              <h3 className="mt-2 font-display text-[1.7rem] font-semibold tracking-[-0.02em] sm:text-[2rem]">
                 Mohammed Sameer Syed
               </h3>
               <div className="mt-1 text-[0.92rem] text-secondary">

@@ -17,7 +17,7 @@ export function CTA() {
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
                 Partners · clinicians · investors
               </div>
-              <h2 className="mt-3 text-balance text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
+              <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
                 Want a closer look at{' '}
                 <span className="gradient-text-warm">ShifaMind</span>?
               </h2>
@@ -30,11 +30,12 @@ export function CTA() {
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <a
                 href="mailto:founder@roshan-ai.com"
-                className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-medium text-white transition will-change-transform hover:-translate-y-0.5"
+                className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
                   background:
                     'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
                   boxShadow: 'var(--shadow-glow)',
+                  color: 'var(--on-accent)',
                 }}
               >
                 Request a demo
