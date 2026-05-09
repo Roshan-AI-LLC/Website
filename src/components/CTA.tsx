@@ -29,7 +29,7 @@ export function CTA() {
 
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <a
-                href="mailto:hello@roshanai.com"
+                href="mailto:founder@roshan-ai.com"
                 className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-medium text-white transition will-change-transform hover:-translate-y-0.5"
                 style={{
                   background:

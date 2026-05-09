@@ -43,7 +43,7 @@ export function Founder() {
                 label="LinkedIn"
               />
               <FounderLink
-                href="mailto:hello@roshanai.com"
+                href="mailto:founder@roshan-ai.com"
                 icon={Mail}
                 label="Get in touch"
               />

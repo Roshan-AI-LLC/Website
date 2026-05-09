@@ -156,20 +156,13 @@ html.dark {
     -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
   }
 
-  .gradient-text {
-    background: linear-gradient(120deg, var(--accent) 0%, var(--accent-strong) 55%, var(--color-iris-500) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-  }
-
+  .gradient-text,
   .gradient-text-warm {
-    background: linear-gradient(120deg, var(--accent) 0%, var(--accent-warm) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: var(--accent);
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    -webkit-text-fill-color: var(--accent);
   }
 
   .ring-glow {
@@ -213,6 +206,15 @@ html.dark {
     50% { opacity: 0.5; transform: scale(1.4); }
   }
   .pulse-dot { animation: pulse-dot 2s var(--ease-spring) infinite; }
+
+  @keyframes cursor-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes cursor-spin-rev {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
 
   /* Marquee for tech list */
   @keyframes marquee {
