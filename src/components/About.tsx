@@ -10,7 +10,7 @@ const principles = [
   {
     icon: ShieldCheck,
     title: 'Built for the regulated world',
-    body: 'Privacy, auditability, and interpretability are first-class — not an afterthought.',
+    body: 'Privacy, auditability, and interpretability are first-class, not an afterthought.',
   },
   {
     icon: Sparkles,
@@ -37,7 +37,7 @@ export function About() {
               <span className="gradient-text-warm">clinical trust</span>.
             </>
           }
-          desc="Roshan AI is an applied research company. We pick problems where the cost of being wrong is real — and where interpretability, latency, and accuracy must coexist. Healthcare is our first frontier."
+          desc="Roshan AI is an applied research company. We pick problems where the cost of being wrong is real, and where interpretability, latency, and accuracy must coexist. Healthcare is our first frontier."
         />
 
         <div className="mt-14 grid gap-3 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">

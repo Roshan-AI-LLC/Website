@@ -13,7 +13,7 @@ const steps = [
     n: '02',
     icon: Network,
     title: 'Ground',
-    body: 'Cross-attention aligns the text against 111 explicit clinical concepts — symptoms, findings, treatments.',
+    body: 'Cross-attention aligns the text against 111 explicit clinical concepts: symptoms, findings, treatments.',
   },
   {
     n: '03',

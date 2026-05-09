@@ -39,7 +39,7 @@ export function Performance() {
               <span className="gradient-text">enforced transparency</span>.
             </>
           }
-          desc="Evaluated on top-50 ICD-10 codes from MIMIC-IV. ShifaMind matches state-of-the-art black-box models in F1 — and is the only one that comes with a verifiable concept trail."
+          desc="Evaluated on top-50 ICD-10 codes from MIMIC-IV. ShifaMind matches state-of-the-art black-box models in F1, and is the only one that ships with a verifiable concept trail."
         />
 
         <div className="mt-14 grid gap-5 lg:grid-cols-[1.4fr_1fr]">

@@ -9,7 +9,6 @@ import { Hero } from './components/Hero';
 import { Nav } from './components/Nav';
 import { Performance } from './components/Performance';
 import { Projects } from './components/Projects';
-import { SampleOutput } from './components/SampleOutput';
 import { ShifaMindHero } from './components/ShifaMindHero';
 
 export default function App() {
@@ -21,12 +20,11 @@ export default function App() {
 
       <main>
         <Hero />
-        <About />
-        <Divider />
         <ShifaMindHero />
-        <Architecture />
         <Performance />
-        <SampleOutput />
+        <Architecture />
+        <Divider />
+        <About />
         <Divider />
         <Projects />
         <Divider />

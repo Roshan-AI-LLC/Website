@@ -25,7 +25,7 @@ export function ShifaMindHero() {
                 Flagship product
               </div>
               <h2 className="mt-4 text-balance text-[2.1rem] font-semibold leading-[1.05] tracking-[-0.035em] sm:text-[3.2rem]">
-                ShifaMind — clinical AI that{' '}
+                ShifaMind: clinical AI that{' '}
                 <span className="gradient-text">explains itself.</span>
               </h2>
               <p className="mt-5 max-w-xl text-[1rem] font-light leading-relaxed text-secondary">

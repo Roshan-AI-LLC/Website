@@ -32,7 +32,7 @@ export function Projects() {
             tone="soon"
             icon={Cpu}
             title="HardwareAI"
-            desc="Reasoning models embedded in physical hardware — bringing interpretable intelligence to robotics, edge devices, and on-prem systems."
+            desc="Reasoning models embedded in physical hardware. Interpretable intelligence for robotics, edge devices, and on-prem systems."
             cta="Coming soon"
           />
         </div>

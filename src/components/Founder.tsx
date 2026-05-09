@@ -1,27 +1,16 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Globe, Linkedin, Mail } from 'lucide-react';
-import { SectionHeader } from './About';
 
 export function Founder() {
   return (
     <section id="founder" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <SectionHeader
-          eyebrow="Founder"
-          title={
-            <>
-              Solo-founded.{' '}
-              <span className="gradient-text">Engineer-led.</span>
-            </>
-          }
-        />
-
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative mt-12 overflow-hidden rounded-3xl p-8 sm:p-12"
+          className="glass relative overflow-hidden rounded-3xl p-8 sm:p-12"
         >
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
             <div>

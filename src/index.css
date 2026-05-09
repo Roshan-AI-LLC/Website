@@ -6,7 +6,7 @@
   --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
 
-  /* ShifaMind palette — teal + coral + gold on deep navy */
+  /* ShifaMind palette: teal + coral + gold on deep navy */
   --color-brand-100: #d6f7f4;
   --color-brand-200: #b1efea;
   --color-brand-300: #7de8e1;
@@ -15,12 +15,12 @@
   --color-brand-600: #1f8c85;
   --color-brand-700: #186b66;
 
-  /* Kept as gradient mid-tone — lighter teal */
+  /* Kept as gradient mid-tone: lighter teal */
   --color-iris-400: #9deee8;
   --color-iris-500: #7de8e1;
   --color-iris-600: #4ecdc4;
 
-  /* Kept as warm gradient endpoint — coral */
+  /* Kept as warm gradient endpoint: coral */
   --color-violet-400: #ff8a8a;
   --color-violet-500: #ff6b6b;
   --color-violet-600: #ef4444;
@@ -32,7 +32,7 @@
 }
 
 :root {
-  /* Light theme — soft teal-tinted off-white */
+  /* Light theme: soft teal-tinted off-white */
   --bg-base: #f6fbfa;
   --bg-elev: #ffffff;
   --bg-glass: rgba(255, 255, 255, 0.7);
@@ -54,7 +54,7 @@
 }
 
 html.dark {
-  /* Dark theme — ShifaMind deep navy + teal */
+  /* Dark theme: ShifaMind deep navy + teal */
   --bg-base: #060a13;
   --bg-elev: #0b1120;
   --bg-glass: rgba(255, 255, 255, 0.04);

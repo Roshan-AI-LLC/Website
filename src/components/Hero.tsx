@@ -58,7 +58,7 @@ export function Hero() {
         >
           Roshan AI builds research-grade systems that ship. Our flagship product,{' '}
           <span className="text-primary">ShifaMind</span>, brings interpretable
-          clinical reasoning to healthcare — accuracy that matches the state of
+          clinical reasoning to healthcare. Accuracy that matches the state of
           the art, with explanations clinicians can verify.
         </motion.p>
 
