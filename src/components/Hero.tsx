@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, FileText } from 'lucide-react';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -89,11 +89,13 @@ export function Hero() {
           </a>
 
           <a
-            href="#shifamind"
+            href="/arxiv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
           >
-            <Sparkles size={14} />
-            See how it works
+            <FileText size={14} />
+            Technical paper
           </a>
         </motion.div>
 
