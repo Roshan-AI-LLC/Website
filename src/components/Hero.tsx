@@ -89,13 +89,13 @@ export function Hero() {
           </a>
 
           <a
-            href="/arxiv.pdf"
+            href="https://arxiv.org/abs/2605.08482"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
           >
             <FileText size={14} />
-            Technical paper
+            Read the paper
           </a>
         </motion.div>
 
