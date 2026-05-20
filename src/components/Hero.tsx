@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const MotionLink = motion.create(Link);
+
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   animate: { opacity: 1, y: 0 },
@@ -21,9 +23,9 @@ export function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <motion.a
+            <MotionLink
               {...fadeUp}
-              href="/products/shifamind"
+              to="/products/shifamind"
               className="group inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
             >
               <span className="relative inline-flex h-1.5 w-1.5">
@@ -41,7 +43,7 @@ export function Hero() {
                 size={12}
                 className="transition-transform group-hover:translate-x-0.5"
               />
-            </motion.a>
+            </MotionLink>
 
             <motion.h1
               {...fadeUp}
