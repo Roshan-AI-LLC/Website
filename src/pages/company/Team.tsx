@@ -55,11 +55,7 @@ function Hero() {
       </div>
 
       <div className="mx-auto max-w-4xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div className="enter-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
             Team
@@ -75,7 +71,7 @@ function Hero() {
             directly on the model, the platform, and the customers. No buffer
             layers. That's the point.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -22,11 +21,7 @@ export function PagePlaceholder({
       </div>
 
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div className="enter-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-accent">
             <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
             {status}
@@ -53,7 +48,7 @@ export function PagePlaceholder({
             <ArrowLeft size={14} />
             Back to home
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

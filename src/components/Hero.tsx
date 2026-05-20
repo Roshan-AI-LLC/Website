@@ -1,14 +1,5 @@
-import { motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const MotionLink = motion.create(Link);
-
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-};
 
 export function Hero() {
   return (
@@ -23,10 +14,9 @@ export function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_1fr]">
           <div>
-            <MotionLink
-              {...fadeUp}
+            <Link
               to="/products/shifamind"
-              className="group inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+              className="enter-fade-up group inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
             >
               <span className="relative inline-flex h-1.5 w-1.5">
                 <span
@@ -43,33 +33,21 @@ export function Hero() {
                 size={12}
                 className="transition-transform group-hover:translate-x-0.5"
               />
-            </MotionLink>
+            </Link>
 
-            <motion.h1
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: 0.05 }}
-              className="mt-6 text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.6rem]"
-            >
+            <h1 className="enter-fade-up enter-d-1 mt-6 text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.6rem]">
               AI infrastructure for{' '}
               <span className="gradient-text">clinical reasoning.</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: 0.12 }}
-              className="mt-6 max-w-xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]"
-            >
+            <p className="enter-fade-up enter-d-2 mt-6 max-w-xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]">
               Roshan AI builds clinical-grade models that explain themselves.
               The same concepts a doctor reaches for, surfaced as verifiable
               evidence on every prediction. ShifaMind is the first product on
               the platform.
-            </motion.p>
+            </p>
 
-            <motion.div
-              {...fadeUp}
-              transition={{ ...fadeUp.transition, delay: 0.18 }}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
+            <div className="enter-fade-up enter-d-3 mt-8 flex flex-wrap items-center gap-3">
               <Link
                 to="/products/shifamind"
                 className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
@@ -93,17 +71,12 @@ export function Hero() {
               >
                 Talk to us
               </Link>
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
-            className="relative"
-          >
+          <div className="enter-fade-up enter-d-3 relative">
             <PlatformStack />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -131,20 +104,20 @@ function PlatformStack() {
     },
   ];
 
+  const stackDelay = [
+    'enter-d-stack-1',
+    'enter-d-stack-2',
+    'enter-d-stack-3',
+    'enter-d-stack-4',
+  ];
+
   return (
     <div className="relative">
       <div className="space-y-2">
         {layers.map((l, i) => (
-          <motion.div
+          <div
             key={l.title}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.5,
-              delay: 0.25 + i * 0.08,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="glass relative overflow-hidden rounded-2xl px-5 py-4 sm:px-6"
+            className={`enter-fade-up-sm ${stackDelay[i]} glass relative overflow-hidden rounded-2xl px-5 py-4 sm:px-6`}
             style={
               l.tone === 'accent'
                 ? {
@@ -176,7 +149,7 @@ function PlatformStack() {
                     : 'color-mix(in oklab, var(--accent) 30%, transparent)',
               }}
             />
-          </motion.div>
+          </div>
         ))}
       </div>
 

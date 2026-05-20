@@ -89,11 +89,7 @@ function Hero() {
       </div>
 
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <div className="enter-fade-up">
           <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
             <Terminal size={11} strokeWidth={2.4} />
             Developers
@@ -142,7 +138,7 @@ function Hero() {
             />
             Closed beta · API access is gated while we onboard partners
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

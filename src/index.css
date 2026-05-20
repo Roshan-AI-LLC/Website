@@ -324,6 +324,29 @@ html:not(.dark) .glass-strong {
   }
   .pulse-dot { animation: pulse-dot 2s var(--ease-spring) infinite; }
 
+  /* CSS-driven entry animations for above-the-fold content. Independent of
+     JS hydration so content is visible even if the JS bundle is delayed or
+     blocked. Default state (post-animation) is the element's natural state,
+     so if the animation never runs the element is fully visible. */
+  @keyframes enter-fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+  }
+  .enter-fade-up {
+    animation: enter-fade-up 0.7s var(--ease-spring) both;
+  }
+  .enter-fade-up-sm {
+    animation: enter-fade-up 0.5s var(--ease-spring) both;
+  }
+  .enter-d-1 { animation-delay: 0.05s; }
+  .enter-d-2 { animation-delay: 0.12s; }
+  .enter-d-3 { animation-delay: 0.18s; }
+  .enter-d-4 { animation-delay: 0.24s; }
+  .enter-d-5 { animation-delay: 0.30s; }
+  .enter-d-stack-1 { animation-delay: 0.25s; }
+  .enter-d-stack-2 { animation-delay: 0.33s; }
+  .enter-d-stack-3 { animation-delay: 0.41s; }
+  .enter-d-stack-4 { animation-delay: 0.49s; }
+
   @keyframes cursor-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }

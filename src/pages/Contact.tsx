@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from 'react';
 import { Head } from 'vite-react-ssg';
-import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2, Mail } from 'lucide-react';
 import { CONTACT_EMAIL } from '../lib/config';
 
@@ -65,11 +64,7 @@ export default function Contact() {
 
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
+            <div className="enter-fade-up">
               <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
                 <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
                 Contact
@@ -99,17 +94,9 @@ export default function Contact() {
                 We respond to legitimate inquiries within 2 business days.
                 Recruiters and unsolicited vendor pitches will not get a reply.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.7,
-                delay: 0.12,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            >
+            <div className="enter-fade-up enter-d-2">
               <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-8">
                 {status === 'success' ? (
                   <SuccessState onReset={() => setStatus('idle')} />
@@ -221,7 +208,7 @@ export default function Contact() {
                   </form>
                 )}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 

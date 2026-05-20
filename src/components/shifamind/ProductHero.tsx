@@ -1,15 +1,8 @@
-import { motion } from 'framer-motion';
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
 import { ShifaMindLogo } from '../ShifaMindLogo';
 import { PLATFORM_URL } from '../../lib/config';
 
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
-
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
-};
 
 export function ProductHero() {
   return (
@@ -19,38 +12,23 @@ export function ProductHero() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <motion.div
-          {...fadeUp}
-          className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur"
-        >
+        <div className="enter-fade-up inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur">
           <ShifaMindLogo size={14} />
           ShifaMind · A Roshan AI product
-        </motion.div>
+        </div>
 
-        <motion.h1
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.05 }}
-          className="mt-6 max-w-4xl text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.5rem]"
-        >
+        <h1 className="enter-fade-up enter-d-1 mt-6 max-w-4xl text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.03em] sm:text-[3rem] lg:text-[3.5rem]">
           Concept-grounded ICD-10 coding{' '}
           <span className="gradient-text">for clinicians and coders.</span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.12 }}
-          className="mt-6 max-w-2xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]"
-        >
+        <p className="enter-fade-up enter-d-2 mt-6 max-w-2xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]">
           ShifaMind reads a clinical note and returns ranked ICD-10 codes with
           the concept evidence behind each one. Interpretability is enforced
           architecturally, not bolted on after training.
-        </motion.p>
+        </p>
 
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.18 }}
-          className="mt-8 flex flex-wrap items-center gap-3"
-        >
+        <div className="enter-fade-up enter-d-3 mt-8 flex flex-wrap items-center gap-3">
           <a
             href={PLATFORM_URL}
             target="_blank"
@@ -82,17 +60,13 @@ export function ProductHero() {
             <FileText size={14} />
             Read the paper
           </a>
-        </motion.div>
+        </div>
 
-        <motion.div
-          {...fadeUp}
-          transition={{ ...fadeUp.transition, delay: 0.24 }}
-          className="mt-12 grid max-w-3xl grid-cols-3 gap-3 sm:gap-4"
-        >
+        <div className="enter-fade-up enter-d-4 mt-12 grid max-w-3xl grid-cols-3 gap-3 sm:gap-4">
           <Stat value="0.71" label="Macro-F1" sub="50-code MIMIC-IV" />
           <Stat value="160" label="Clinical concepts" sub="Grounded vocabulary" />
           <Stat value="113K" label="Linked admissions" sub="MIMIC-IV labeled corpus" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
