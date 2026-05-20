@@ -3,6 +3,7 @@ import { CTA } from '../components/CTA';
 import { Hero } from '../components/Hero';
 import { PlatformDiagram } from '../components/home/PlatformDiagram';
 import { ProductStrip } from '../components/home/ProductStrip';
+import { Proof } from '../components/home/Proof';
 import { WhyRoshanAI } from '../components/home/WhyRoshanAI';
 
 export default function Home() {
@@ -27,6 +28,8 @@ export default function Home() {
 
       <Hero />
       <ProductStrip />
+      <Divider />
+      <Proof />
       <Divider />
       <WhyRoshanAI />
       <Divider />

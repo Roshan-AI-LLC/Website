@@ -2,6 +2,7 @@ import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
 import { ProductHero } from '../../components/shifamind/ProductHero';
 import { DemoBlock } from '../../components/shifamind/DemoBlock';
+import { BenchmarkSection } from '../../components/shifamind/BenchmarkSection';
 import { FeatureColumns } from '../../components/shifamind/FeatureColumns';
 import { BreadthGrid } from '../../components/shifamind/BreadthGrid';
 import { DeveloperBlock } from '../../components/shifamind/DeveloperBlock';
@@ -33,6 +34,8 @@ export default function ShifaMindProduct() {
 
       <DemoSection />
 
+      <BenchmarkSection />
+      <Divider />
       <FeatureColumns />
       <Divider />
       <BreadthGrid />
