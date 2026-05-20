@@ -1,12 +1,9 @@
 import { Head } from 'vite-react-ssg';
-import { About } from '../components/About';
-import { Architecture } from '../components/Architecture';
 import { CTA } from '../components/CTA';
-import { Founder } from '../components/Founder';
 import { Hero } from '../components/Hero';
-import { Performance } from '../components/Performance';
-import { Projects } from '../components/Projects';
-import { ShifaMindHero } from '../components/ShifaMindHero';
+import { PlatformDiagram } from '../components/home/PlatformDiagram';
+import { ProductStrip } from '../components/home/ProductStrip';
+import { WhyRoshanAI } from '../components/home/WhyRoshanAI';
 
 export default function Home() {
   return (
@@ -29,15 +26,11 @@ export default function Home() {
       </Head>
 
       <Hero />
-      <ShifaMindHero />
-      <Performance />
-      <Architecture />
+      <ProductStrip />
       <Divider />
-      <About />
+      <WhyRoshanAI />
       <Divider />
-      <Projects />
-      <Divider />
-      <Founder />
+      <PlatformDiagram />
       <CTA />
     </>
   );
