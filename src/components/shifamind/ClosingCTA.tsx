@@ -25,7 +25,7 @@ export function ClosingCTA() {
               </h2>
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
                 The platform accepts pasted notes today. API access for
-                production integration is gated — talk to us about your
+                production integration is gated. Talk to us about your
                 workflow and we'll fit the path.
               </p>
             </div>

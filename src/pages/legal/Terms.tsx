@@ -47,7 +47,7 @@ const sections: LegalSection[] = [
         <p>
           <strong>The Services are not a medical device.</strong> They do not
           render a diagnosis, prescribe treatment, or replace the judgment of a
-          licensed clinician. Outputs are intended to support — not replace —
+          licensed clinician. Outputs are intended to support, not replace,
           clinical decision-making.
         </p>
         <p>
@@ -298,7 +298,7 @@ export default function Terms() {
   return (
     <>
       <Head>
-        <title>Terms of Service — Roshan AI</title>
+        <title>Terms of Service | Roshan AI</title>
         <meta
           name="description"
           content="The terms governing use of the Roshan AI website and the ShifaMind platform."

@@ -11,7 +11,7 @@ const pillars: { icon: ElementType; title: string; desc: string }[] = [
   {
     icon: Plug,
     title: 'Built for integration',
-    desc: 'API-first from day one. Drop predictions, evidence, and concepts into existing workflows — EHR, coding tools, dashboards — without custom integration work.',
+    desc: 'API-first from day one. Drop predictions, evidence, and concepts into existing workflows (EHR, coding tools, dashboards) without custom integration work.',
   },
   {
     icon: Eye,

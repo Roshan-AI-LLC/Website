@@ -16,7 +16,7 @@ const items: { icon: ElementType; title: string; desc: string }[] = [
   {
     icon: Eye,
     title: 'Auditable by design',
-    desc: 'Every prediction logs its activated concepts and evidence — no opaque inference.',
+    desc: 'Every prediction logs its activated concepts and evidence. No opaque inference.',
   },
   {
     icon: FileLock,

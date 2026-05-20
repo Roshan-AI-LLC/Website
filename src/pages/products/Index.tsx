@@ -19,7 +19,7 @@ const products: Product[] = [
     status: 'live',
     name: 'ShifaMind',
     descriptor: 'Concept-grounded ICD-10 coding for clinicians and coders',
-    body: 'ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. The interpretability is enforced architecturally — each prediction must flow through an explicit clinical-concept layer before a code can be assigned.',
+    body: 'ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. The interpretability is enforced architecturally: each prediction must flow through an explicit clinical-concept layer before a code can be assigned.',
     highlights: [
       'ICD-10-CM coding from discharge summaries',
       '111 grounded clinical concepts',
@@ -33,7 +33,7 @@ const products: Product[] = [
     status: 'next',
     name: 'In development',
     descriptor: 'More clinical reasoning products on the platform',
-    body: 'Same infrastructure stack, same evidence-first design. Specialised products built on the shared Roshan AI platform are in active R&D. Partner deployments shape the roadmap — talk to us early.',
+    body: 'Same infrastructure stack, same evidence-first design. Specialised products built on the shared Roshan AI platform are in active R&D. Partner deployments shape the roadmap. Talk to us early.',
     highlights: [
       'On the same ingestion + reasoning layers',
       'Same response shape, no new integration',
@@ -47,7 +47,7 @@ export default function ProductsIndex() {
   return (
     <>
       <Head>
-        <title>Products — Roshan AI</title>
+        <title>Products | Roshan AI</title>
         <meta
           name="description"
           content="Clinical AI products built on the Roshan AI platform. ShifaMind is our flagship; more in development."
@@ -89,7 +89,7 @@ function Hero() {
             ShifaMind is the first product Roshan AI ships. The infrastructure
             underneath is shared with every product that follows. Each one
             reads from the same ingestion layer and explains itself through
-            the same concept reasoning layer — same contract, same audit trail.
+            the same concept reasoning layer: same contract, same audit trail.
           </p>
         </motion.div>
       </div>
@@ -245,7 +245,7 @@ function Closing() {
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
                 Roshan AI's product roadmap is shaped by partner workflows.
                 Tell us where evidence-grounded reasoning would change your
-                clinical or operational outcome — we'll tell you what's
+                clinical or operational outcome. We'll tell you what's
                 possible on the platform today.
               </p>
             </div>

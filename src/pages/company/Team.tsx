@@ -31,10 +31,10 @@ export default function CompanyTeam() {
   return (
     <>
       <Head>
-        <title>Team — Roshan AI</title>
+        <title>Team | Roshan AI</title>
         <meta
           name="description"
-          content="The people building Roshan AI — founder, engineers, clinical advisors, and what we're hiring for."
+          content="The people building Roshan AI: founder, engineers, clinical advisors, and what we're hiring for."
         />
         <link rel="canonical" href="https://roshan-ai.com/company/team" />
       </Head>
@@ -72,7 +72,7 @@ function Hero() {
 
           <p className="mt-6 max-w-2xl text-[1.05rem] font-light leading-relaxed text-secondary">
             We're early. The team today is small and operational. Founders work
-            directly on the model, the platform, and the customers — no buffer
+            directly on the model, the platform, and the customers. No buffer
             layers. That's the point.
           </p>
         </motion.div>
@@ -162,7 +162,7 @@ function BuildingTeam() {
           </h2>
           <p className="mt-4 max-w-2xl text-[0.96rem] font-light leading-relaxed text-secondary">
             No filler hires, no preemptive scaling. When a role is the
-            constraint between us and something a customer needs, we open it —
+            constraint between us and something a customer needs, we open it,
             and we close it fast. If your background fits, tell us what you'd
             ship and where you'd take the platform. We respond to thoughtful
             outreach.
@@ -227,7 +227,7 @@ function Closing() {
           <div className="relative z-10 grid gap-6 lg:grid-cols-[1.3fr_auto] lg:items-center">
             <div>
               <h2 className="text-balance font-display text-[1.5rem] font-semibold leading-[1.15] tracking-[-0.02em] sm:text-[1.9rem]">
-                Want to work with us — clinical, technical, or commercial?
+                Want to work with us, clinical, technical, or commercial?
               </h2>
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
                 Pilots, partnerships, hiring. Same inbox, same response time.

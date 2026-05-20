@@ -35,7 +35,7 @@ const stages: Stage[] = [
     title: 'Products out',
     body: 'What clinicians and developers actually use.',
     items: [
-      { label: 'ShifaMind — coding & reasoning' },
+      { label: 'ShifaMind · coding & reasoning' },
       { label: 'More products in development' },
     ],
   },

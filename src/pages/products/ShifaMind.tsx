@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ProductHero } from '../../components/shifamind/ProductHero';
 import { DemoBlock } from '../../components/shifamind/DemoBlock';
 import { BenchmarkSection } from '../../components/shifamind/BenchmarkSection';
+import { InterpretabilityMetrics } from '../../components/shifamind/InterpretabilityMetrics';
 import { FeatureColumns } from '../../components/shifamind/FeatureColumns';
 import { BreadthGrid } from '../../components/shifamind/BreadthGrid';
 import { DeveloperBlock } from '../../components/shifamind/DeveloperBlock';
@@ -14,14 +15,14 @@ export default function ShifaMindProduct() {
   return (
     <>
       <Head>
-        <title>ShifaMind — Concept-grounded ICD-10 coding | Roshan AI</title>
+        <title>ShifaMind: Concept-grounded ICD-10 coding | Roshan AI</title>
         <meta
           name="description"
           content="ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. Built for clinicians and coders."
         />
         <meta
           property="og:title"
-          content="ShifaMind — Concept-grounded ICD-10 coding for clinicians and coders"
+          content="ShifaMind: concept-grounded ICD-10 coding for clinicians and coders."
         />
         <meta
           property="og:description"
@@ -35,6 +36,8 @@ export default function ShifaMindProduct() {
       <DemoSection />
 
       <BenchmarkSection />
+      <Divider />
+      <InterpretabilityMetrics />
       <Divider />
       <FeatureColumns />
       <Divider />
@@ -72,7 +75,7 @@ function DemoSection() {
             </div>
             <p className="max-w-sm text-[0.92rem] text-secondary">
               Pick a scenario, run the coder, and inspect the concepts behind
-              every code. Prerendered for the demo — the platform runs against
+              every code. Prerendered for the demo; the platform runs against
               your own notes.
             </p>
           </div>

@@ -33,7 +33,7 @@ const layers: Layer[] = [
     icon: Brain,
     title: 'Models',
     oneLiner: 'Clinical encoders trained on real clinical text.',
-    body: 'BioClinicalBERT today, with larger backbones under evaluation. Each encoder is paired with a concept layer trained against an explicit set of clinical concepts — the same concepts a coder or clinician would name out loud. The encoder is the substrate; the concept layer is the contract.',
+    body: 'BioClinicalBERT today, with larger backbones under evaluation. Each encoder is paired with a concept layer trained against an explicit set of clinical concepts: the same concepts a coder or clinician would name out loud. The encoder is the substrate; the concept layer is the contract.',
     capabilities: [
       'BioClinicalBERT (current production encoder)',
       '111 grounded clinical concepts',
@@ -72,9 +72,9 @@ const layers: Layer[] = [
     icon: Sparkles,
     title: 'App surface',
     oneLiner: 'The first product on the stack, today.',
-    body: 'ShifaMind is the first consumer of the platform — a coder and reasoning workspace clinicians use directly. The same platform layers power the products that come next. Adding a new product is a content and policy exercise, not a re-architecture.',
+    body: 'ShifaMind is the first consumer of the platform: a coder and reasoning workspace clinicians use directly. The same platform layers power the products that come next. Adding a new product is a content and policy exercise, not a re-architecture.',
     capabilities: [
-      'ShifaMind — live',
+      'ShifaMind · live',
       'More clinical-reasoning products in development',
       'Customer-facing UI surfaces share the design system',
     ],
@@ -85,7 +85,7 @@ export default function Platform() {
   return (
     <>
       <Head>
-        <title>Platform — Roshan AI</title>
+        <title>Platform | Roshan AI</title>
         <meta
           name="description"
           content="The Roshan AI platform: shared clinical AI infrastructure powering ShifaMind and every product downstream."
@@ -124,8 +124,8 @@ function Hero() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-[1.05rem] font-light leading-relaxed text-secondary">
-            Roshan AI is a platform company. Every product we ship — ShifaMind
-            today, more in development — reads from the same ingestion layer,
+            Roshan AI is a platform company. Every product we ship (ShifaMind
+            today, more in development) reads from the same ingestion layer,
             runs on the same clinical encoders, and explains itself through the
             same concept reasoning layer. This page is the stack.
           </p>
@@ -255,7 +255,7 @@ function Closing() {
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
                 The same platform that powers ShifaMind will power the products
                 that come after it. If you're building a clinical workflow
-                that needs grounded reasoning, talk to us early — partner
+                that needs grounded reasoning, talk to us early. Partner
                 deployments shape the roadmap.
               </p>
             </div>

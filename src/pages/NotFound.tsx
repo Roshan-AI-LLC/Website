@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <>
       <Head>
-        <title>Page not found — Roshan AI</title>
+        <title>Page not found | Roshan AI</title>
         <meta name="robots" content="noindex" />
       </Head>
       <PagePlaceholder

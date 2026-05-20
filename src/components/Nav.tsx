@@ -263,7 +263,7 @@ function MobileGroup({
           <span>
             {item.label}
             {item.desc && (
-              <span className="ml-2 text-[0.74rem] text-muted">— {item.desc}</span>
+              <span className="ml-2 text-[0.74rem] text-muted">· {item.desc}</span>
             )}
           </span>
           <ArrowUpRight size={14} strokeWidth={1.6} />

@@ -10,14 +10,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Roshan AI — AI infrastructure for clinical reasoning</title>
+        <title>Roshan AI: AI infrastructure for clinical reasoning</title>
         <meta
           name="description"
           content="Roshan AI builds clinical-grade AI infrastructure. ShifaMind, our flagship product, delivers concept-grounded ICD-10 coding for clinicians and coders."
         />
         <meta
           property="og:title"
-          content="Roshan AI — AI infrastructure for clinical reasoning"
+          content="Roshan AI: AI infrastructure for clinical reasoning"
         />
         <meta
           property="og:description"

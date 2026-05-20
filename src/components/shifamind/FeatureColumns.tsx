@@ -11,7 +11,7 @@ const features: { icon: ElementType; title: string; desc: string }[] = [
   {
     icon: Brain,
     title: 'Explain',
-    desc: 'Concept activation shows why each code was assigned — the same clinical concepts a coder would reach for, surfaced as verifiable evidence.',
+    desc: 'Concept activation shows why each code was assigned: the same clinical concepts a coder would reach for, surfaced as verifiable evidence.',
   },
   {
     icon: MessageSquare,

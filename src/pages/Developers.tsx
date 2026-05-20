@@ -65,10 +65,10 @@ export default function Developers() {
   return (
     <>
       <Head>
-        <title>Developers — Roshan AI</title>
+        <title>Developers | Roshan AI</title>
         <meta
           name="description"
-          content="Roshan AI APIs power clinical reasoning inside your product. Predictions, concepts, evidence, alternatives — through one integration surface."
+          content="Roshan AI APIs power clinical reasoning inside your product. Predictions, concepts, evidence, alternatives, through one integration surface."
         />
         <link rel="canonical" href="https://roshan-ai.com/developers" />
       </Head>
@@ -161,7 +161,7 @@ function CodeShowcase() {
         >
           <CodeBlock label="Authenticate" language="bash" code={authExample} />
           <div className="border-t border-subtle" />
-          <CodeBlock label="Request — POST /v1/shifamind/predict" language="bash" code={predictExample} />
+          <CodeBlock label="Request · POST /v1/shifamind/predict" language="bash" code={predictExample} />
           <div className="border-t border-subtle" />
           <CodeBlock label="Response" language="json" code={responseExample} />
         </motion.div>

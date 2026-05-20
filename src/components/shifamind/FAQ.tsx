@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react';
 const items: { q: string; a: string }[] = [
   {
     q: 'How is ShifaMind different from a general-purpose LLM?',
-    a: 'General LLMs generate codes from a single forward pass over the note. ShifaMind uses a concept-bottleneck model — the network must first activate human-readable clinical concepts (edema, BNP elevation, ST depression) before it can produce a code. That bottleneck makes every prediction explainable by construction, not by post-hoc rationalization.',
+    a: 'General LLMs generate codes from a single forward pass over the note. ShifaMind uses a concept-bottleneck model: the network must first activate human-readable clinical concepts (edema, BNP elevation, ST depression) before it can produce a code. That bottleneck makes every prediction explainable by construction, not by post-hoc rationalization.',
   },
   {
     q: 'Does ShifaMind replace coders?',
@@ -21,11 +21,11 @@ const items: { q: string; a: string }[] = [
   },
   {
     q: 'Can I try it on my own notes?',
-    a: 'Yes. The ShifaMind platform accepts pasted notes today for clinicians and researchers evaluating the system. API access for production integration is gated — reach out via the contact form to start that conversation.',
+    a: 'Yes. The ShifaMind platform accepts pasted notes today for clinicians and researchers evaluating the system. API access for production integration is gated; reach out via the contact form to start that conversation.',
   },
   {
     q: 'What benchmark do you report on?',
-    a: 'Our headline number is F1 = 0.71 on the 50-code MIMIC-IV held-out set, which matches the standard interpretable-ICD-coding benchmark. We also report a Concept-Truth Precision-Recall (CSTPR) score that measures whether the model activates the right concepts for the right reasons — a metric general LLMs cannot produce.',
+    a: 'Our headline number is F1 = 0.71 on the 50-code MIMIC-IV held-out set, which matches the standard interpretable-ICD-coding benchmark. We also report a Concept-Truth Precision-Recall (CSTPR) score that measures whether the model activates the right concepts for the right reasons, a metric general LLMs cannot produce.',
   },
 ];
 

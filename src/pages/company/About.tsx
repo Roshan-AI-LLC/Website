@@ -7,7 +7,7 @@ export default function CompanyAbout() {
   return (
     <>
       <Head>
-        <title>About — Roshan AI</title>
+        <title>About | Roshan AI</title>
         <meta
           name="description"
           content="Roshan AI LLC builds clinical-grade AI infrastructure. Our mission, what we believe, and what we're building toward."
@@ -39,7 +39,7 @@ export default function CompanyAbout() {
             <p className="mt-6 max-w-2xl text-[1.05rem] font-light leading-relaxed text-secondary">
               Roshan AI LLC is a clinical-AI company. We build models trained
               against real clinical data and structured around the concepts a
-              doctor uses — so every output is auditable, every prediction is
+              doctor uses, so every output is auditable, every prediction is
               explainable, and every deployment is something the clinician can
               stand behind in court if it came to that.
             </p>
@@ -84,7 +84,7 @@ export default function CompanyAbout() {
         <p>
           We train clinical encoders on clinical data, structure them against an
           explicit concept layer, and route every prediction through that
-          layer. The bottleneck is the feature, not the bug — it forces the
+          layer. The bottleneck is the feature, not the bug. It forces the
           model to ground each output in the same concepts a doctor or coder
           would name out loud.
         </p>
@@ -108,7 +108,7 @@ export default function CompanyAbout() {
       >
         <p>
           ShifaMind is the first thing we shipped. It reads a clinical note and
-          returns ranked ICD-10 codes — each one paired with the concept
+          returns ranked ICD-10 codes, each one paired with the concept
           evidence behind it. Today it's used by clinicians and researchers
           evaluating coding workflows; tomorrow it's an API any health system
           can integrate.
@@ -135,7 +135,7 @@ export default function CompanyAbout() {
         }
       >
         <p>
-          Coding is one piece. Clinical reasoning runs deeper — risk
+          Coding is one piece. Clinical reasoning runs deeper: risk
           stratification, decision support, longitudinal patient summaries,
           documentation. Every one of those workflows benefits from the same
           architectural commitment: evidence-first, concept-grounded, defensible
@@ -143,7 +143,7 @@ export default function CompanyAbout() {
         </p>
         <p>
           We're building toward a future where a clinician's AI tools share a
-          common reasoning fabric — where the same concept activates a diagnosis
+          common reasoning fabric, where the same concept activates a diagnosis
           code, surfaces a relevant guideline, and flags a contraindication, all
           with the same audit trail. That's the platform.
         </p>
@@ -213,7 +213,7 @@ function Closing() {
         >
           <div className="relative z-10">
             <h2 className="text-balance font-display text-[1.5rem] font-semibold leading-[1.15] tracking-[-0.02em] sm:text-[1.9rem]">
-              Want to work with us — or for us?
+              Want to work with us, or for us?
             </h2>
             <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
               Pilots, integrations, partnerships, hiring. The fastest way to a

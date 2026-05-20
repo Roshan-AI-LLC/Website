@@ -62,7 +62,7 @@ const sections: LegalSection[] = [
           <li>Operate, maintain, and secure our services;</li>
           <li>Respond to inquiries and provide support;</li>
           <li>
-            Improve our products — typically through aggregate or de-identified
+            Improve our products, typically through aggregate or de-identified
             data, never by training on identifiable customer content without
             explicit written consent;
           </li>
@@ -80,7 +80,7 @@ const sections: LegalSection[] = [
         <p>
           When customers process Protected Health Information (PHI) through
           the ShifaMind platform under a signed BAA, that PHI is handled
-          according to HIPAA, the BAA, and the customer's instructions — not
+          according to HIPAA, the BAA, and the customer's instructions, not
           this Privacy Policy.
         </p>
         <p>
@@ -99,17 +99,17 @@ const sections: LegalSection[] = [
         <p>We share information with:</p>
         <ul className="list-disc space-y-1.5 pl-5">
           <li>
-            <strong>Service providers</strong> — vendors who help us operate
+            <strong>Service providers.</strong> Vendors who help us operate
             (hosting, analytics, email). They are contractually bound to use
             the information only on our behalf.
           </li>
           <li>
-            <strong>Legal compliance</strong> — when required by law, court
+            <strong>Legal compliance.</strong> When required by law, court
             order, or to protect the rights, safety, or property of Roshan AI
             or others.
           </li>
           <li>
-            <strong>Business transfers</strong> — in the event of a merger,
+            <strong>Business transfers.</strong> In the event of a merger,
             acquisition, or sale of assets, with continued protection of your
             information.
           </li>
@@ -187,7 +187,7 @@ const sections: LegalSection[] = [
       <>
         <p>
           We use commercially reasonable safeguards to protect information
-          against unauthorized access, alteration, and destruction — including
+          against unauthorized access, alteration, and destruction, including
           TLS in transit, encryption at rest, and strict access controls. No
           system is perfectly secure, and we cannot guarantee absolute
           security; if a breach materially affects your information, we will
@@ -243,7 +243,7 @@ export default function Privacy() {
   return (
     <>
       <Head>
-        <title>Privacy Policy — Roshan AI</title>
+        <title>Privacy Policy | Roshan AI</title>
         <meta
           name="description"
           content="How Roshan AI collects, uses, and protects information across our website and the ShifaMind platform."
@@ -259,7 +259,7 @@ export default function Privacy() {
           <p>
             This Privacy Policy explains what information Roshan AI collects,
             how we use it, and what choices you have. We tried to keep it
-            short, direct, and honest — if anything is unclear, email us.
+            short, direct, and honest. If anything is unclear, email us.
           </p>
         }
         sections={sections}

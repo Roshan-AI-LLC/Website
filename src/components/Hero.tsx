@@ -38,7 +38,7 @@ export function Hero() {
                   style={{ background: 'var(--accent)', opacity: 0.4 }}
                 />
               </span>
-              ShifaMind is live — concept-grounded ICD-10 coding
+              ShifaMind is live · concept-grounded ICD-10 coding
               <ArrowRight
                 size={12}
                 className="transition-transform group-hover:translate-x-0.5"
@@ -59,10 +59,10 @@ export function Hero() {
               transition={{ ...fadeUp.transition, delay: 0.12 }}
               className="mt-6 max-w-xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]"
             >
-              Roshan AI builds clinical-grade models that explain themselves — the
-              same concepts a doctor reaches for, surfaced as verifiable evidence
-              on every prediction. ShifaMind is the first product on the
-              platform.
+              Roshan AI builds clinical-grade models that explain themselves.
+              The same concepts a doctor reaches for, surfaced as verifiable
+              evidence on every prediction. ShifaMind is the first product on
+              the platform.
             </motion.p>
 
             <motion.div

@@ -50,7 +50,7 @@ export default function Contact() {
   return (
     <>
       <Head>
-        <title>Contact — Roshan AI</title>
+        <title>Contact | Roshan AI</title>
         <meta
           name="description"
           content="Talk to Roshan AI about pilots, partnerships, integration, and demos."
@@ -82,7 +82,7 @@ export default function Contact() {
 
               <p className="mt-5 max-w-md text-[1rem] font-light leading-relaxed text-secondary">
                 Pilots, integrations, partnerships, demos. Tell us where you sit
-                and what you're trying to do — we'll route it to the right
+                and what you're trying to do. We'll route it to the right
                 person.
               </p>
 

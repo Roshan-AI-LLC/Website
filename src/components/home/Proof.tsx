@@ -26,8 +26,8 @@ export function Proof() {
             </motion.h2>
           </div>
           <p className="max-w-sm text-[0.94rem] font-light leading-relaxed text-secondary lg:text-right">
-            Same evaluation, same test set, same metric. ShifaMind on top —
-            because clinical-grade reasoning isn't a prompt, it's an
+            Same evaluation, same test set, same metric. ShifaMind on top,
+            because clinical-grade reasoning isn't a prompt. It's an
             architecture.
           </p>
         </div>

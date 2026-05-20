@@ -1,6 +1,6 @@
 /**
  * Demo scenarios for the /products/shifamind interactive coder.
- * All data is hand-curated for the demo — no live inference. The
+ * All data is hand-curated for the demo. No live inference. The
  * highlights, concepts, and codes are clinically reasonable but the
  * "predictions" are prerendered, not produced by ShifaMind in real time.
  */
