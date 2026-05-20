@@ -11,12 +11,12 @@ type Row = {
 };
 
 const f1Rows: Row[] = [
-  { name: 'ShifaMind', value: 0.7122, width: 95, tone: 'accent', highlight: true },
-  { name: 'LAAT', value: 0.7114, width: 94.9, tone: 'iris' },
-  { name: 'GKI-ICD', value: 0.6485, width: 86.5, tone: 'slate' },
-  { name: 'Gemini 2.5 Pro', value: 0.4349, width: 58, tone: 'mute' },
-  { name: 'GPT-5.4', value: 0.4169, width: 55.6, tone: 'mute' },
-  { name: 'Claude 4.6', value: 0.3426, width: 45.7, tone: 'mute' },
+  { name: 'ShifaMind', value: 0.712, width: 95, tone: 'accent', highlight: true },
+  { name: 'LAAT', value: 0.711, width: 94.9, tone: 'iris' },
+  { name: 'GKI-ICD', value: 0.649, width: 86.5, tone: 'slate' },
+  { name: 'Gemini 2.5 Pro', value: 0.435, width: 58, tone: 'mute' },
+  { name: 'GPT-5.4', value: 0.417, width: 55.6, tone: 'mute' },
+  { name: 'Claude 4.6', value: 0.343, width: 45.7, tone: 'mute' },
   { name: 'Vanilla CBM', value: 0.164, width: 21.9, tone: 'dim' },
 ];
 
@@ -173,7 +173,7 @@ function BarRow({ name, value, width, tone, highlight, delay }: Row & { delay: n
           highlight ? 'text-accent' : 'text-secondary'
         }`}
       >
-        {value.toFixed(4)}
+        {value.toFixed(3)}
       </div>
     </div>
   );

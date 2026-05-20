@@ -80,26 +80,27 @@
 }
 
 :root {
-  /* Light theme: soft teal-tinted off-white */
-  --bg-base: #f6fbfa;
+  /* Light theme: clean, near-white with a barely-teal hint. Calm, not hazy. */
+  --bg-base: #fbfdfc;
   --bg-elev: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.7);
-  --bg-glass-strong: rgba(255, 255, 255, 0.86);
-  --border-subtle: rgba(11, 17, 32, 0.08);
-  --border-strong: rgba(11, 17, 32, 0.14);
+  --bg-glass: rgba(255, 255, 255, 0.92);
+  --bg-glass-strong: rgba(255, 255, 255, 0.96);
+  --border-subtle: rgba(11, 17, 32, 0.11);
+  --border-strong: rgba(11, 17, 32, 0.2);
   --text-primary: #0b1120;
-  --text-secondary: rgba(11, 17, 32, 0.62);
-  --text-muted: rgba(11, 17, 32, 0.42);
-  --accent: #1f8c85;
-  --accent-soft: rgba(78, 205, 196, 0.16);
-  --accent-strong: #186b66;
-  --accent-warm: #ff6b6b;
-  --accent-gold: #b58d12;
+  --text-secondary: rgba(11, 17, 32, 0.74);
+  --text-muted: rgba(11, 17, 32, 0.54);
+  --accent: #157771;
+  --accent-soft: rgba(31, 140, 133, 0.13);
+  --accent-strong: #0f5953;
+  --accent-warm: #d44d4d;
+  --accent-gold: #8a6b0e;
   --logo-fg: #0b1120;
-  --on-accent: #03070a;
-  --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.32);
-  --grid-color: rgba(11, 17, 32, 0.06);
-  --noise-opacity: 0.02;
+  --on-accent: #04201e;
+  --shadow-glow: 0 0 60px -16px rgba(31, 140, 133, 0.28);
+  --shadow-card: 0 1px 2px rgba(11, 17, 32, 0.04), 0 8px 24px -12px rgba(11, 17, 32, 0.08);
+  --grid-color: rgba(11, 17, 32, 0.05);
+  --noise-opacity: 0.015;
   color-scheme: light;
 }
 
@@ -150,6 +151,39 @@ html.dark .aurora {
   );
   opacity: 0.5;
   filter: blur(80px);
+}
+
+/* Light mode: same treatment, calmer canvas. Orbs and aurora dialed way back
+   so the page reads clean instead of hazy on the off-white base. */
+html:not(.dark) .bg-orb-2,
+html:not(.dark) .bg-orb-3 {
+  display: none;
+}
+html:not(.dark) .bg-orb-1 {
+  opacity: 0.18;
+  filter: blur(160px);
+}
+html:not(.dark) .bg-base-wash {
+  opacity: 0.35;
+}
+html:not(.dark) .bg-grid-layer {
+  opacity: 0.45;
+}
+html:not(.dark) .aurora {
+  background: radial-gradient(
+    55% 45% at 50% 30%,
+    color-mix(in oklab, var(--accent) 14%, transparent) 0%,
+    transparent 65%
+  );
+  opacity: 0.55;
+  filter: blur(70px);
+}
+
+/* Glass cards lift off the page in light mode with a subtle shadow so they
+   don't fade into the background. */
+html:not(.dark) .glass,
+html:not(.dark) .glass-strong {
+  box-shadow: var(--shadow-card);
 }
 
 @layer base {

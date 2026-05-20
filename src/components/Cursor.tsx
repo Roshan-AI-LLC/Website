@@ -193,7 +193,7 @@ export function Cursor() {
         </svg>
       </div>
 
-      {/* Main angular arrow — tip anchored at (0,0) of container */}
+      {/* Main angular arrow, tip anchored at (0,0) of container */}
       <svg
         width="20"
         height="20"

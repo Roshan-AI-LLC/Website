@@ -149,7 +149,7 @@ function ConceptVisual() {
       <div className="mt-5">
         <div className="mb-2 flex items-center justify-between text-[0.72rem] font-medium uppercase tracking-[0.12em] text-secondary">
           Activated concepts
-          <span className="font-mono text-muted">111 grounded</span>
+          <span className="font-mono text-muted">160 grounded</span>
         </div>
         <div className="space-y-1.5">
           {concepts.map((c, i) => (

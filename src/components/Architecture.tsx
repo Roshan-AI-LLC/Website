@@ -7,25 +7,25 @@ const steps = [
     n: '01',
     icon: FileText,
     title: 'Encode',
-    body: 'BioClinicalModernBERT turns discharge summaries into rich, clinically-aware embeddings.',
+    body: 'BioClinical ModernBERT-base turns 8,192-token discharge summaries into long-context clinical token representations.',
   },
   {
     n: '02',
     icon: Network,
     title: 'Ground',
-    body: 'Cross-attention aligns the text against 111 explicit clinical concepts: symptoms, findings, treatments.',
+    body: 'Cross-attention against 160 learnable concept queries produces a concept-grounded representation in the encoder hidden space.',
   },
   {
     n: '03',
     icon: Sigma,
     title: 'Gate',
-    body: 'A multiplicative bottleneck routes prediction signal exclusively through the active concepts. No shortcuts.',
+    body: 'A learned multiplicative gate modulates the concept-grounded representation. No direct path from encoder to prediction head; prediction is concept-mediated by construction.',
   },
   {
     n: '04',
     icon: Stethoscope,
     title: 'Predict',
-    body: 'ICD-10 codes are produced with concept-level confidence so a clinician can trace every claim.',
+    body: 'ICD-10 logits are produced from the gated, LayerNorm-normalized concept-grounded representation, with auxiliary concept activations exposed for inspection.',
   },
 ];
 
@@ -38,10 +38,10 @@ export function Architecture() {
           title={
             <>
               Every prediction flows through a{' '}
-              <span className="gradient-text-warm">human-readable bottleneck</span>.
+              <span className="gradient-text-warm">multiplicative concept bottleneck</span>.
             </>
           }
-          desc="ShifaMind is a concept-bottleneck architecture. The model literally cannot make a prediction that isn't traceable to clinical concepts a doctor can read, audit, and override."
+          desc="ShifaMind is a Multiplicative Concept Bottleneck (MCB) architecture. A no-bypass design enforces that diagnosis predictions can only flow through a concept-grounded representation, while a multiplicative gate preserves the representational capacity that a narrow scalar bottleneck would lose."
         />
 
         <div className="relative mt-14">

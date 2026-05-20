@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PLATFORM_URL } from '../../lib/config';
 
-export function CTA() {
+export function ClosingCTA() {
   return (
     <section className="relative py-20 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
@@ -16,22 +17,24 @@ export function CTA() {
           <div className="relative z-10 grid gap-8 lg:grid-cols-[1.4fr_auto] lg:items-center">
             <div>
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
-                Clinicians · developers · partners
+                ShifaMind · ready to evaluate
               </div>
               <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
-                Build with{' '}
-                <span className="gradient-text">Roshan AI.</span>
+                Bring your notes.{' '}
+                <span className="gradient-text">See the concepts behind every code.</span>
               </h2>
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
-                Pilot ShifaMind, integrate the API, or talk to us about the next
-                product on the platform. We work directly with the people who
-                ship the workflow.
+                The platform accepts pasted notes today. API access for
+                production integration is gated. Talk to us about your
+                workflow and we'll fit the path.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 lg:justify-end">
-              <Link
-                to="/contact"
+              <a
+                href={PLATFORM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
                   background:
@@ -40,17 +43,17 @@ export function CTA() {
                   color: 'var(--on-accent)',
                 }}
               >
-                Book a demo
+                Try ShifaMind
                 <ArrowUpRight
                   size={15}
                   className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
-              </Link>
+              </a>
               <Link
-                to="/products/shifamind"
+                to="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
               >
-                See ShifaMind
+                Book a demo
                 <ArrowUpRight size={15} />
               </Link>
             </div>
