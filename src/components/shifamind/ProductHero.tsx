@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Stethoscope } from 'lucide-react';
+import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
 import { ShifaMindLogo } from '../ShifaMindLogo';
 import { PLATFORM_URL } from '../../lib/config';
+
+const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -70,6 +72,15 @@ export function ProductHero() {
           >
             <Stethoscope size={14} />
             Book a demo
+          </a>
+          <a
+            href={PAPER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+          >
+            <FileText size={14} />
+            Read the paper
           </a>
         </motion.div>
 

@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
-import { Info } from 'lucide-react';
+import { ArrowUpRight, FileText, Info } from 'lucide-react';
+
+const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
 
 type Tone = 'ours' | 'clinical' | 'clinical-alt' | 'llm' | 'baseline';
 
@@ -78,13 +80,25 @@ export function BenchmarkChart() {
         ))}
       </div>
 
-      {/* Caption */}
-      <div className="mt-7 flex items-start gap-2 border-t border-subtle pt-5 text-[0.86rem] font-light leading-relaxed text-secondary">
-        <Info size={14} className="mt-0.5 flex-shrink-0 text-muted" />
-        <p>
-          ShifaMind beats every general-purpose LLM tested and matches the best
-          clinical specialist baseline.
-        </p>
+      {/* Caption + paper link */}
+      <div className="mt-7 border-t border-subtle pt-5">
+        <div className="flex items-start gap-2 text-[0.86rem] font-light leading-relaxed text-secondary">
+          <Info size={14} className="mt-0.5 flex-shrink-0 text-muted" />
+          <p>
+            ShifaMind beats every general-purpose LLM tested and matches the
+            best clinical specialist baseline.
+          </p>
+        </div>
+        <a
+          href={PAPER_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-subtle bg-glass px-3.5 py-1.5 text-[0.8rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
+        >
+          <FileText size={13} />
+          Read the paper
+          <ArrowUpRight size={12} />
+        </a>
       </div>
     </motion.div>
   );
