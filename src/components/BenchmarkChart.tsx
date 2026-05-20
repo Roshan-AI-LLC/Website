@@ -12,12 +12,12 @@ type Bar = {
 };
 
 const bars: Bar[] = [
-  { label: 'ShifaMind', value: 0.7122, tone: 'ours' },
-  { label: 'LAAT', value: 0.7114, tone: 'clinical' },
-  { label: 'GKI-ICD', value: 0.6485, tone: 'clinical-alt' },
-  { label: 'Gemini 2.5 Pro', value: 0.4349, tone: 'llm' },
-  { label: 'GPT-5.4', value: 0.4169, tone: 'llm' },
-  { label: 'Claude 4.6', value: 0.3426, tone: 'llm' },
+  { label: 'ShifaMind', value: 0.712, tone: 'ours' },
+  { label: 'LAAT', value: 0.711, tone: 'clinical' },
+  { label: 'GKI-ICD', value: 0.649, tone: 'clinical-alt' },
+  { label: 'Gemini 2.5 Pro', value: 0.435, tone: 'llm' },
+  { label: 'GPT-5.4', value: 0.417, tone: 'llm' },
+  { label: 'Claude 4.6', value: 0.343, tone: 'llm' },
   { label: 'Vanilla CBM', value: 0.164, tone: 'baseline' },
 ];
 
@@ -142,7 +142,7 @@ function BarRow({
       <div
         className="relative h-7 overflow-hidden rounded-md border border-subtle bg-glass sm:h-8"
         role="img"
-        aria-label={`${bar.label}: F1 ${bar.value.toFixed(4)}`}
+        aria-label={`${bar.label}: F1 ${bar.value.toFixed(3)}`}
       >
         <motion.div
           initial={{ width: 0 }}
@@ -159,7 +159,7 @@ function BarRow({
           isOurs ? 'text-accent' : 'text-secondary'
         }`}
       >
-        {bar.value.toFixed(4)}
+        {bar.value.toFixed(3)}
       </div>
     </div>
   );
