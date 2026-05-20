@@ -4,20 +4,20 @@ const metrics = [
   {
     code: 'CSTPR',
     value: '0.704',
-    name: 'Concept-truth precision and recall',
-    desc: 'Of every concept the model activated, how often it was correct, and of every truly-present concept, how often the model caught it.',
+    name: 'Concept-Supported True Positive Rate',
+    desc: 'Of all truly positive diagnoses, the fraction the model both predicted correctly AND grounded in at least one correctly activated relevant concept. Tests that correct predictions come with correct evidence.',
   },
   {
     code: 'CIM',
     value: '1.314',
-    name: 'Concept influence metric',
-    desc: 'Causal strength of each concept on the predicted code. The bigger the number, the more the concept actually moves the prediction.',
+    name: 'Concept Influence Magnitude',
+    desc: 'Gradient-norm sensitivity of the diagnosis logits with respect to the representation feeding the diagnosis head. A larger value means the concept-grounded representation carries more signal at the prediction boundary.',
   },
   {
     code: 'CCR',
     value: '0.836',
-    name: 'Concept-conditioned recall',
-    desc: 'Diagnosis recall when the right concepts are activated. Tests whether the bottleneck actually carries the signal a code needs.',
+    name: 'Concept-Conditioned Recall',
+    desc: 'Diagnosis recall restricted to samples where the relevant concept is actually present. Tests whether the bottleneck recovers the diagnosis when the right concept evidence is there.',
   },
 ];
 

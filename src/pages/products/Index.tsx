@@ -22,7 +22,7 @@ const products: Product[] = [
     body: 'ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. The interpretability is enforced architecturally: each prediction must flow through an explicit clinical-concept layer before a code can be assigned.',
     highlights: [
       'ICD-10-CM coding from discharge summaries',
-      '111 grounded clinical concepts',
+      '160 grounded clinical concepts',
       'Evidence phrases from the source note',
       'Ranked alternatives with confidences',
     ],

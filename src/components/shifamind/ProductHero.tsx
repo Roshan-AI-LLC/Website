@@ -89,9 +89,9 @@ export function ProductHero() {
           transition={{ ...fadeUp.transition, delay: 0.24 }}
           className="mt-12 grid max-w-3xl grid-cols-3 gap-3 sm:gap-4"
         >
-          <Stat value="0.71" label="Diagnostic F1" sub="50-code MIMIC-IV" />
-          <Stat value="111" label="Clinical concepts" sub="Grounded explanations" />
-          <Stat value="115K" label="Discharge summaries" sub="Training corpus" />
+          <Stat value="0.71" label="Macro-F1" sub="50-code MIMIC-IV" />
+          <Stat value="160" label="Clinical concepts" sub="Grounded vocabulary" />
+          <Stat value="113K" label="Linked admissions" sub="MIMIC-IV labeled corpus" />
         </motion.div>
       </div>
     </section>

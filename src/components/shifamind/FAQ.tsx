@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react';
 const items: { q: string; a: string }[] = [
   {
     q: 'How is ShifaMind different from a general-purpose LLM?',
-    a: 'General LLMs generate codes from a single forward pass over the note. ShifaMind uses a concept-bottleneck model: the network must first activate human-readable clinical concepts (edema, BNP elevation, ST depression) before it can produce a code. That bottleneck makes every prediction explainable by construction, not by post-hoc rationalization.',
+    a: 'General LLMs generate codes from a single forward pass over the note. ShifaMind uses a Multiplicative Concept Bottleneck: cross-attention extracts a concept-grounded representation from the note against a vocabulary of 160 named clinical concepts, and a learned multiplicative gate constrains the diagnosis head to operate only on that concept-grounded representation. There is no direct path from the encoder to the prediction head, so every prediction is concept-mediated by construction.',
   },
   {
     q: 'Does ShifaMind replace coders?',
@@ -13,7 +13,7 @@ const items: { q: string; a: string }[] = [
   },
   {
     q: 'What models power it?',
-    a: 'Phase 1 uses BioClinicalBERT as the encoder, paired with a learned concept layer (111 grounded clinical concepts) and a code prediction head. Concepts are supervised against MIMIC-IV discharge summaries. We are evaluating larger backbone models for Phase 2.',
+    a: 'The encoder is BioClinical ModernBERT-base, an 8,192-token long-context clinical encoder. Above the encoder sits a cross-attention concept-grounding module over 160 learnable concept queries, a multiplicative gate, LayerNorm, and a diagnosis head trained with focal loss against the MIMIC-IV top-50 ICD-10 set. A separate concept head produces inspectable scalar concept activations supervised by NegEx-derived pseudo-labels; this head is not used in the diagnosis pathway. Larger backbones are under evaluation.',
   },
   {
     q: 'How do you handle PHI?',
@@ -25,7 +25,7 @@ const items: { q: string; a: string }[] = [
   },
   {
     q: 'What benchmark do you report on?',
-    a: 'Our headline number is F1 = 0.71 on the 50-code MIMIC-IV held-out set, which matches the standard interpretable-ICD-coding benchmark. We also report a Concept-Truth Precision-Recall (CSTPR) score that measures whether the model activates the right concepts for the right reasons, a metric general LLMs cannot produce.',
+    a: 'Our headline number is Macro-F1 = 0.712 on the MIMIC-IV top-50 ICD-10 held-out set (global threshold τ = 0.5), evaluated against six published baselines including LAAT, CAML, PLM-ICD, KEPT, and GKI-ICD. We also report three interpretability-oriented metrics on the same test set: Concept-Supported True Positive Rate (CSTPR = 0.704), Concept Influence Magnitude (CIM = 1.314), and Concept-Conditioned Recall (CCR = 0.836), against a capacity-matched Vanilla CBM. Methodology, ablations, and statistical tests are in the preprint.',
   },
 ];
 
