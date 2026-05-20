@@ -155,6 +155,11 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
   const closeTimer = useRef<number | null>(null);
   const location = useLocation();
 
+  const isActive = items.some((item) =>
+    location.pathname === item.href ||
+    location.pathname.startsWith(`${item.href}/`),
+  );
+
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
@@ -187,7 +192,7 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
         onClick={() => setOpen((v) => !v)}
         className={cn(
           'nav-link inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[0.86rem] font-medium transition-colors hover:text-primary',
-          open ? 'text-primary' : 'text-secondary',
+          open || isActive ? 'text-primary' : 'text-secondary',
         )}
         aria-expanded={open}
         aria-haspopup="menu"

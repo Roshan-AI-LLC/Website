@@ -10,6 +10,17 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Parent paths without a dedicated page send users somewhere useful.
+[[redirects]]
+  from = "/company"
+  to = "/company/about"
+  status = 301
+
+[[redirects]]
+  from = "/legal"
+  to = "/legal/privacy"
+  status = 301
+
 # SSG produces real HTML per route. For any unmatched URL, fall back to the
 # client-rendered 404 page (the React Router catch-all renders NotFound).
 [[redirects]]
