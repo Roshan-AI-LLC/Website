@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function CTA() {
   return (
@@ -15,21 +16,22 @@ export function CTA() {
           <div className="relative z-10 grid gap-8 lg:grid-cols-[1.4fr_auto] lg:items-center">
             <div>
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
-                Partners · clinicians · investors
+                Clinicians · developers · partners
               </div>
               <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]">
-                Want a closer look at{' '}
-                <span className="gradient-text-warm">ShifaMind</span>?
+                Build with{' '}
+                <span className="gradient-text">Roshan AI.</span>
               </h2>
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
-                We give clinical partners and serious investors a private walkthrough of the
-                model, evals, and roadmap. No deck-spam, just the work.
+                Pilot ShifaMind, integrate the API, or talk to us about the next
+                product on the platform. We work directly with the people who
+                ship the workflow.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 lg:justify-end">
-              <a
-                href="mailto:founder@roshan-ai.com"
+              <Link
+                to="/contact"
                 className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
                   background:
@@ -38,21 +40,19 @@ export function CTA() {
                   color: 'var(--on-accent)',
                 }}
               >
-                Request a demo
+                Book a demo
                 <ArrowUpRight
                   size={15}
                   className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
-              </a>
-              <a
-                href="https://shifamind.me"
-                target="_blank"
-                rel="noopener noreferrer"
+              </Link>
+              <Link
+                to="/products/shifamind"
                 className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
               >
-                Visit shifamind.me
+                See ShifaMind
                 <ArrowUpRight size={15} />
-              </a>
+              </Link>
             </div>
           </div>
 
