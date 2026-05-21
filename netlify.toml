@@ -21,6 +21,22 @@
   to = "/legal/privacy"
   status = 301
 
+# vite-react-ssg's static-loader-data-manifest must always resolve from root,
+# even when fetched via a relative URL from a nested route. Without this
+# rewrite, the SPA catchall below would serve index.html (HTML) in response
+# to a manifest request, breaking JSON parsing on every non-root page.
+[[redirects]]
+  from = "/*/static-loader-data-manifest-:hash.json"
+  to = "/static-loader-data-manifest-:hash.json"
+  status = 200
+
+# Any other missing .json must 404, never the SPA shell — otherwise client
+# fetches that hit a missing file get HTML back and fail to JSON.parse.
+[[redirects]]
+  from = "/*.json"
+  to = "/404"
+  status = 404
+
 # SSG produces real HTML per route. For any unmatched URL, fall back to the
 # client-rendered 404 page (the React Router catch-all renders NotFound).
 [[redirects]]
