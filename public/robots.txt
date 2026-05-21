@@ -1,5 +1,4 @@
 User-agent: *
-Allow: /
 Disallow: /legal/
 
 Sitemap: https://roshan-ai.com/sitemap.xml
