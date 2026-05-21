@@ -2,6 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      Root-relative base. Forces relative fetches (including vite-react-ssg's
+      static-loader-data-manifest-<hash>.json) to resolve from /, not from
+      the current route path. Without this, on /products/shifamind the SSG
+      runtime tries to fetch /products/shifamind/static-loader-data-manifest-…
+      which doesn't exist; the SPA catchall returns index.html, and JS fails
+      to parse HTML as JSON ("Unexpected token '<'").
+    -->
+    <base href="/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
