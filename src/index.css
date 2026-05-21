@@ -112,9 +112,9 @@ html.dark {
   --bg-glass-strong: rgba(10, 12, 16, 0.75);
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-strong: rgba(255, 255, 255, 0.13);
-  --text-primary: rgba(255, 255, 255, 0.92);
-  --text-secondary: rgba(255, 255, 255, 0.58);
-  --text-muted: rgba(255, 255, 255, 0.32);
+  --text-primary: rgba(255, 255, 255, 0.94);
+  --text-secondary: rgba(255, 255, 255, 0.66);
+  --text-muted: rgba(255, 255, 255, 0.5);
   --accent: #4ecdc4;
   --accent-soft: rgba(78, 205, 196, 0.14);
   --accent-strong: #7de8e1;
