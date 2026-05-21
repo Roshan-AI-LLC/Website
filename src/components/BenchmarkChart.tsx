@@ -187,6 +187,8 @@ function BarColumn({
         whileInView={{ height: `${heightPct}%` }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 1.0, delay, ease: [0.22, 1, 0.36, 1] }}
+        role="img"
+        aria-label={`${competitor.label}: Macro-F1 ${competitor.value.toFixed(3)}`}
         className={`w-full max-w-[56px] rounded-md ${
           isOurs ? '' : 'border border-subtle'
         }`}
@@ -198,7 +200,6 @@ function BarColumn({
             ? '0 4px 18px -4px color-mix(in oklab, var(--accent) 50%, transparent)'
             : undefined,
         }}
-        aria-label={`${competitor.label}: Macro-F1 ${competitor.value.toFixed(3)}`}
       />
     </div>
   );
