@@ -80,11 +80,11 @@
 }
 
 :root {
-  /* Light theme: clean, near-white with a barely-teal hint. Calm, not hazy. */
+  /* Light theme: warm cream base, all elevated surfaces tinted to match. */
   --bg-base: #f5f1e8;
-  --bg-elev: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --bg-glass-strong: rgba(255, 255, 255, 0.96);
+  --bg-elev: #faf8f3;
+  --bg-glass: rgba(250, 247, 241, 0.88);
+  --bg-glass-strong: rgba(250, 247, 241, 0.96);
   --border-subtle: rgba(11, 17, 32, 0.11);
   --border-strong: rgba(11, 17, 32, 0.2);
   --text-primary: #0b1120;
