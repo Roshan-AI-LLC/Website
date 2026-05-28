@@ -81,7 +81,7 @@
 
 :root {
   /* Light theme: clean, near-white with a barely-teal hint. Calm, not hazy. */
-  --bg-base: #fbfdfc;
+  --bg-base: #f5f1e8;
   --bg-elev: #ffffff;
   --bg-glass: rgba(255, 255, 255, 0.92);
   --bg-glass-strong: rgba(255, 255, 255, 0.96);
