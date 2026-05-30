@@ -186,6 +186,36 @@ html:not(.dark) .glass-strong {
   box-shadow: var(--shadow-card);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   NabzGraph product theme — ocean blue + violet, scoped.
+   Applied via a .theme-nabzgraph wrapper on the NabzGraph product page so the
+   accent variables shift to ocean blue *only* on that page. The rest of the
+   site (and ShifaMind) keeps the teal accent. Overrides both light and dark.
+   ───────────────────────────────────────────────────────────────────────── */
+.theme-nabzgraph {
+  /* Light mode: deeper ocean blue for contrast on the cream base. */
+  --accent: #1d6fe0;
+  --accent-soft: rgba(29, 111, 224, 0.12);
+  --accent-strong: #1552ad;
+  --color-iris-400: #8aa6ff;
+  --color-iris-500: #6d7cf0;
+  --color-iris-600: #5b6ae0;
+  --on-accent: #ffffff;
+  --shadow-glow: 0 0 60px -16px rgba(29, 111, 224, 0.32);
+}
+
+html.dark .theme-nabzgraph {
+  /* Dark mode: bright ocean blue on the glassmorphism canvas. */
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.16);
+  --accent-strong: #7cb0ff;
+  --color-iris-400: #a5b4fc;
+  --color-iris-500: #818cf8;
+  --color-iris-600: #6366f1;
+  --on-accent: #04122c;
+  --shadow-glow: 0 0 80px -10px rgba(59, 130, 246, 0.32);
+}
+
 @layer base {
   *,
   *::before,

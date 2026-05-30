@@ -9,6 +9,7 @@ const columns: {
     title: 'Products',
     links: [
       { label: 'ShifaMind', to: '/products/shifamind' },
+      { label: 'NabzGraph', to: '/products/nabzgraph' },
       { label: 'All products', to: '/products' },
     ],
   },

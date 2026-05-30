@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="ng-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1730" />
+      <stop offset="1" stop-color="#070c1c" />
+    </linearGradient>
+    <radialGradient id="ng-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3b82f6" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#3b82f6" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="ng-edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6" />
+      <stop offset="1" stop-color="#818cf8" />
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="400" fill="url(#ng-bg)" />
+  <circle cx="205" cy="205" r="150" fill="url(#ng-glow)" />
+
+  <!-- Edges -->
+  <g stroke="url(#ng-edge)" stroke-width="9" stroke-linecap="round" fill="none" opacity="0.9">
+    <line x1="124" y1="118" x2="205" y2="208" />
+    <line x1="288" y1="104" x2="205" y2="208" />
+    <line x1="205" y1="208" x2="116" y2="298" />
+    <line x1="205" y1="208" x2="300" y2="292" />
+    <line x1="124" y1="118" x2="288" y2="104" stroke-dasharray="4 22" stroke-width="7" opacity="0.7" />
+    <line x1="116" y1="298" x2="300" y2="292" stroke-dasharray="4 22" stroke-width="7" opacity="0.7" />
+    <line x1="288" y1="104" x2="300" y2="292" stroke-width="7" opacity="0.55" />
+  </g>
+
+  <!-- Nodes -->
+  <g>
+    <circle cx="124" cy="118" r="26" fill="#3b82f6" />
+    <circle cx="288" cy="104" r="22" fill="#60a5fa" />
+    <circle cx="116" cy="298" r="22" fill="#818cf8" />
+    <circle cx="300" cy="292" r="24" fill="#3b82f6" />
+    <!-- Central hub node, brightest -->
+    <circle cx="205" cy="208" r="38" fill="#0a1730" stroke="#7cb0ff" stroke-width="10" />
+    <circle cx="205" cy="208" r="15" fill="#bcd6ff" />
+  </g>
+</svg>

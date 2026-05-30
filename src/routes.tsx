@@ -3,6 +3,7 @@ import Layout from './Layout';
 import Home from './pages/Home';
 import ProductsIndex from './pages/products/Index';
 import ShifaMindProduct from './pages/products/ShifaMind';
+import NabzGraphProduct from './pages/products/NabzGraph';
 import Platform from './pages/Platform';
 import Developers from './pages/Developers';
 import CompanyAbout from './pages/company/About';
@@ -24,6 +25,7 @@ export const routes: RouteRecord[] = [
         children: [
           { index: true, Component: ProductsIndex, entry: 'src/pages/products/Index.tsx' },
           { path: 'shifamind', Component: ShifaMindProduct, entry: 'src/pages/products/ShifaMind.tsx' },
+          { path: 'nabzgraph', Component: NabzGraphProduct, entry: 'src/pages/products/NabzGraph.tsx' },
         ],
       },
       { path: 'platform', Component: Platform, entry: 'src/pages/Platform.tsx' },

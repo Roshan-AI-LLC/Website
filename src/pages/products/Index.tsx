@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ShifaMindLogo } from '../../components/ShifaMindLogo';
+import { NabzGraphLogo } from '../../components/NabzGraphLogo';
 
 type Product = {
   status: 'live' | 'next';
@@ -11,7 +12,7 @@ type Product = {
   body: string;
   highlights: string[];
   href?: string;
-  visual: 'shifamind' | 'placeholder';
+  visual: 'shifamind' | 'nabzgraph' | 'placeholder';
 };
 
 const products: Product[] = [
@@ -28,6 +29,20 @@ const products: Product[] = [
     ],
     href: '/products/shifamind',
     visual: 'shifamind',
+  },
+  {
+    status: 'live',
+    name: 'NabzGraph',
+    descriptor: 'Interpretable knowledge graphs from ICU signals',
+    body: 'NabzGraph turns continuous multi-modal sensor streams — ECG, PPG, arterial pressure, respiration — into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. Every node and edge traces back to the exact signal windows behind it.',
+    highlights: [
+      'Patient-specific knowledge graph from raw waveforms',
+      '7 SNOMED-grounded signal concepts',
+      'Temporal, co-occurrence & Granger edges',
+      'Every node traceable to the signal window',
+    ],
+    href: '/products/nabzgraph',
+    visual: 'nabzgraph',
   },
   {
     status: 'next',
@@ -131,6 +146,8 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
             <div className="flex items-center justify-between gap-4 lg:justify-start lg:gap-5">
               {product.visual === 'shifamind' ? (
                 <ShifaMindLogo size={48} />
+              ) : product.visual === 'nabzgraph' ? (
+                <NabzGraphLogo size={48} />
               ) : (
                 <div
                   className="inline-flex h-12 w-12 items-center justify-center rounded-2xl font-mono text-[0.72rem] font-semibold uppercase tracking-[0.14em]"

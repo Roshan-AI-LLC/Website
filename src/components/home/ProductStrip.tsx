@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ShifaMindLogo } from '../ShifaMindLogo';
+import { NabzGraphLogo } from '../NabzGraphLogo';
 
 type Product = {
   status: 'live' | 'next';
@@ -9,7 +10,7 @@ type Product = {
   descriptor: string;
   longDesc: string;
   href?: string;
-  visual: 'shifamind' | 'placeholder';
+  visual: 'shifamind' | 'nabzgraph' | 'placeholder';
 };
 
 const products: Product[] = [
@@ -21,6 +22,15 @@ const products: Product[] = [
       'Reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. Built for clinicians and coders.',
     href: '/products/shifamind',
     visual: 'shifamind',
+  },
+  {
+    status: 'live',
+    name: 'NabzGraph',
+    descriptor: 'Interpretable knowledge graphs from ICU signals',
+    longDesc:
+      'Turns continuous ICU sensor streams into a patient-specific knowledge graph of SNOMED concepts and measured relationships — every node traceable to the raw signal window.',
+    href: '/products/nabzgraph',
+    visual: 'nabzgraph',
   },
   {
     status: 'next',
@@ -108,6 +118,8 @@ function ProductCard({ product, delay }: { product: Product; delay: number }) {
           </span>
           {product.visual === 'shifamind' ? (
             <ShifaMindLogo size={40} />
+          ) : product.visual === 'nabzgraph' ? (
+            <NabzGraphLogo size={40} />
           ) : (
             <div
               className="inline-flex h-10 w-10 items-center justify-center rounded-2xl font-mono text-[0.72rem] font-semibold uppercase tracking-[0.14em]"
