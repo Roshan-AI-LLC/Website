@@ -5,15 +5,15 @@ import { Plus } from 'lucide-react';
 const items: { q: string; a: string }[] = [
   {
     q: 'How is NabzGraph different from a monitoring alarm?',
-    a: 'An alarm fires on a single threshold for a single channel. NabzGraph builds a patient-specific knowledge graph: each node is a SNOMED concept activated by detectable signal patterns, and each edge is a measured relationship between concepts — temporal precedence, co-occurrence, or Granger-causal influence. You can interrogate why a concept fired, how concepts relate, and when a pattern first emerged, all the way down to the raw signal window.',
+    a: 'An alarm fires on a single threshold for a single channel. NabzGraph builds a patient-specific knowledge graph: each node is a SNOMED concept activated by detectable signal patterns, and each edge is a measured relationship between concepts (temporal precedence, co-occurrence, or Granger-causal influence). You can interrogate why a concept fired, how concepts relate, and when a pattern first emerged, all the way down to the raw signal window.',
   },
   {
     q: 'Why are the edge types trustworthy?',
-    a: 'Every edge type is derived from a measurable property of the signal evidence, not hand-designed. Temporal edges come from lagged cross-correlation of concept activation series, co-occurrence edges from Jaccard overlap of source-window sets, and Granger edges from Granger causality on the underlying signal features. This is the core research contribution — a defense against the "why these types?" critique.',
+    a: 'Every edge type is derived from a measurable property of the signal evidence, not hand-designed. Temporal edges come from lagged cross-correlation of concept activation series, co-occurrence edges from Jaccard overlap of source-window sets, and Granger edges from Granger causality on the underlying signal features. This is the core research contribution: a defense against the "why these types?" critique.',
   },
   {
     q: 'Is it a diagnosis system?',
-    a: 'No. NabzGraph detects physiological concepts and their relationships, not disease labels. It is a signal-layer reasoning layer that sits alongside the EMR and existing monitoring — it does not replace them.',
+    a: 'No. NabzGraph detects physiological concepts and their relationships, not disease labels. It is a signal-layer reasoning layer that sits alongside the EMR and existing monitoring; it does not replace them.',
   },
   {
     q: 'What model powers it?',

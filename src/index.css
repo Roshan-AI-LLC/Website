@@ -187,33 +187,34 @@ html:not(.dark) .glass-strong {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   NabzGraph product theme — ocean blue + violet, scoped.
-   Applied via a .theme-nabzgraph wrapper on the NabzGraph product page so the
-   accent variables shift to ocean blue *only* on that page. The rest of the
-   site (and ShifaMind) keeps the teal accent. Overrides both light and dark.
+   NabzGraph product theme, scoped.
+   Ocean cyan: the same cool family as ShifaMind's teal, shifted toward cyan
+   and sky blue so NabzGraph reads as a sibling, not a clone. Applied via a
+   .theme-nabzgraph wrapper on the product page only; the rest of the site
+   (and ShifaMind) keeps the teal accent. Overrides both light and dark.
    ───────────────────────────────────────────────────────────────────────── */
 .theme-nabzgraph {
-  /* Light mode: deeper ocean blue for contrast on the cream base. */
-  --accent: #1d6fe0;
-  --accent-soft: rgba(29, 111, 224, 0.12);
-  --accent-strong: #1552ad;
-  --color-iris-400: #8aa6ff;
-  --color-iris-500: #6d7cf0;
-  --color-iris-600: #5b6ae0;
+  /* Light mode: deep ocean cyan for contrast on the cream base. */
+  --accent: #0a8fb0;
+  --accent-soft: rgba(10, 143, 176, 0.12);
+  --accent-strong: #086e88;
+  --color-iris-400: #4cc7e6;
+  --color-iris-500: #1f9fc9;
+  --color-iris-600: #167da3;
   --on-accent: #ffffff;
-  --shadow-glow: 0 0 60px -16px rgba(29, 111, 224, 0.32);
+  --shadow-glow: 0 0 60px -16px rgba(10, 143, 176, 0.30);
 }
 
 html.dark .theme-nabzgraph {
-  /* Dark mode: bright ocean blue on the glassmorphism canvas. */
-  --accent: #3b82f6;
-  --accent-soft: rgba(59, 130, 246, 0.16);
-  --accent-strong: #7cb0ff;
-  --color-iris-400: #a5b4fc;
-  --color-iris-500: #818cf8;
-  --color-iris-600: #6366f1;
-  --on-accent: #04122c;
-  --shadow-glow: 0 0 80px -10px rgba(59, 130, 246, 0.32);
+  /* Dark mode: bright ocean cyan on the glassmorphism canvas. */
+  --accent: #1cc5e8;
+  --accent-soft: rgba(28, 197, 232, 0.15);
+  --accent-strong: #6fe3f5;
+  --color-iris-400: #7dd3fc;
+  --color-iris-500: #38bdf8;
+  --color-iris-600: #0ea5e9;
+  --on-accent: #04222b;
+  --shadow-glow: 0 0 80px -10px rgba(28, 197, 232, 0.30);
 }
 
 @layer base {

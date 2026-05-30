@@ -16,7 +16,7 @@ const edges: EdgeKind[] = [
     code: 'TEMPORAL',
     name: 'Temporal',
     derived: 'Lagged cross-correlation of concept activation series',
-    desc: 'A directed edge when one concept reliably precedes another. The lag and correlation are read straight off the activation timelines — the trajectory, not just the snapshot.',
+    desc: 'A directed edge when one concept reliably precedes another. The lag and correlation are read straight off the activation timelines: the trajectory, not just the snapshot.',
   },
   {
     icon: Layers,
@@ -30,7 +30,7 @@ const edges: EdgeKind[] = [
     code: 'GRANGER',
     name: 'Granger',
     derived: 'Granger causality on the underlying signal features',
-    desc: 'A directed edge suggesting one signal drives another. It gives a causal direction a threshold alarm cannot — the kind of structure that survives peer review.',
+    desc: 'A directed edge suggesting one signal drives another. It gives a causal direction a threshold alarm cannot, the kind of structure that survives peer review.',
   },
 ];
 
@@ -57,7 +57,7 @@ export function EdgeTypes() {
         <p className="mt-4 max-w-2xl text-[0.98rem] font-light leading-relaxed text-secondary">
           The critique that kills most clinical knowledge-graph papers is “why
           these types?” NabzGraph answers it by deriving every edge from a
-          measurable property of the signal evidence — nothing is hand-designed
+          measurable property of the signal evidence. Nothing is hand-designed
           by an ontology author.
         </p>
 

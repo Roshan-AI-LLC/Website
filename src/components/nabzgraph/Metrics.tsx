@@ -13,7 +13,7 @@ const metrics = [
     value: '0.78',
     name: 'Faithfulness',
     ref: 'DeYoung et al. 2020',
-    desc: 'Comprehensiveness / sufficiency of the cited signal windows. Removing the evidence behind a node should collapse its activation — the explanation is the cause, not a post-hoc rationalisation.',
+    desc: 'Comprehensiveness / sufficiency of the cited signal windows. Removing the evidence behind a node should collapse its activation: the explanation is the cause, not a post-hoc rationalisation.',
   },
   {
     code: 'GR',
@@ -47,7 +47,7 @@ export function Metrics() {
           </div>
           <p className="max-w-sm text-[0.94rem] font-light leading-relaxed text-secondary lg:text-right">
             NabzGraph is evaluated against published protocols for concept
-            fidelity, explanation faithfulness, and causal replication — not
+            fidelity, explanation faithfulness, and causal replication, not
             just downstream accuracy.
           </p>
         </div>

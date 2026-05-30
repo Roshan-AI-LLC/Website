@@ -21,8 +21,8 @@ export function ProductHero() {
         </h1>
 
         <p className="enter-fade-up enter-d-2 mt-6 max-w-2xl text-pretty text-[1.02rem] font-light leading-relaxed text-secondary sm:text-[1.1rem]">
-          NabzGraph turns continuous multi-modal signals — ECG, PPG, arterial
-          pressure, respiration — into a patient-specific knowledge graph of
+          NabzGraph turns continuous multi-modal signals (ECG, PPG, arterial
+          pressure, respiration) into a patient-specific knowledge graph of
           SNOMED concepts and their measured relationships. Every node and edge
           traces back to the exact signal windows behind it.
         </p>

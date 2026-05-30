@@ -26,7 +26,7 @@ export default function NabzGraphProduct() {
         />
         <meta
           property="og:description"
-          content="Patient-specific knowledge graphs with concept nodes and measured temporal, co-occurrence, and Granger edges — every node traceable to the raw signal window."
+          content="Patient-specific knowledge graphs with concept nodes and measured temporal, co-occurrence, and Granger edges, every node traceable to the raw signal window."
         />
         <link rel="canonical" href="https://roshan-ai.com/products/nabzgraph" />
       </Head>

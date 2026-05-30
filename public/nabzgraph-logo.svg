@@ -2,16 +2,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
   <defs>
     <linearGradient id="ng-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0a1730" />
-      <stop offset="1" stop-color="#070c1c" />
+      <stop offset="0" stop-color="#08222b" />
+      <stop offset="1" stop-color="#05141b" />
     </linearGradient>
     <radialGradient id="ng-glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#3b82f6" stop-opacity="0.55" />
-      <stop offset="1" stop-color="#3b82f6" stop-opacity="0" />
+      <stop offset="0" stop-color="#1cc5e8" stop-opacity="0.55" />
+      <stop offset="1" stop-color="#1cc5e8" stop-opacity="0" />
     </radialGradient>
     <linearGradient id="ng-edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#3b82f6" />
-      <stop offset="1" stop-color="#818cf8" />
+      <stop offset="0" stop-color="#1cc5e8" />
+      <stop offset="1" stop-color="#38bdf8" />
     </linearGradient>
   </defs>
 
@@ -31,12 +31,12 @@
 
   <!-- Nodes -->
   <g>
-    <circle cx="124" cy="118" r="26" fill="#3b82f6" />
-    <circle cx="288" cy="104" r="22" fill="#60a5fa" />
-    <circle cx="116" cy="298" r="22" fill="#818cf8" />
-    <circle cx="300" cy="292" r="24" fill="#3b82f6" />
+    <circle cx="124" cy="118" r="26" fill="#1cc5e8" />
+    <circle cx="288" cy="104" r="22" fill="#38bdf8" />
+    <circle cx="116" cy="298" r="22" fill="#5fe0f0" />
+    <circle cx="300" cy="292" r="24" fill="#1cc5e8" />
     <!-- Central hub node, brightest -->
-    <circle cx="205" cy="208" r="38" fill="#0a1730" stroke="#7cb0ff" stroke-width="10" />
-    <circle cx="205" cy="208" r="15" fill="#bcd6ff" />
+    <circle cx="205" cy="208" r="38" fill="#08222b" stroke="#6fe3f5" stroke-width="10" />
+    <circle cx="205" cy="208" r="15" fill="#cdf6ff" />
   </g>
 </svg>
