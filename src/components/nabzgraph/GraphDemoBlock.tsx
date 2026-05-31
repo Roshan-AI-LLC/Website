@@ -9,6 +9,7 @@ import {
   TIER_META,
   TIER_ROW_ORDER,
   type ConceptNode,
+  type EdgeType,
   type GraphEdge,
   type Modality,
   type Scenario,
@@ -21,7 +22,7 @@ const BUILD_DURATION_MS = 2400;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Deterministic grid layout: a column per concept (grouped by modality),
-// a row per persistence tier — mirrors the real dashboard and keeps a dense
+// a row per persistence tier, mirroring the real dashboard and keeping a dense
 // graph legible. Returns the scenario nodes with x/y assigned.
 function layoutNodes(nodes: ConceptNode[]): ConceptNode[] {
   const present = CONCEPT_COLUMN_ORDER.filter((c) => nodes.some((nd) => nd.label === c));
@@ -180,10 +181,25 @@ function GraphCanvas({
   onBuild: () => void;
 }) {
   const [hoverEdge, setHoverEdge] = useState<string | null>(null);
+  const [enabledTypes, setEnabledTypes] = useState<Set<EdgeType>>(
+    () => new Set<EdgeType>(['TEMPORAL', 'CO_OCCURS', 'GRANGER']),
+  );
+  const toggleType = (t: EdgeType) =>
+    setEnabledTypes((prev) => {
+      const next = new Set(prev);
+      if (next.has(t)) next.delete(t);
+      else next.add(t);
+      return next;
+    });
+
   const nodes = useMemo(() => layoutNodes(scenario.nodes), [scenario]);
   const nodeById = useMemo(
     () => Object.fromEntries(nodes.map((n) => [n.id, n])),
     [nodes],
+  );
+  const visibleEdges = useMemo(
+    () => scenario.edges.filter((e) => enabledTypes.has(e.type)),
+    [scenario, enabledTypes],
   );
 
   const building = state === 'building';
@@ -229,7 +245,7 @@ function GraphCanvas({
             </marker>
           </defs>
           {show &&
-            scenario.edges.map((edge, i) => (
+            visibleEdges.map((edge, i) => (
               <EdgeLine
                 key={edge.id}
                 edge={edge}
@@ -316,7 +332,7 @@ function GraphCanvas({
         </AnimatePresence>
       </div>
 
-      <Legend />
+      <Legend enabled={enabledTypes} onToggle={toggleType} />
     </div>
   );
 }
@@ -340,9 +356,22 @@ function GhostGraph() {
   );
 }
 
-function Legend() {
+const EDGE_LEGEND: { type: EdgeType; label: string; stroke: string; width: number; dashed: boolean }[] = [
+  { type: 'TEMPORAL', label: 'Temporal', stroke: 'var(--accent)', width: 1.6, dashed: true },
+  { type: 'CO_OCCURS', label: 'Co-occurs', stroke: 'var(--accent)', width: 1.6, dashed: false },
+  { type: 'GRANGER', label: 'Granger', stroke: 'var(--accent-strong)', width: 3, dashed: false },
+];
+
+function Legend({
+  enabled,
+  onToggle,
+}: {
+  enabled: Set<EdgeType>;
+  onToggle: (t: EdgeType) => void;
+}) {
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.7rem] text-muted">
+      {/* Tier swatches (static reference) */}
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: 'var(--accent)' }} />
         Persistent
@@ -361,19 +390,42 @@ function Legend() {
         />
         Transient
       </span>
+
       <span aria-hidden className="opacity-40">·</span>
-      <span className="inline-flex items-center gap-1.5 font-mono uppercase tracking-[0.08em]">
-        <svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="var(--accent)" strokeWidth="1.6" strokeDasharray="3 3" /></svg>
-        Temporal
-      </span>
-      <span className="inline-flex items-center gap-1.5 font-mono uppercase tracking-[0.08em]">
-        <svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="var(--accent)" strokeWidth="1.6" /></svg>
-        Co-occurs
-      </span>
-      <span className="inline-flex items-center gap-1.5 font-mono uppercase tracking-[0.08em]">
-        <svg width="22" height="8"><line x1="0" y1="4" x2="22" y2="4" stroke="var(--accent-strong)" strokeWidth="3" /></svg>
-        Granger
-      </span>
+      <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] opacity-70">filter edges</span>
+
+      {/* Edge-type toggles */}
+      {EDGE_LEGEND.map((e) => {
+        const on = enabled.has(e.type);
+        return (
+          <button
+            key={e.type}
+            type="button"
+            onClick={() => onToggle(e.type)}
+            aria-pressed={on}
+            title={on ? `Hide ${e.label} edges` : `Show ${e.label} edges`}
+            className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-mono uppercase tracking-[0.08em] transition"
+            style={{
+              opacity: on ? 1 : 0.4,
+              background: on ? 'var(--accent-soft)' : 'transparent',
+              color: on ? 'var(--text-secondary)' : 'var(--text-muted)',
+            }}
+          >
+            <svg width="22" height="8" aria-hidden>
+              <line
+                x1="0"
+                y1="4"
+                x2="22"
+                y2="4"
+                stroke={e.stroke}
+                strokeWidth={e.width}
+                strokeDasharray={e.dashed ? '3 3' : undefined}
+              />
+            </svg>
+            {e.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -522,6 +574,8 @@ function NodeChip({
   onSelect: () => void;
 }) {
   const tier = TIER_META[node.tier];
+  // The "_ppg" suffix is redundant with the PPG modality tag already shown.
+  const displayLabel = node.label.replace('_ppg', '');
   const bg =
     node.tier === 'TRANSIENT'
       ? 'var(--accent-soft)'
@@ -536,7 +590,7 @@ function NodeChip({
       initial={building ? { opacity: 0, scale: 0.5 } : false}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.45, delay: building ? index * 0.05 : 0, ease: EASE }}
-      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border px-2 py-1.5 text-left transition will-change-transform"
+      className="absolute w-[104px] -translate-x-1/2 -translate-y-1/2 rounded-xl border px-2 py-1.5 text-left transition will-change-transform"
       style={{
         left: `${((node.x ?? 0) / CANVAS.w) * 100}%`,
         top: `${((node.y ?? 0) / CANVAS.h) * 100}%`,
@@ -551,9 +605,6 @@ function NodeChip({
             : 'none',
       }}
     >
-      {node.tier === 'PERSISTENT' && (
-        <span className="pulse-dot absolute -right-1 -top-1 inline-block h-2 w-2 rounded-full" style={{ background: 'var(--accent-strong)' }} />
-      )}
       <div className="flex items-center gap-1.5">
         <span
           className="font-mono text-[0.52rem] font-semibold uppercase tracking-[0.1em]"
@@ -562,7 +613,7 @@ function NodeChip({
           {node.modality}
         </span>
       </div>
-      <div className="text-[0.72rem] font-semibold leading-tight">{node.label}</div>
+      <div className="truncate text-[0.7rem] font-semibold leading-tight">{displayLabel}</div>
     </motion.button>
   );
 }
