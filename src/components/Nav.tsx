@@ -14,6 +14,11 @@ const productItems: DropdownItem[] = [
     href: '/products/shifamind',
     desc: 'Clinical coding & reasoning for physicians',
   },
+  {
+    label: 'NabzGraph',
+    href: '/products/nabzgraph',
+    desc: 'Interpretable knowledge graphs from ICU signals',
+  },
 ];
 
 const companyItems: DropdownItem[] = [
