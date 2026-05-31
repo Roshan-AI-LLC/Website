@@ -3,24 +3,24 @@ import { motion } from 'framer-motion';
 const metrics = [
   {
     code: 'CF',
-    value: '0.91',
+    value: '0.92',
     name: 'Concept fidelity',
     ref: 'Koh et al. 2020',
-    desc: 'How faithfully the concept bottleneck recovers the ground-truth physiological concept from the signal. High fidelity means the node labels are earned by the evidence, not guessed.',
+    desc: 'Mean held-out AUROC of the concept bottleneck against rule-defined ground truth, across the seven concepts. High fidelity means the node labels are earned by the evidence, not guessed.',
   },
   {
     code: 'ERASER',
-    value: '0.78',
+    value: '0.64',
     name: 'Faithfulness',
     ref: 'DeYoung et al. 2020',
-    desc: 'Comprehensiveness / sufficiency of the cited signal windows. Removing the evidence behind a node should collapse its activation: the explanation is the cause, not a post-hoc rationalisation.',
+    desc: 'Comprehensiveness of the cited signal windows: removing the evidence behind a node drops its activation by 0.64 on average, with near-zero sufficiency loss. The explanation is the cause, not a post-hoc rationalisation.',
   },
   {
     code: 'GR',
-    value: '22 / 30',
+    value: '0.70',
     name: 'Granger replication',
     ref: 'Seth 2010',
-    desc: 'Cohort-level replication of a derived causal edge. The tachycardia → hypotension structure recurs across 22 of 30 confirmed sepsis patients and is absent in matched controls.',
+    desc: 'Held-out replication of the derived causal edges. Granger edges fit on the first half of each stay recur in the second half 70% of the time (151 of 217), evidence the structure is stable, not an artefact of a single window.',
   },
 ];
 
@@ -82,9 +82,9 @@ export function Metrics() {
         </div>
 
         <p className="mt-6 text-[0.78rem] text-muted">
-          Figures are representative pending the camera-ready preprint. Cohort:
-          200 MIMIC-IV-WDB patients; V2 targets full MIMIC-IV with external
-          validation.
+          Figures are from the single-seed held-out test split, pending the
+          camera-ready preprint. Cohort: 200 MIMIC-IV-WDB patients (167 with
+          built graphs); V2 targets full MIMIC-IV with external validation.
         </p>
       </div>
     </section>

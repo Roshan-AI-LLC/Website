@@ -60,9 +60,9 @@ export function ProductHero() {
         </div>
 
         <div className="enter-fade-up enter-d-4 mt-12 grid max-w-3xl grid-cols-3 gap-3 sm:gap-4">
+          <Stat value="0.92" label="Concept fidelity" sub="Held-out AUROC" />
+          <Stat value="120+" label="Relationships / graph" sub="All signal-derived" />
           <Stat value="< 2s" label="KG per patient" sub="CPU, post-encoder" />
-          <Stat value="7" label="SNOMED concepts" sub="Signal-grounded" />
-          <Stat value="3" label="Edge types" sub="All measured, not imposed" />
         </div>
       </div>
     </section>

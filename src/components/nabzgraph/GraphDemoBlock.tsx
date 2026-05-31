@@ -3,9 +3,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, ArrowUpRight, RotateCcw, Sparkles, Workflow } from 'lucide-react';
 import {
   CANVAS,
+  CONCEPT_COLUMN_ORDER,
   EDGE_META,
   SCENARIOS,
   TIER_META,
+  TIER_ROW_ORDER,
   type ConceptNode,
   type GraphEdge,
   type Modality,
@@ -17,6 +19,25 @@ type DemoState = 'idle' | 'building' | 'results';
 
 const BUILD_DURATION_MS = 2400;
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+// Deterministic grid layout: a column per concept (grouped by modality),
+// a row per persistence tier — mirrors the real dashboard and keeps a dense
+// graph legible. Returns the scenario nodes with x/y assigned.
+function layoutNodes(nodes: ConceptNode[]): ConceptNode[] {
+  const present = CONCEPT_COLUMN_ORDER.filter((c) => nodes.some((nd) => nd.label === c));
+  const nCol = present.length;
+  const MX = 80;
+  const MY = 74;
+  const ROW_GAP = 150;
+  const usableW = CANVAS.w - MX * 2;
+  const colX = (ci: number) =>
+    nCol <= 1 ? CANVAS.w / 2 : MX + (ci * usableW) / (nCol - 1);
+  return nodes.map((node) => {
+    const ci = present.indexOf(node.label);
+    const ri = TIER_ROW_ORDER.indexOf(node.tier);
+    return { ...node, x: colX(ci < 0 ? 0 : ci), y: MY + (ri < 0 ? 1 : ri) * ROW_GAP };
+  });
+}
 
 export function GraphDemoBlock() {
   const [scenarioId, setScenarioId] = useState<Scenario['id']>('sepsis');
@@ -159,9 +180,10 @@ function GraphCanvas({
   onBuild: () => void;
 }) {
   const [hoverEdge, setHoverEdge] = useState<string | null>(null);
+  const nodes = useMemo(() => layoutNodes(scenario.nodes), [scenario]);
   const nodeById = useMemo(
-    () => Object.fromEntries(scenario.nodes.map((n) => [n.id, n])),
-    [scenario],
+    () => Object.fromEntries(nodes.map((n) => [n.id, n])),
+    [nodes],
   );
 
   const building = state === 'building';
@@ -224,7 +246,7 @@ function GraphCanvas({
 
         {/* Node layer */}
         {show &&
-          scenario.nodes.map((n, i) => (
+          nodes.map((n, i) => (
             <NodeChip
               key={n.id}
               node={n}
@@ -379,20 +401,25 @@ function EdgeLine({
 }) {
   const meta = EDGE_META[edge.type];
   // Shorten both ends so the line stops short of the node chips.
-  const dx = target.x - source.x;
-  const dy = target.y - source.y;
+  const sx = source.x ?? 0;
+  const sy = source.y ?? 0;
+  const tx = target.x ?? 0;
+  const ty = target.y ?? 0;
+  const dx = tx - sx;
+  const dy = ty - sy;
   const len = Math.hypot(dx, dy) || 1;
   const ux = dx / len;
   const uy = dy / len;
-  const PAD_S = 42;
-  const PAD_T = edge.directed ? 50 : 42;
-  const x1 = source.x + ux * PAD_S;
-  const y1 = source.y + uy * PAD_S;
-  const x2 = target.x - ux * PAD_T;
-  const y2 = target.y - uy * PAD_T;
+  const PAD_S = 34;
+  const PAD_T = edge.directed ? 42 : 34;
+  const x1 = sx + ux * PAD_S;
+  const y1 = sy + uy * PAD_S;
+  const x2 = tx - ux * PAD_T;
+  const y2 = ty - uy * PAD_T;
 
   const color = edge.type === 'GRANGER' ? 'var(--accent-strong)' : 'var(--accent)';
-  const opacity = edge.type === 'CO_OCCURS' ? 0.55 : 0.95;
+  // Keep the dense web layered, not a solid blob.
+  const opacity = edge.type === 'TEMPORAL' ? 0.85 : 0.5;
 
   return (
     <g
@@ -419,7 +446,7 @@ function EdgeLine({
             ? { pathLength: 1, opacity }
             : { opacity: hovered ? 1 : opacity }
         }
-        transition={{ duration: 0.7, delay: 0.5 + index * 0.18, ease: EASE }}
+        transition={{ duration: 0.6, delay: 0.45 + index * 0.05, ease: EASE }}
       />
       {meta.dashed && interactive && (
         <motion.line
@@ -449,8 +476,8 @@ function EdgeTooltip({
   source: ConceptNode;
   target: ConceptNode;
 }) {
-  const midX = ((source.x + target.x) / 2 / CANVAS.w) * 100;
-  const midY = ((source.y + target.y) / 2 / CANVAS.h) * 100;
+  const midX = (((source.x ?? 0) + (target.x ?? 0)) / 2 / CANVAS.w) * 100;
+  const midY = (((source.y ?? 0) + (target.y ?? 0)) / 2 / CANVAS.h) * 100;
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.92 }}
@@ -508,11 +535,11 @@ function NodeChip({
       disabled={!interactive}
       initial={building ? { opacity: 0, scale: 0.5 } : false}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: building ? index * 0.14 : 0, ease: EASE }}
-      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-2xl border px-3 py-2 text-left transition will-change-transform"
+      transition={{ duration: 0.45, delay: building ? index * 0.05 : 0, ease: EASE }}
+      className="absolute -translate-x-1/2 -translate-y-1/2 rounded-xl border px-2 py-1.5 text-left transition will-change-transform"
       style={{
-        left: `${(node.x / CANVAS.w) * 100}%`,
-        top: `${(node.y / CANVAS.h) * 100}%`,
+        left: `${((node.x ?? 0) / CANVAS.w) * 100}%`,
+        top: `${((node.y ?? 0) / CANVAS.h) * 100}%`,
         background: bg,
         color: textColor,
         borderColor: selected ? 'var(--accent-strong)' : 'var(--border-subtle)',
@@ -529,13 +556,13 @@ function NodeChip({
       )}
       <div className="flex items-center gap-1.5">
         <span
-          className="font-mono text-[0.6rem] font-semibold uppercase tracking-[0.1em]"
+          className="font-mono text-[0.52rem] font-semibold uppercase tracking-[0.1em]"
           style={{ opacity: 0.85 }}
         >
           {node.modality}
         </span>
       </div>
-      <div className="text-[0.82rem] font-semibold leading-tight">{node.label}</div>
+      <div className="text-[0.72rem] font-semibold leading-tight">{node.label}</div>
     </motion.button>
   );
 }
