@@ -186,6 +186,14 @@ html:not(.dark) .glass-strong {
   box-shadow: var(--shadow-card);
 }
 
+/* Light mode: the thin 300 ("font-light") weight reads too faint on the warm
+   cream base, especially for body copy. Bump anything that opts into
+   font-light up to a regular weight so it stays legible. Dark mode keeps the
+   lighter, airier weight. */
+html:not(.dark) .font-light {
+  font-weight: 400;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
    NabzGraph product theme, scoped.
    Ocean cyan: the same cool family as ShifaMind's teal, shifted toward cyan
