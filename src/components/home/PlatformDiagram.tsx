@@ -167,14 +167,14 @@ function ItemRow({ item }: { item: Item }) {
       )}
 
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="truncate text-[0.88rem] font-medium text-primary">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="text-[0.88rem] font-medium leading-snug text-primary">
             {item.label}
           </span>
           <StatusChip status={item.status} />
         </div>
         {item.sub && (
-          <div className="mt-0.5 text-[0.76rem] leading-snug text-muted">
+          <div className="mt-1 text-[0.76rem] leading-snug text-muted">
             {item.sub}
           </div>
         )}
@@ -212,7 +212,7 @@ function ItemRow({ item }: { item: Item }) {
 function StatusChip({ status }: { status: ItemStatus }) {
   if (status === 'live') {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent">
+      <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-accent-soft px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent">
         <span className="pulse-dot inline-block h-1 w-1 rounded-full bg-current" />
         Live
       </span>
@@ -220,7 +220,7 @@ function StatusChip({ status }: { status: ItemStatus }) {
   }
   if (status === 'progress') {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent">
+      <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-accent-soft px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent">
         <span className="pulse-dot inline-block h-1 w-1 rounded-full bg-current" />
         Scaling in progress
       </span>
@@ -229,7 +229,7 @@ function StatusChip({ status }: { status: ItemStatus }) {
   if (status === 'next') {
     return (
       <span
-        className="rounded-full px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
+        className="whitespace-nowrap rounded-full px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em]"
         style={{
           background: 'rgba(120, 145, 170, 0.14)',
           color: 'var(--color-violet-500)',
@@ -240,7 +240,7 @@ function StatusChip({ status }: { status: ItemStatus }) {
     );
   }
   return (
-    <span className="rounded-full border border-subtle px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-muted">
+    <span className="whitespace-nowrap rounded-full border border-subtle px-1.5 py-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-muted">
       Planned
     </span>
   );
