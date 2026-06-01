@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PLATFORM_URL } from '../../lib/config';
 
 export function ClosingCTA() {
   return (
@@ -24,17 +23,15 @@ export function ClosingCTA() {
                 <span className="gradient-text">See the graph behind the patient.</span>
               </h2>
               <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
-                The dashboard runs against MIMIC-IV-WDB today. Talk to us about
-                a retrospective cohort or a research collaboration and we'll fit
-                the path.
+                NabzGraph runs against MIMIC-IV-WDB today, and we're scaling to
+                more cohorts and signal types. Talk to us about a retrospective
+                cohort or a research collaboration and we'll fit the path.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-2 lg:justify-end">
-              <a
-                href={PLATFORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/contact"
                 className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
                   background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
@@ -42,15 +39,15 @@ export function ClosingCTA() {
                   color: 'var(--on-accent)',
                 }}
               >
-                Open the dashboard
+                Book a demo
                 <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
+              </Link>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
               >
-                Book a demo
-                <ArrowUpRight size={15} />
+                <FileText size={14} />
+                Request the preprint
               </Link>
             </div>
           </div>

@@ -28,7 +28,7 @@ const products: Product[] = [
     name: 'NabzGraph',
     descriptor: 'Interpretable knowledge graphs from ICU signals',
     longDesc:
-      'Turns continuous ICU sensor streams into a patient-specific knowledge graph of SNOMED concepts and measured relationships — every node traceable to the raw signal window.',
+      'Turns continuous ICU sensor streams into a patient-specific knowledge graph of SNOMED concepts and measured relationships, with every node traceable to the raw signal window.',
     href: '/products/nabzgraph',
     visual: 'nabzgraph',
   },

@@ -34,7 +34,7 @@ const products: Product[] = [
     status: 'live',
     name: 'NabzGraph',
     descriptor: 'Interpretable knowledge graphs from ICU signals',
-    body: 'NabzGraph turns continuous multi-modal sensor streams — ECG, PPG, arterial pressure, respiration — into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. Every node and edge traces back to the exact signal windows behind it.',
+    body: 'NabzGraph turns continuous multi-modal sensor streams (ECG, PPG, arterial pressure, respiration) into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. Every node and edge traces back to the exact signal windows behind it.',
     highlights: [
       'Patient-specific knowledge graph from raw waveforms',
       '7 SNOMED-grounded signal concepts',

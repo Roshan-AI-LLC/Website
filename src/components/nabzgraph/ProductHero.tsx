@@ -1,6 +1,5 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
 import { NabzGraphLogo } from '../NabzGraphLogo';
-import { PLATFORM_URL } from '../../lib/config';
 
 export function ProductHero() {
   return (
@@ -29,9 +28,7 @@ export function ProductHero() {
 
         <div className="enter-fade-up enter-d-3 mt-8 flex flex-wrap items-center gap-3">
           <a
-            href={PLATFORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/contact"
             className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
             style={{
               background:
@@ -40,15 +37,9 @@ export function ProductHero() {
               color: 'var(--on-accent)',
             }}
           >
-            Open the dashboard
-            <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
-          >
             <Stethoscope size={14} />
             Book a demo
+            <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
           <a
             href="/contact"
@@ -57,6 +48,10 @@ export function ProductHero() {
             <FileText size={14} />
             Request the preprint
           </a>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-subtle bg-glass px-3 py-2 text-[0.8rem] font-medium text-muted">
+            <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
+            Scaling in progress
+          </span>
         </div>
 
         <div className="enter-fade-up enter-d-4 mt-12 grid max-w-3xl grid-cols-3 gap-3 sm:gap-4">

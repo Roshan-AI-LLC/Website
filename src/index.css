@@ -88,8 +88,8 @@
   --border-subtle: rgba(11, 17, 32, 0.11);
   --border-strong: rgba(11, 17, 32, 0.2);
   --text-primary: #0b1120;
-  --text-secondary: rgba(11, 17, 32, 0.74);
-  --text-muted: rgba(11, 17, 32, 0.54);
+  --text-secondary: rgba(11, 17, 32, 0.96);
+  --text-muted: rgba(11, 17, 32, 0.76);
   --accent: #157771;
   --accent-soft: rgba(31, 140, 133, 0.13);
   --accent-strong: #0f5953;
@@ -184,6 +184,14 @@ html:not(.dark) .aurora {
 html:not(.dark) .glass,
 html:not(.dark) .glass-strong {
   box-shadow: var(--shadow-card);
+}
+
+/* Light mode: the thin 300 ("font-light") weight reads too faint on the warm
+   cream base, especially for body copy. Bump anything that opts into
+   font-light up to a regular weight so it stays legible. Dark mode keeps the
+   lighter, airier weight. */
+html:not(.dark) .font-light {
+  font-weight: 400;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
