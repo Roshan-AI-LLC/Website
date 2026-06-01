@@ -87,7 +87,7 @@ function PlatformStack() {
   const layers = [
     {
       title: 'Products',
-      body: 'ShifaMind · future products',
+      body: 'ShifaMind · NabzGraph · future products',
       tone: 'accent' as const,
     },
     {

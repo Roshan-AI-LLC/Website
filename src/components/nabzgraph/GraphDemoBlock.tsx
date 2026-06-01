@@ -14,7 +14,6 @@ import {
   type Modality,
   type Scenario,
 } from '../../data/nabzgraphScenarios';
-import { PLATFORM_URL } from '../../lib/config';
 
 type DemoState = 'idle' | 'building' | 'results';
 
@@ -951,9 +950,7 @@ function Controls({ state, onReset }: { state: DemoState; onReset: () => void })
         Reset
       </button>
       <a
-        href={PLATFORM_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+        href="/contact"
         className="group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.86rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
         style={{
           background:
@@ -962,7 +959,7 @@ function Controls({ state, onReset }: { state: DemoState; onReset: () => void })
           color: 'var(--on-accent)',
         }}
       >
-        Open the dashboard
+        Book a demo
         <ArrowUpRight
           size={14}
           className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
