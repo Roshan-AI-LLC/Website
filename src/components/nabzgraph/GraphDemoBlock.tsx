@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, ArrowUpRight, RotateCcw, Sparkles, Workflow } from 'lucide-react';
 import {
@@ -54,12 +54,12 @@ function runForceLayout(nodes: ConceptNode[], edges: GraphEdge[]): ConceptNode[]
   });
 
   const springs = edges.map((e) => [e.source, e.target] as [string, string]);
-  const REPULSION = 7500;
-  const SPRING_K = 0.055;
-  const SPRING_LEN = 145;
-  const CENTER_K = 0.013;
-  const DAMPING = 0.82;
-  const PAD = 62;
+  const REPULSION = 11000;
+  const SPRING_K = 0.04;
+  const SPRING_LEN = 190;
+  const CENTER_K = 0.006;
+  const DAMPING = 0.80;
+  const PAD = 70;
 
   for (let iter = 0; iter < 300; iter++) {
     const f = new Map<string, { fx: number; fy: number }>();
@@ -267,7 +267,49 @@ function GraphCanvas({
       return next;
     });
 
-  const nodes = useMemo(() => runForceLayout(scenario.nodes, scenario.edges), [scenario]);
+  const layoutedNodes = useMemo(() => runForceLayout(scenario.nodes, scenario.edges), [scenario]);
+
+  // Mutable positions so nodes can be dragged after layout
+  const [nodePositions, setNodePositions] = useState<Map<string, { x: number; y: number }>>(() => new Map());
+  useEffect(() => {
+    setNodePositions(new Map(layoutedNodes.map((n) => [n.id, { x: n.x!, y: n.y! }])));
+  }, [layoutedNodes]);
+
+  const nodes = useMemo(
+    () => layoutedNodes.map((n) => ({ ...n, x: nodePositions.get(n.id)?.x ?? n.x, y: nodePositions.get(n.id)?.y ?? n.y })),
+    [layoutedNodes, nodePositions],
+  );
+
+  const [dragNodeId, setDragNodeId] = useState<string | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const toSVGCoords = (e: React.PointerEvent) => {
+    const svg = svgRef.current;
+    if (!svg) return { x: 0, y: 0 };
+    const rect = svg.getBoundingClientRect();
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * CANVAS.w,
+      y: ((e.clientY - rect.top) / rect.height) * CANVAS.h,
+    };
+  };
+
+  const handleSVGPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (!dragNodeId) return;
+    e.preventDefault();
+    const { x, y } = toSVGCoords(e);
+    const PAD = 70;
+    setNodePositions((prev) => {
+      const next = new Map(prev);
+      next.set(dragNodeId, {
+        x: Math.max(PAD, Math.min(CANVAS.w - PAD, x)),
+        y: Math.max(PAD, Math.min(CANVAS.h - PAD, y)),
+      });
+      return next;
+    });
+  };
+
+  const handleSVGPointerUp = () => setDragNodeId(null);
+
   const nodeById = useMemo(() => Object.fromEntries(nodes.map((n) => [n.id, n])), [nodes]);
   const visibleEdges = useMemo(
     () => scenario.edges.filter((e) => enabledTypes.has(e.type)),
@@ -297,9 +339,14 @@ function GraphCanvas({
         }}
       >
         <svg
+          ref={svgRef}
           viewBox={`0 0 ${CANVAS.w} ${CANVAS.h}`}
           className="absolute inset-0 h-full w-full"
           preserveAspectRatio="xMidYMid meet"
+          style={{ cursor: dragNodeId ? 'grabbing' : 'default' }}
+          onPointerMove={handleSVGPointerMove}
+          onPointerUp={handleSVGPointerUp}
+          onPointerLeave={handleSVGPointerUp}
         >
           <defs>
             {/* Subtle dot grid for depth */}
@@ -393,7 +440,9 @@ function GraphCanvas({
                   building={building}
                   index={i}
                   interactive={state === 'results'}
+                  dragging={dragNodeId === n.id}
                   onSelect={() => onSelectNode(n.id)}
+                  onDragStart={() => setDragNodeId(n.id)}
                 />
               ))}
           </g>
@@ -714,14 +763,18 @@ function NodeCircle({
   building,
   index,
   interactive,
+  dragging,
   onSelect,
+  onDragStart,
 }: {
   node: ConceptNode;
   selected: boolean;
   building: boolean;
   index: number;
   interactive: boolean;
+  dragging: boolean;
   onSelect: () => void;
+  onDragStart: () => void;
 }) {
   const cx = node.x ?? 0;
   const cy = node.y ?? 0;
@@ -736,8 +789,9 @@ function NodeCircle({
 
   return (
     <motion.g
-      onClick={interactive ? onSelect : undefined}
-      style={{ cursor: interactive ? 'pointer' : 'default', x: cx, y: cy }}
+      onPointerDown={interactive ? (e) => { e.stopPropagation(); onDragStart(); } : undefined}
+      onClick={interactive && !dragging ? onSelect : undefined}
+      style={{ cursor: dragging ? 'grabbing' : interactive ? 'grab' : 'default', x: cx, y: cy }}
       initial={building ? { opacity: 0, scale: 0.2 } : false}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: building ? 0.15 + index * 0.07 : 0, ease: EASE }}
