@@ -1,18 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, ArrowUpRight, RotateCcw, Sparkles, Workflow } from 'lucide-react';
 import {
   CANVAS,
-  CONCEPT_COLUMN_ORDER,
   EDGE_META,
   SCENARIOS,
   TIER_META,
-  TIER_ROW_ORDER,
   type ConceptNode,
   type EdgeType,
   type GraphEdge,
   type Modality,
   type Scenario,
+  type Tier,
 } from '../../data/nabzgraphScenarios';
 
 type DemoState = 'idle' | 'building' | 'results';
@@ -20,24 +19,110 @@ type DemoState = 'idle' | 'building' | 'results';
 const BUILD_DURATION_MS = 2400;
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// Deterministic grid layout: a column per concept (grouped by modality),
-// a row per persistence tier, mirroring the real dashboard and keeping a dense
-// graph legible. Returns the scenario nodes with x/y assigned.
-function layoutNodes(nodes: ConceptNode[]): ConceptNode[] {
-  const present = CONCEPT_COLUMN_ORDER.filter((c) => nodes.some((nd) => nd.label === c));
-  const nCol = present.length;
-  const MX = 80;
-  const MY = 74;
-  const ROW_GAP = 150;
-  const usableW = CANVAS.w - MX * 2;
-  const colX = (ci: number) =>
-    nCol <= 1 ? CANVAS.w / 2 : MX + (ci * usableW) / (nCol - 1);
-  return nodes.map((node) => {
-    const ci = present.indexOf(node.label);
-    const ri = TIER_ROW_ORDER.indexOf(node.tier);
-    return { ...node, x: colX(ci < 0 ? 0 : ci), y: MY + (ri < 0 ? 1 : ri) * ROW_GAP };
+/** SVG circle radius per persistence tier. */
+const NODE_R: Record<Tier, number> = { PERSISTENT: 24, EPISODIC: 18, TRANSIENT: 13 };
+
+/**
+ * Verlet force simulation — organic layout without external dependencies.
+ * Seed is derived from node ids so the layout is deterministic per scenario.
+ */
+function runForceLayout(nodes: ConceptNode[], edges: GraphEdge[]): ConceptNode[] {
+  const W = CANVAS.w;
+  const H = CANVAS.h;
+  const count = nodes.length;
+
+  let seed = 0;
+  nodes.forEach((n) => {
+    for (let i = 0; i < n.id.length; i++) seed = (seed * 31 + n.id.charCodeAt(i)) | 0;
   });
+  const rng = () => {
+    seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+    return (seed >>> 0) / 0x100000000;
+  };
+
+  // Start in a circle with per-node jitter
+  const pos = new Map<string, { x: number; y: number; vx: number; vy: number }>();
+  nodes.forEach((node, i) => {
+    const angle = (2 * Math.PI * i) / count + rng() * 0.4;
+    const rad = Math.min(W, H) * 0.27;
+    pos.set(node.id, {
+      x: W / 2 + rad * Math.cos(angle) + (rng() - 0.5) * 50,
+      y: H / 2 + rad * Math.sin(angle) + (rng() - 0.5) * 50,
+      vx: 0,
+      vy: 0,
+    });
+  });
+
+  const springs = edges.map((e) => [e.source, e.target] as [string, string]);
+  const REPULSION = 7500;
+  const SPRING_K = 0.055;
+  const SPRING_LEN = 145;
+  const CENTER_K = 0.013;
+  const DAMPING = 0.82;
+  const PAD = 62;
+
+  for (let iter = 0; iter < 300; iter++) {
+    const f = new Map<string, { fx: number; fy: number }>();
+    nodes.forEach((n) => f.set(n.id, { fx: 0, fy: 0 }));
+
+    // Repulsion between every pair
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = pos.get(nodes[i].id)!;
+        const b = pos.get(nodes[j].id)!;
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const d2 = dx * dx + dy * dy + 0.01;
+        const d = Math.sqrt(d2);
+        const force = REPULSION / d2;
+        const fx = (dx / d) * force;
+        const fy = (dy / d) * force;
+        f.get(nodes[i].id)!.fx -= fx;
+        f.get(nodes[i].id)!.fy -= fy;
+        f.get(nodes[j].id)!.fx += fx;
+        f.get(nodes[j].id)!.fy += fy;
+      }
+    }
+
+    // Spring attraction for edges
+    springs.forEach(([sid, tid]) => {
+      const a = pos.get(sid);
+      const b = pos.get(tid);
+      if (!a || !b) return;
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const d = Math.sqrt(dx * dx + dy * dy) || 1;
+      const stretch = (d - SPRING_LEN) * SPRING_K;
+      const fx = (dx / d) * stretch;
+      const fy = (dy / d) * stretch;
+      f.get(sid)!.fx += fx;
+      f.get(sid)!.fy += fy;
+      f.get(tid)!.fx -= fx;
+      f.get(tid)!.fy -= fy;
+    });
+
+    // Weak pull to canvas center
+    nodes.forEach((node) => {
+      const p = pos.get(node.id)!;
+      f.get(node.id)!.fx += (W / 2 - p.x) * CENTER_K;
+      f.get(node.id)!.fy += (H / 2 - p.y) * CENTER_K;
+    });
+
+    // Integrate + clamp
+    nodes.forEach((node) => {
+      const p = pos.get(node.id)!;
+      const fi = f.get(node.id)!;
+      p.vx = (p.vx + fi.fx) * DAMPING;
+      p.vy = (p.vy + fi.fy) * DAMPING;
+      p.x = Math.max(PAD, Math.min(W - PAD, p.x + p.vx));
+      p.y = Math.max(PAD, Math.min(H - PAD, p.y + p.vy));
+    });
+  }
+
+  return nodes.map((node) => ({ ...node, x: pos.get(node.id)!.x, y: pos.get(node.id)!.y }));
 }
+
+// ─────────────────────────────────────────────────────── Root component
 
 export function GraphDemoBlock() {
   const [scenarioId, setScenarioId] = useState<Scenario['id']>('sepsis');
@@ -47,25 +132,18 @@ export function GraphDemoBlock() {
 
   const scenario = SCENARIOS.find((s) => s.id === scenarioId) ?? SCENARIOS[0];
 
-  useEffect(() => {
+  const handleScenarioChange = (id: Scenario['id']) => {
+    setScenarioId(id);
     setState('idle');
     setSelectedNode(null);
     if (timerRef.current) window.clearTimeout(timerRef.current);
-  }, [scenarioId]);
-
-  useEffect(
-    () => () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current);
-    },
-    [],
-  );
+  };
 
   const handleBuild = () => {
     setState('building');
     timerRef.current = window.setTimeout(() => {
       setState('results');
-      const focus =
-        scenario.nodes.find((n) => n.tier === 'PERSISTENT') ?? scenario.nodes[0];
+      const focus = scenario.nodes.find((n) => n.tier === 'PERSISTENT') ?? scenario.nodes[0];
       setSelectedNode(focus?.id ?? null);
     }, BUILD_DURATION_MS);
   };
@@ -83,7 +161,7 @@ export function GraphDemoBlock() {
       <TabBar
         scenarios={SCENARIOS}
         activeId={scenarioId}
-        onSelect={setScenarioId}
+        onSelect={handleScenarioChange}
         subLabel={scenario.subLabel}
       />
 
@@ -138,9 +216,7 @@ function TabBar({
               type="button"
               onClick={() => onSelect(s.id)}
               className="relative rounded-full px-4 py-1.5 text-[0.84rem] font-medium transition-colors"
-              style={{
-                color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
-              }}
+              style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)' }}
             >
               {active && (
                 <motion.span
@@ -191,11 +267,8 @@ function GraphCanvas({
       return next;
     });
 
-  const nodes = useMemo(() => layoutNodes(scenario.nodes), [scenario]);
-  const nodeById = useMemo(
-    () => Object.fromEntries(nodes.map((n) => [n.id, n])),
-    [nodes],
-  );
+  const nodes = useMemo(() => runForceLayout(scenario.nodes, scenario.edges), [scenario]);
+  const nodeById = useMemo(() => Object.fromEntries(nodes.map((n) => [n.id, n])), [nodes]);
   const visibleEdges = useMemo(
     () => scenario.edges.filter((e) => enabledTypes.has(e.type)),
     [scenario, enabledTypes],
@@ -220,68 +293,124 @@ function GraphCanvas({
         className="relative mt-3 overflow-hidden rounded-2xl border border-subtle"
         style={{
           aspectRatio: `${CANVAS.w} / ${CANVAS.h}`,
-          background:
-            'radial-gradient(120% 120% at 50% 0%, color-mix(in oklab, var(--accent) 7%, transparent), transparent 60%)',
+          background: 'radial-gradient(ellipse 110% 80% at 50% 50%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 70%)',
         }}
       >
-        {/* Edge layer */}
         <svg
           viewBox={`0 0 ${CANVAS.w} ${CANVAS.h}`}
           className="absolute inset-0 h-full w-full"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
+            {/* Subtle dot grid for depth */}
+            <pattern id="ng-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+              <circle cx="12" cy="12" r="0.7" fill="var(--accent)" fillOpacity="0.1" />
+            </pattern>
+
+            {/* Moderate glow — episodic nodes, GRANGER edges */}
+            <filter id="ng-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            {/* Strong glow — persistent nodes */}
+            <filter id="ng-glow-bright" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            {/* Radial fill gradients per tier */}
+            <radialGradient id="ng-fill-p" cx="35%" cy="35%" r="70%">
+              <stop offset="0%" stopColor="var(--accent-strong)" stopOpacity="1" />
+              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.75" />
+            </radialGradient>
+            <radialGradient id="ng-fill-e" cx="35%" cy="35%" r="70%">
+              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.35" />
+            </radialGradient>
+
+            {/* Arrow marker */}
             <marker
               id="ng-arrow"
               viewBox="0 0 10 10"
               refX="8"
               refY="5"
-              markerWidth="7"
-              markerHeight="7"
+              markerWidth="6"
+              markerHeight="6"
               orient="auto-start-reverse"
             >
               <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
             </marker>
+            <marker
+              id="ng-arrow-granger"
+              viewBox="0 0 10 10"
+              refX="8"
+              refY="5"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--accent-strong)" />
+            </marker>
           </defs>
-          {show &&
-            visibleEdges.map((edge, i) => (
-              <EdgeLine
-                key={edge.id}
+
+          {/* Background dot grid */}
+          <rect width={CANVAS.w} height={CANVAS.h} fill="url(#ng-dots)" />
+
+          {/* Edge layer */}
+          <g>
+            {show &&
+              visibleEdges.map((edge, i) => (
+                <EdgePath
+                  key={edge.id}
+                  edge={edge}
+                  source={nodeById[edge.source]}
+                  target={nodeById[edge.target]}
+                  building={building}
+                  index={i}
+                  hovered={hoverEdge === edge.id}
+                  onHover={setHoverEdge}
+                  interactive={state === 'results'}
+                />
+              ))}
+          </g>
+
+          {/* Node layer */}
+          <g>
+            {show &&
+              nodes.map((n, i) => (
+                <NodeCircle
+                  key={n.id}
+                  node={n}
+                  selected={selectedNode === n.id}
+                  building={building}
+                  index={i}
+                  interactive={state === 'results'}
+                  onSelect={() => onSelectNode(n.id)}
+                />
+              ))}
+          </g>
+        </svg>
+
+        {/* Edge tooltip — HTML overlay, positioned from SVG coords */}
+        <AnimatePresence>
+          {hoverEdge && state === 'results' && (() => {
+            const edge = scenario.edges.find((e) => e.id === hoverEdge)!;
+            return (
+              <EdgeTooltip
                 edge={edge}
                 source={nodeById[edge.source]}
                 target={nodeById[edge.target]}
-                building={building}
-                index={i}
-                hovered={hoverEdge === edge.id}
-                onHover={setHoverEdge}
-                interactive={state === 'results'}
               />
-            ))}
-        </svg>
-
-        {/* Node layer */}
-        {show &&
-          nodes.map((n, i) => (
-            <NodeChip
-              key={n.id}
-              node={n}
-              selected={selectedNode === n.id}
-              building={building}
-              index={i}
-              interactive={state === 'results'}
-              onSelect={() => onSelectNode(n.id)}
-            />
-          ))}
-
-        {/* Edge tooltip */}
-        <AnimatePresence>
-          {hoverEdge && state === 'results' && (
-            <EdgeTooltip
-              edge={scenario.edges.find((e) => e.id === hoverEdge)!}
-              source={nodeById[scenario.edges.find((e) => e.id === hoverEdge)!.source]}
-              target={nodeById[scenario.edges.find((e) => e.id === hoverEdge)!.target]}
-            />
-          )}
+            );
+          })()}
         </AnimatePresence>
 
         {/* Idle overlay */}
@@ -302,8 +431,7 @@ function GraphCanvas({
                 onClick={onBuild}
                 className="group relative inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
+                  background: 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
                   boxShadow: 'var(--shadow-glow)',
                   color: 'var(--on-accent)',
                 }}
@@ -325,7 +453,7 @@ function GraphCanvas({
               className="absolute left-3 top-3 inline-flex items-center gap-2 rounded-full border border-subtle bg-glass-strong px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent backdrop-blur"
             >
               <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              Deriving nodes & edges
+              Deriving nodes &amp; edges
             </motion.div>
           )}
         </AnimatePresence>
@@ -336,41 +464,55 @@ function GraphCanvas({
   );
 }
 
+// ────────────────────────────────────────────────────────────── Ghost graph
+
 function GhostGraph() {
-  // Faint static preview so the idle canvas isn't empty.
   return (
-    <svg width="120" height="78" viewBox="0 0 120 78" className="opacity-40">
-      <g stroke="var(--accent)" strokeWidth="2" opacity="0.5">
-        <line x1="26" y1="22" x2="62" y2="40" />
-        <line x1="94" y1="20" x2="62" y2="40" />
-        <line x1="62" y1="40" x2="34" y2="64" />
+    <svg width="140" height="90" viewBox="0 0 140 90" className="opacity-35">
+      <defs>
+        <filter id="ghost-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+      <g stroke="var(--accent)" strokeWidth="1.2" opacity="0.45" fill="none">
+        <line x1="26" y1="26" x2="70" y2="46" />
+        <line x1="114" y1="22" x2="70" y2="46" />
+        <line x1="70" y1="46" x2="38" y2="72" />
+        <line x1="70" y1="46" x2="104" y2="68" />
+        <line x1="38" y1="72" x2="104" y2="68" />
       </g>
-      <g fill="var(--accent)">
-        <circle cx="26" cy="22" r="7" opacity="0.7" />
-        <circle cx="94" cy="20" r="6" opacity="0.55" />
-        <circle cx="62" cy="40" r="9" />
-        <circle cx="34" cy="64" r="6" opacity="0.5" />
+      <g filter="url(#ghost-glow)">
+        <circle cx="26" cy="26" r="8" fill="var(--accent)" fillOpacity="0.6" />
+        <circle cx="114" cy="22" r="6" fill="var(--accent)" fillOpacity="0.45" />
+        <circle cx="70" cy="46" r="10" fill="var(--accent)" fillOpacity="0.85" />
+        <circle cx="38" cy="72" r="6" fill="var(--accent)" fillOpacity="0.4" />
+        <circle cx="104" cy="68" r="7" fill="var(--accent)" fillOpacity="0.5" />
       </g>
     </svg>
   );
 }
 
-const EDGE_LEGEND: { type: EdgeType; label: string; stroke: string; width: number; dashed: boolean }[] = [
+// ─────────────────────────────────────────────────────────────────── Legend
+
+const EDGE_LEGEND: {
+  type: EdgeType;
+  label: string;
+  stroke: string;
+  width: number;
+  dashed: boolean;
+}[] = [
   { type: 'TEMPORAL', label: 'Temporal', stroke: 'var(--accent)', width: 1.6, dashed: true },
   { type: 'CO_OCCURS', label: 'Co-occurs', stroke: 'var(--accent)', width: 1.6, dashed: false },
   { type: 'GRANGER', label: 'Granger', stroke: 'var(--accent-strong)', width: 3, dashed: false },
 ];
 
-function Legend({
-  enabled,
-  onToggle,
-}: {
-  enabled: Set<EdgeType>;
-  onToggle: (t: EdgeType) => void;
-}) {
+function Legend({ enabled, onToggle }: { enabled: Set<EdgeType>; onToggle: (t: EdgeType) => void }) {
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.7rem] text-muted">
-      {/* Tier swatches (static reference) */}
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: 'var(--accent)' }} />
         Persistent
@@ -390,10 +532,11 @@ function Legend({
         Transient
       </span>
 
-      <span aria-hidden className="opacity-40">·</span>
+      <span aria-hidden className="opacity-40">
+        ·
+      </span>
       <span className="font-mono text-[0.62rem] uppercase tracking-[0.1em] opacity-70">filter edges</span>
 
-      {/* Edge-type toggles */}
       {EDGE_LEGEND.map((e) => {
         const on = enabled.has(e.type);
         return (
@@ -431,7 +574,7 @@ function Legend({
 
 // ─────────────────────────────────────────────────────────────────── Edges
 
-function EdgeLine({
+function EdgePath({
   edge,
   source,
   target,
@@ -451,26 +594,37 @@ function EdgeLine({
   interactive: boolean;
 }) {
   const meta = EDGE_META[edge.type];
-  // Shorten both ends so the line stops short of the node chips.
   const sx = source.x ?? 0;
   const sy = source.y ?? 0;
   const tx = target.x ?? 0;
   const ty = target.y ?? 0;
+
   const dx = tx - sx;
   const dy = ty - sy;
   const len = Math.hypot(dx, dy) || 1;
   const ux = dx / len;
   const uy = dy / len;
-  const PAD_S = 34;
-  const PAD_T = edge.directed ? 42 : 34;
-  const x1 = sx + ux * PAD_S;
-  const y1 = sy + uy * PAD_S;
-  const x2 = tx - ux * PAD_T;
-  const y2 = ty - uy * PAD_T;
 
-  const color = edge.type === 'GRANGER' ? 'var(--accent-strong)' : 'var(--accent)';
-  // Keep the dense web layered, not a solid blob.
-  const opacity = edge.type === 'TEMPORAL' ? 0.85 : 0.5;
+  // Shorten to stop at node edge
+  const R_S = NODE_R[source.tier] + 3;
+  const R_T = NODE_R[target.tier] + (edge.directed ? 8 : 3);
+  const x1 = sx + ux * R_S;
+  const y1 = sy + uy * R_S;
+  const x2 = tx - ux * R_T;
+  const y2 = ty - uy * R_T;
+
+  // Gentle quadratic bezier curve
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2;
+  const BEND = 22;
+  const cpx = mx - uy * BEND;
+  const cpy = my + ux * BEND;
+  const d = `M ${x1.toFixed(1)},${y1.toFixed(1)} Q ${cpx.toFixed(1)},${cpy.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
+
+  const isGranger = edge.type === 'GRANGER';
+  const color = isGranger ? 'var(--accent-strong)' : 'var(--accent)';
+  const arrowId = isGranger ? 'url(#ng-arrow-granger)' : 'url(#ng-arrow)';
+  const baseOpacity = edge.type === 'TEMPORAL' ? 0.8 : isGranger ? 0.72 : 0.38;
 
   return (
     <g
@@ -478,38 +632,35 @@ function EdgeLine({
       onMouseLeave={() => interactive && onHover(null)}
       style={{ cursor: interactive ? 'pointer' : 'default' }}
     >
-      {/* Hit area */}
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="transparent" strokeWidth={18} />
-      <motion.line
-        x1={x1}
-        y1={y1}
-        x2={x2}
-        y2={y2}
+      {/* Wide hit area */}
+      <path d={d} stroke="transparent" strokeWidth={18} fill="none" />
+
+      {/* Main edge */}
+      <motion.path
+        d={d}
         stroke={color}
         strokeWidth={hovered ? meta.width + 1.2 : meta.width}
         strokeLinecap="round"
         strokeDasharray={meta.dashed ? '5 5' : undefined}
-        markerEnd={edge.directed ? 'url(#ng-arrow)' : undefined}
-        style={{ opacity: hovered ? 1 : opacity }}
+        markerEnd={edge.directed ? arrowId : undefined}
+        fill="none"
+        filter={isGranger ? 'url(#ng-glow)' : undefined}
+        style={{ opacity: hovered ? 1 : baseOpacity }}
         initial={building ? { pathLength: 0, opacity: 0 } : false}
-        animate={
-          building
-            ? { pathLength: 1, opacity }
-            : { opacity: hovered ? 1 : opacity }
-        }
-        transition={{ duration: 0.6, delay: 0.45 + index * 0.05, ease: EASE }}
+        animate={building ? { pathLength: 1, opacity: baseOpacity } : { opacity: hovered ? 1 : baseOpacity }}
+        transition={{ duration: 0.7, delay: 0.5 + index * 0.04, ease: EASE }}
       />
+
+      {/* Animated flow on TEMPORAL edges */}
       {meta.dashed && interactive && (
-        <motion.line
-          x1={x1}
-          y1={y1}
-          x2={x2}
-          y2={y2}
+        <motion.path
+          d={d}
           stroke={color}
           strokeWidth={meta.width}
           strokeLinecap="round"
           strokeDasharray="5 5"
-          style={{ opacity: 0.9 }}
+          fill="none"
+          style={{ opacity: 0.85 }}
           animate={{ strokeDashoffset: [0, -20] }}
           transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
         />
@@ -557,7 +708,7 @@ function EdgeTooltip({
 
 // ─────────────────────────────────────────────────────────────────── Nodes
 
-function NodeChip({
+function NodeCircle({
   node,
   selected,
   building,
@@ -572,52 +723,98 @@ function NodeChip({
   interactive: boolean;
   onSelect: () => void;
 }) {
-  const tier = TIER_META[node.tier];
-  // The "_ppg" suffix is redundant with the PPG modality tag already shown.
+  const cx = node.x ?? 0;
+  const cy = node.y ?? 0;
+  const r = NODE_R[node.tier];
   const displayLabel = node.label.replace('_ppg', '');
-  const bg =
-    node.tier === 'TRANSIENT'
-      ? 'var(--accent-soft)'
-      : `color-mix(in oklab, var(--accent) ${tier.mix}%, var(--bg-glass-strong))`;
-  const textColor = node.tier === 'TRANSIENT' ? 'var(--text-primary)' : 'var(--on-accent)';
+
+  const fillId =
+    node.tier === 'PERSISTENT' ? 'url(#ng-fill-p)' : node.tier === 'EPISODIC' ? 'url(#ng-fill-e)' : undefined;
+  const fillOpacity = node.tier === 'TRANSIENT' ? 0.18 : 1;
+  const strokeOpacity = node.tier === 'TRANSIENT' ? 0.65 : 0.3;
+  const glowFilter = node.tier === 'PERSISTENT' ? 'url(#ng-glow-bright)' : node.tier === 'EPISODIC' ? 'url(#ng-glow)' : undefined;
 
   return (
-    <motion.button
-      type="button"
-      onClick={onSelect}
-      disabled={!interactive}
-      initial={building ? { opacity: 0, scale: 0.5 } : false}
+    <motion.g
+      onClick={interactive ? onSelect : undefined}
+      style={{ cursor: interactive ? 'pointer' : 'default', x: cx, y: cy }}
+      initial={building ? { opacity: 0, scale: 0.2 } : false}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.45, delay: building ? index * 0.05 : 0, ease: EASE }}
-      className="absolute w-[104px] -translate-x-1/2 -translate-y-1/2 rounded-xl border px-2 py-1.5 text-left transition will-change-transform"
-      style={{
-        left: `${((node.x ?? 0) / CANVAS.w) * 100}%`,
-        top: `${((node.y ?? 0) / CANVAS.h) * 100}%`,
-        background: bg,
-        color: textColor,
-        borderColor: selected ? 'var(--accent-strong)' : 'var(--border-subtle)',
-        cursor: interactive ? 'pointer' : 'default',
-        boxShadow: selected
-          ? '0 0 0 2px var(--accent), var(--shadow-glow)'
-          : node.tier === 'PERSISTENT'
-            ? 'var(--shadow-glow)'
-            : 'none',
-      }}
+      transition={{ duration: 0.5, delay: building ? 0.15 + index * 0.07 : 0, ease: EASE }}
     >
-      <div className="flex items-center gap-1.5">
-        <span
-          className="font-mono text-[0.52rem] font-semibold uppercase tracking-[0.1em]"
-          style={{ opacity: 0.85 }}
-        >
-          {node.modality}
-        </span>
-      </div>
-      <div className="truncate text-[0.7rem] font-semibold leading-tight">{displayLabel}</div>
-    </motion.button>
+      {/* Breathing halo for persistent nodes */}
+      {node.tier === 'PERSISTENT' && (
+        <motion.circle
+          cx={0}
+          cy={0}
+          r={r + 6}
+          fill="var(--accent)"
+          fillOpacity={selected ? 0.18 : 0.07}
+          filter="url(#ng-glow-bright)"
+          animate={{ r: [r + 4, r + 12, r + 4], fillOpacity: [0.07, 0.14, 0.07] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      )}
+
+      {/* Selection ring */}
+      {selected && (
+        <circle
+          cx={0}
+          cy={0}
+          r={r + 5}
+          fill="none"
+          stroke="var(--accent)"
+          strokeWidth={2.2}
+          strokeOpacity={0.9}
+          filter="url(#ng-glow)"
+        />
+      )}
+
+      {/* Main circle */}
+      <circle
+        cx={0}
+        cy={0}
+        r={r}
+        fill={fillId ?? 'var(--accent)'}
+        fillOpacity={fillOpacity}
+        stroke="var(--accent)"
+        strokeWidth={node.tier === 'TRANSIENT' ? 1.5 : 0.5}
+        strokeOpacity={strokeOpacity}
+        filter={glowFilter}
+      />
+
+      {/* Modality tag above */}
+      <text
+        x={0}
+        y={-r - 6}
+        textAnchor="middle"
+        fontSize={7.5}
+        fontFamily="monospace"
+        fill="var(--accent)"
+        fillOpacity={0.8}
+        letterSpacing={1.2}
+      >
+        {node.modality}
+      </text>
+
+      {/* Concept label below */}
+      <text
+        x={0}
+        y={r + 14}
+        textAnchor="middle"
+        fontSize={9.5}
+        fontFamily="system-ui, sans-serif"
+        fontWeight="600"
+        fill="var(--text-primary)"
+        fillOpacity={node.tier === 'TRANSIENT' ? 0.65 : 0.9}
+      >
+        {displayLabel.length > 12 ? displayLabel.slice(0, 11) + '…' : displayLabel}
+      </text>
+    </motion.g>
   );
 }
 
-// ─────────────────────────────────────────────────────────── Evidence panel
+// ─────────────────────────────────────────────────── Evidence panel
 
 function EvidencePanel({
   scenario,
@@ -684,17 +881,12 @@ function NodeEvidence({ node, summary }: { node: ConceptNode; summary: string })
           <h3 className="mt-1 font-mono text-[1.05rem] font-semibold tracking-tight text-primary">
             {node.label}
           </h3>
-          <div className="mt-0.5 font-mono text-[0.72rem] text-muted">
-            SNOMED {node.snomed}
-          </div>
+          <div className="mt-0.5 font-mono text-[0.72rem] text-muted">SNOMED {node.snomed}</div>
         </div>
         <span
           className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.1em]"
           style={{
-            background:
-              node.tier === 'TRANSIENT'
-                ? 'rgba(120,145,170,0.14)'
-                : 'var(--accent-soft)',
+            background: node.tier === 'TRANSIENT' ? 'rgba(120,145,170,0.14)' : 'var(--accent-soft)',
             color: node.tier === 'TRANSIENT' ? 'var(--color-violet-500)' : 'var(--accent)',
           }}
         >
@@ -708,7 +900,6 @@ function NodeEvidence({ node, summary }: { node: ConceptNode; summary: string })
         <Stat label="Activating windows" value={`${node.windowCount}`} />
       </div>
 
-      {/* Waveform strip */}
       <div className="mt-4">
         <div className="flex items-center justify-between text-[0.7rem] uppercase tracking-[0.12em] text-muted">
           <span className="font-mono">signal · 30s window</span>
@@ -717,11 +908,8 @@ function NodeEvidence({ node, summary }: { node: ConceptNode; summary: string })
         <Waveform modality={node.modality} seed={node.id} segment={windowIdx} segments={node.windows.length} />
       </div>
 
-      {/* Window scrubber */}
       <div className="mt-3">
-        <div className="text-[0.7rem] uppercase tracking-[0.12em] text-muted">
-          Activating windows
-        </div>
+        <div className="text-[0.7rem] uppercase tracking-[0.12em] text-muted">Activating windows</div>
         <div className="mt-2 flex flex-wrap gap-1.5">
           {node.windows.map((w, i) => {
             const sel = i === windowIdx;
@@ -748,9 +936,7 @@ function NodeEvidence({ node, summary }: { node: ConceptNode; summary: string })
       <p className="mt-4 border-t border-subtle pt-3 text-[0.84rem] font-light leading-relaxed text-secondary">
         {node.evidence}
       </p>
-      <p className="mt-2 text-[0.78rem] font-light leading-relaxed text-muted">
-        {summary}
-      </p>
+      <p className="mt-2 text-[0.78rem] font-light leading-relaxed text-muted">{summary}</p>
     </motion.div>
   );
 }
@@ -758,12 +944,8 @@ function NodeEvidence({ node, summary }: { node: ConceptNode; summary: string })
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-subtle bg-glass p-3">
-      <div className="font-mono text-[1.15rem] font-semibold tracking-tight text-accent">
-        {value}
-      </div>
-      <div className="mt-0.5 text-[0.68rem] uppercase tracking-[0.08em] text-muted">
-        {label}
-      </div>
+      <div className="font-mono text-[1.15rem] font-semibold tracking-tight text-accent">{value}</div>
+      <div className="mt-0.5 text-[0.68rem] uppercase tracking-[0.08em] text-muted">{label}</div>
     </div>
   );
 }
@@ -780,7 +962,6 @@ function hashString(s: string) {
   return Math.abs(h);
 }
 
-/** Per-beat morphology, value roughly in [-0.3, 1]. */
 function beatValue(modality: Modality, u: number) {
   switch (modality) {
     case 'ECG':
@@ -817,7 +998,7 @@ function Waveform({
     const n = 260;
     const rnd = hashString(seed + modality);
     const beats = modality === 'ECG' ? 6 : modality === 'ABP' || modality === 'PPG' ? 7 : 0;
-    const cycles = 2.5; // RESP
+    const cycles = 2.5;
     const mid = H / 2;
     const amp = H * 0.34;
     let dStr = '';
@@ -843,17 +1024,17 @@ function Waveform({
   return (
     <div className="mt-2 overflow-hidden rounded-xl border border-subtle bg-glass">
       <svg viewBox={`0 0 ${W} ${H}`} className="block h-[76px] w-full">
-        {/* highlighted active window band */}
-        <rect
-          x={segX}
-          y={0}
-          width={segW}
-          height={H}
-          fill="var(--accent-soft)"
-        />
+        <rect x={segX} y={0} width={segW} height={H} fill="var(--accent-soft)" />
         <line x1={segX} y1={0} x2={segX} y2={H} stroke="var(--accent)" strokeWidth={0.8} strokeOpacity={0.5} />
-        <line x1={segX + segW} y1={0} x2={segX + segW} y2={H} stroke="var(--accent)" strokeWidth={0.8} strokeOpacity={0.5} />
-        {/* baseline */}
+        <line
+          x1={segX + segW}
+          y1={0}
+          x2={segX + segW}
+          y2={H}
+          stroke="var(--accent)"
+          strokeWidth={0.8}
+          strokeOpacity={0.5}
+        />
         <line x1={0} y1={H / 2} x2={W} y2={H / 2} stroke="var(--border-subtle)" strokeWidth={0.6} />
         <motion.path
           d={path}
@@ -953,8 +1134,7 @@ function Controls({ state, onReset }: { state: DemoState; onReset: () => void })
         href="/contact"
         className="group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.86rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
         style={{
-          background:
-            'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
+          background: 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
           boxShadow: 'var(--shadow-glow)',
           color: 'var(--on-accent)',
         }}
