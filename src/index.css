@@ -2,6 +2,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Scroll-reveal failsafe (see the inline script in index.html). framer-motion
+ * bakes its hidden initial state into the SSG'd HTML as
+ * `opacity:0;transform:translateY(Npx)`. If hydration never confirms, the
+ * inline failsafe adds `mz-reveal-fallback` to <html> and these elements are
+ * forced visible so the page is never permanently blank. The selector is
+ * scoped to that exact serialized shape so decorative opacity:0.x styles and
+ * Tailwind `opacity-0` classes are untouched.
+ */
+html.mz-reveal-fallback [style*='opacity:0;transform:translateY'] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* Self-hosted brand faces */
 @font-face {
   font-family: 'Inter';
