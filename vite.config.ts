@@ -22,7 +22,10 @@ const config: SSGConfig = {
     cssMinify: 'lightningcss',
   },
   ssgOptions: {
-    script: 'async',
+    // `defer` runs after HTML parse in document order, which is more
+    // deterministic than `async` for a single hydration entry and avoids it
+    // executing mid-parse and racing first paint.
+    script: 'defer',
     dirStyle: 'nested',
     formatting: 'none',
   },

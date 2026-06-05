@@ -53,6 +53,29 @@
         } catch (e) {}
       })();
     </script>
+    <script>
+      // Scroll-reveal failsafe. Sections animated with framer-motion render
+      // with opacity:0 baked into this static HTML and only become visible
+      // once the JS bundle hydrates and their IntersectionObserver fires. If
+      // the bundle is slow, blocked, served stale by a CDN (a hashed chunk
+      // from an old deploy 404s), or hydration aborts, that content would
+      // stay invisible until a hard refresh. This reveals it as a fallback
+      // when React hasn't confirmed hydration shortly after load. Layout
+      // calls __mzCancelRevealFallback() on mount, so on a healthy load the
+      // class is never added and animations play untouched.
+      (function () {
+        var timer = window.setTimeout(function () {
+          if (!window.__mzHydrated) {
+            document.documentElement.classList.add('mz-reveal-fallback');
+          }
+        }, 3000);
+        window.__mzCancelRevealFallback = function () {
+          window.__mzHydrated = true;
+          window.clearTimeout(timer);
+          document.documentElement.classList.remove('mz-reveal-fallback');
+        };
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

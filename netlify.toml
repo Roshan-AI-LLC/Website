@@ -5,6 +5,16 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# HTML documents must always revalidate. Otherwise a browser or CDN can serve
+# a stale shell that references hashed JS/CSS from an earlier deploy; those
+# files no longer exist, hydration never runs, and scroll-reveal sections stay
+# invisible until a hard refresh. The more specific /assets/* rule below
+# overrides this to keep hashed assets immutable.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[headers]]
   for = "/assets/*"
   [headers.values]
