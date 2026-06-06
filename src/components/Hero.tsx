@@ -1,5 +1,6 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CompanyMark } from './CompanyMark';
 
 export function Hero() {
   return (
@@ -74,95 +75,21 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="enter-fade-up enter-d-3 relative">
-            <PlatformStack />
+          <div className="enter-fade-up enter-d-3 relative flex items-center justify-center">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute h-80 w-80 rounded-full"
+              style={{
+                background:
+                  'radial-gradient(circle, color-mix(in oklab, var(--accent) 35%, transparent), transparent 70%)',
+                filter: 'blur(34px)',
+                opacity: 0.55,
+              }}
+            />
+            <CompanyMark className="relative h-auto w-full max-w-[380px]" />
           </div>
         </div>
       </div>
     </section>
-  );
-}
-
-function PlatformStack() {
-  const layers = [
-    {
-      title: 'Products',
-      body: 'ShifaMind · NabzGraph · future products',
-      tone: 'accent' as const,
-    },
-    {
-      title: 'Reasoning',
-      body: 'Concepts · explanations · evidence',
-    },
-    {
-      title: 'Models',
-      body: 'Clinical encoders · concept bottlenecks · decoders',
-    },
-    {
-      title: 'Ingestion',
-      body: 'Notes · structured records · imaging',
-    },
-  ];
-
-  const stackDelay = [
-    'enter-d-stack-1',
-    'enter-d-stack-2',
-    'enter-d-stack-3',
-    'enter-d-stack-4',
-  ];
-
-  return (
-    <div className="relative">
-      <div className="space-y-2">
-        {layers.map((l, i) => (
-          <div
-            key={l.title}
-            className={`enter-fade-up-sm ${stackDelay[i]} glass relative overflow-hidden rounded-2xl px-5 py-4 sm:px-6`}
-            style={
-              l.tone === 'accent'
-                ? {
-                    borderColor: 'color-mix(in oklab, var(--accent) 35%, transparent)',
-                    background:
-                      'linear-gradient(135deg, color-mix(in oklab, var(--accent) 14%, transparent), var(--bg-glass))',
-                  }
-                : undefined
-            }
-          >
-            <div className="flex items-baseline justify-between gap-3">
-              <div className="text-[0.92rem] font-semibold tracking-[-0.01em] text-primary">
-                {l.title}
-              </div>
-              <div className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted">
-                Layer 0{layers.length - i}
-              </div>
-            </div>
-            <div className="mt-1 text-[0.84rem] font-light text-secondary">
-              {l.body}
-            </div>
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 w-1"
-              style={{
-                background:
-                  l.tone === 'accent'
-                    ? 'var(--accent)'
-                    : 'color-mix(in oklab, var(--accent) 30%, transparent)',
-              }}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-12 -top-12 h-72 w-72 rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent) 35%, transparent), transparent 70%)',
-          filter: 'blur(20px)',
-          opacity: 0.5,
-        }}
-      />
-    </div>
   );
 }
