@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
-import { ShifaMindLogo } from './ShifaMindLogo';
 
 const traits = [
   'Concept-grounded predictions',
@@ -27,7 +26,6 @@ export function ShifaMindHero() {
               </div>
 
               <div className="mt-4 flex items-center gap-3">
-                <ShifaMindLogo size={44} />
                 <span className="font-display text-[1.6rem] font-semibold tracking-[-0.025em] sm:text-[2rem]">
                   ShifaMind
                 </span>
@@ -128,7 +126,6 @@ function ConceptVisual() {
     >
       <div className="flex items-center justify-between text-[0.72rem] uppercase tracking-[0.14em] text-muted">
         <span className="inline-flex items-center gap-2 normal-case tracking-normal">
-          <ShifaMindLogo size={20} />
           <span className="font-mono uppercase tracking-[0.14em]">patient #48201</span>
         </span>
         <span className="inline-flex items-center gap-1 text-accent">

@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Network, Workflow } from 'lucide-react';
 import { SectionHeader } from './About';
-import { ShifaMindLogo } from './ShifaMindLogo';
 
 export function Projects() {
   return (
@@ -22,7 +21,6 @@ export function Projects() {
           <RoadmapCard
             tag="Live · v2.1"
             tone="live"
-            visual={<ShifaMindLogo size={44} />}
             title="ShifaMind Core"
             desc="Concept-grounded ICD-10 coding from discharge summaries with full causal trails. Available to clinicians and researchers today."
             href="https://shifamind.me"
@@ -54,7 +52,6 @@ function RoadmapCard({
   tag,
   tone,
   icon: Icon,
-  visual,
   title,
   desc,
   href,
@@ -63,7 +60,6 @@ function RoadmapCard({
   tag: string;
   tone: 'live' | 'next' | 'planned';
   icon?: React.ElementType;
-  visual?: React.ReactNode;
   title: string;
   desc: string;
   href?: string;
@@ -113,9 +109,7 @@ function RoadmapCard({
             />
             {tag}
           </span>
-          {visual ? (
-            visual
-          ) : Icon ? (
+          {Icon ? (
             <div
               className="inline-flex h-11 w-11 items-center justify-center rounded-2xl"
               style={{

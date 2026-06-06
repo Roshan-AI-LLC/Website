@@ -1,9 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ShifaMindLogo } from '../ShifaMindLogo';
-import { NabzGraphLogo } from '../NabzGraphLogo';
-import type { ElementType } from 'react';
 
 type ItemStatus = 'live' | 'progress' | 'next' | 'future';
 
@@ -11,7 +8,6 @@ type Item = {
   label: string;
   sub?: string;
   status: ItemStatus;
-  logo?: ElementType;
   href?: string;
 };
 
@@ -34,14 +30,12 @@ const phases: Phase[] = [
         label: 'ShifaMind',
         sub: 'Concept-grounded ICD-10 coding',
         status: 'live',
-        logo: ShifaMindLogo,
         href: '/products/shifamind',
       },
       {
         label: 'NabzGraph',
         sub: 'Interpretable ICU knowledge graphs',
         status: 'progress',
-        logo: NabzGraphLogo,
         href: '/products/nabzgraph',
       },
     ],
@@ -149,22 +143,15 @@ function PhaseColumn({ phase }: { phase: Phase }) {
 }
 
 function ItemRow({ item }: { item: Item }) {
-  const Logo = item.logo;
   const inner = (
     <>
-      {Logo ? (
-        <Logo size={26} />
-      ) : (
-        <span
-          className="mt-1 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full"
-          style={{
-            background:
-              item.status === 'future'
-                ? 'var(--text-muted)'
-                : 'var(--accent)',
-          }}
-        />
-      )}
+      <span
+        className="mt-1 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+        style={{
+          background:
+            item.status === 'future' ? 'var(--text-muted)' : 'var(--accent)',
+        }}
+      />
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">

@@ -1,5 +1,4 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
-import { NabzGraphLogo } from '../NabzGraphLogo';
 
 export function ProductHero() {
   return (
@@ -10,7 +9,6 @@ export function ProductHero() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur">
-          <NabzGraphLogo size={14} />
           NabzGraph · A Roshan AI product
         </div>
 

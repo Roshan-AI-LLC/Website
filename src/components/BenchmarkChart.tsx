@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, BarChart3, FileText, IceCream2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { AnthropicMark, GoogleMark, OpenAIMark } from './brand-marks';
-import { ShifaMindLogo } from './ShifaMindLogo';
 
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
 
@@ -51,7 +50,7 @@ const competitors: Competitor[] = [
   {
     label: 'ShifaMind',
     value: 0.712,
-    mark: <ShifaMindLogo size={22} />,
+    mark: null,
     ours: true,
   },
 ];
