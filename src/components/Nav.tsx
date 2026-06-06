@@ -3,7 +3,6 @@ import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
-import { CompanyMark } from './CompanyMark';
 import { cn } from '../lib/utils';
 import { PLATFORM_URL } from '../lib/config';
 
@@ -61,7 +60,16 @@ export function Nav() {
           to="/"
           className="group inline-flex items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em]"
         >
-          <CompanyMark size={28} />
+          <img
+            src="/shifamind-logo.svg"
+            alt=""
+            aria-hidden
+            width={28}
+            height={28}
+            decoding="async"
+            className="block"
+            style={{ width: 28, height: 28, borderRadius: 6, objectFit: 'cover' }}
+          />
           <span>
             Roshan<span className="text-secondary">·AI</span>
           </span>
