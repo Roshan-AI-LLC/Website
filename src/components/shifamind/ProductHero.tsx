@@ -1,5 +1,4 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
-import { ShifaMindLogo } from '../ShifaMindLogo';
 import { PLATFORM_URL } from '../../lib/config';
 
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
@@ -13,7 +12,6 @@ export function ProductHero() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur">
-          <ShifaMindLogo size={14} />
           ShifaMind · A Roshan AI product
         </div>
 

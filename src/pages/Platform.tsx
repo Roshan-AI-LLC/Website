@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Brain, Database, Layers, Plug, Sparkles } from 'lucide-react';
 import type { ElementType } from 'react';
 import { Link } from 'react-router-dom';
-import { ShifaMindLogo } from '../components/ShifaMindLogo';
 
 type Layer = {
   index: string;
@@ -205,7 +204,6 @@ function LayerBlock({ layer, index }: { layer: Layer; index: number }) {
           </ul>
           {layer.title === 'App surface' && (
             <div className="mt-4 flex items-center gap-2 rounded-2xl border border-subtle bg-glass px-3 py-2.5">
-              <ShifaMindLogo size={26} />
               <div className="flex-1">
                 <div className="text-[0.86rem] font-semibold text-primary">
                   ShifaMind

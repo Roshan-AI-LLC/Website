@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ShifaMindLogo } from '../ShifaMindLogo';
-import { NabzGraphLogo } from '../NabzGraphLogo';
 
 type Product = {
   status: 'live' | 'next';
@@ -116,11 +114,7 @@ function ProductCard({ product, delay }: { product: Product; delay: number }) {
             />
             {isLive ? 'Live' : 'In development'}
           </span>
-          {product.visual === 'shifamind' ? (
-            <ShifaMindLogo size={40} />
-          ) : product.visual === 'nabzgraph' ? (
-            <NabzGraphLogo size={40} />
-          ) : (
+          {product.visual === 'placeholder' && (
             <div
               className="inline-flex h-10 w-10 items-center justify-center rounded-2xl font-mono text-[0.72rem] font-semibold uppercase tracking-[0.14em]"
               style={{

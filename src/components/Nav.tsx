@@ -3,6 +3,7 @@ import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
+import { CompanyMark } from './CompanyMark';
 import { cn } from '../lib/utils';
 import { PLATFORM_URL } from '../lib/config';
 
@@ -60,7 +61,7 @@ export function Nav() {
           to="/"
           className="group inline-flex items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em]"
         >
-          <Logo />
+          <CompanyMark size={28} />
           <span>
             Roshan<span className="text-secondary">·AI</span>
           </span>
@@ -275,36 +276,5 @@ function MobileGroup({
         </Link>
       ))}
     </div>
-  );
-}
-
-function Logo() {
-  return (
-    <span
-      aria-hidden
-      className="relative inline-flex h-8 w-7 items-center justify-center"
-    >
-      <svg
-        viewBox="0 0 32 32"
-        width="28"
-        height="32"
-        className="block"
-        style={{
-          filter:
-            'drop-shadow(0 0 6px color-mix(in oklab, var(--accent) 45%, transparent))',
-        }}
-      >
-        <path d="M13 17 L11 30 L28 13 L19 13 Z" fill="var(--logo-fg)" />
-        <path d="M21 2 L4 17 L13 17 L19 13 Z" fill="var(--accent)" />
-        <path
-          d="M21 2 L4 17 L13 17 L11 30 L28 13 L19 13 Z"
-          fill="none"
-          stroke="var(--accent)"
-          strokeOpacity="0.6"
-          strokeWidth="0.6"
-          strokeLinejoin="miter"
-        />
-      </svg>
-    </span>
   );
 }
