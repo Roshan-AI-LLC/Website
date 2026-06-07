@@ -19,7 +19,6 @@ export const Closing: React.FC = () => {
   const glow = interpolate(frame, [0, 30], [0, 0.5], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const dividerW = interpolate(frame, [34, 60], [0, 360], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const ctaOpacity = interpolate(frame, [62, 82], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const subOpacity = interpolate(frame, [82, 100], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -67,19 +66,6 @@ export const Closing: React.FC = () => {
         }}
       >
         roshan-ai.com
-      </div>
-
-      <div
-        style={{
-          opacity: subOpacity,
-          marginTop: 18,
-          fontFamily: FONTS.mono,
-          fontSize: 22,
-          letterSpacing: '0.06em',
-          color: COLORS.textSecondary,
-        }}
-      >
-        Read the paper · Request access
       </div>
     </AbsoluteFill>
   );

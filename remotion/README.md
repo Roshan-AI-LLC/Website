@@ -1,15 +1,14 @@
 # ShifaMind launch film (Remotion)
 
 The debut film for ShifaMind, the flagship model of the Roshan AI platform.
-~66 seconds, 1920×1080 / 30fps, animated entirely from scratch. No video
+~75 seconds, 1920×1080 / 30fps, animated entirely from scratch. No video
 recordings or new assets - it reuses the website's brand tokens, fonts, logo,
 demo data, and benchmark numbers.
 
-It's built to land for every part of the audience: investors (market,
-regulation, #1 benchmark, efficiency, platform), clinicians (real note,
-"see the reasoning," trust by construction), and researchers (the MCB
-architecture, 160 concepts, beats frontier LLMs and the best published
-clinical model, arXiv).
+It's built to land for every part of the audience: investors (cited market +
+regulatory pressure, #1 benchmark, efficiency, platform), clinicians (a real
+note, "see the reasoning," trust by construction), and researchers (the MCB
+architecture, 160 concepts, highest Macro-F1 of every model evaluated).
 
 This project is fully isolated from the Vite website build: it lives in
 `remotion/`, has its own `tsconfig.json`, and is not part of `src/`, so the
@@ -22,25 +21,41 @@ isolated preview / render.
 
 | id             | beat                                                   | audience |
 | -------------- | ------------------------------------------------------ | -------- |
-| `Full`         | the whole film (all 10 segments, cross-faded)          | -        |
-| `Hook`         | cold open: "AI that can't explain itself…"             | all      |
-| `Stakes`       | denials, coder shortage, EU AI Act → "it's the law"    | investors|
+| `Full`         | the whole film (11 segments)                           | -        |
+| `Hook`         | cold open: "Medicine needs reasons."                   | all      |
+| `Stakes`       | cited facts: $262B denied, 30% coder gap, EU AI Act    | investors|
 | `Gap`          | frontier LLMs vs research models: the false choice     | research |
 | `Reveal`       | ShifaMind: interpretable AND state-of-the-art; flagship| all      |
+| `GlassBox`     | black box → glass box (concept nodes revealed)         | all      |
 | `Architecture` | the MCB - note → 160 concepts → ICD-10, by construction | research/clinical |
 | `Demo`         | a real cardiology note coded live                      | clinical |
-| `Benchmark`    | MIMIC-IV top-50 Macro-F1, +64% delta, arXiv badge      | investors/research |
-| `Deployment`   | 119M params, on-prem, HIPAA, traceable                 | hospitals|
+| `Benchmark`    | MIMIC-IV top-50 Macro-F1, ShifaMind #1                 | investors/research |
+| `Deployment`   | compact, on-prem, HIPAA, traceable                     | hospitals|
 | `Platform`     | ShifaMind is just the first; the Roshan AI platform    | investors|
-| `Closing`      | sign-off + CTA (paper · access · roshan-ai.com)        | all      |
+| `Closing`      | sign-off + roshan-ai.com                               | all      |
 
 Continuity: a single `Backdrop` (dot grid + drifting teal glow) sits behind
-the whole piece; segments are content-only and cross-fade over it via
-`@remotion/transitions`, so it reads as one film.
+the whole piece; segments are content-only and play back-to-back in a
+`Series`, each fading its own content in/out over the backdrop (see
+`components/Segment.tsx`). Only one segment is visible at a time, so there's
+no cross-segment overlap, but the canvas stays continuous.
 
-Sound: the timing is laid out on a steady pulse with marked "sound slots" in
-each segment's header comment, so subtle sound design (no music bed, no VO)
-can be dropped onto the beats later.
+Sound: the timing sits on a steady pulse with marked "sound slots" in each
+segment's header comment, so subtle sound design (no music bed, no VO) can be
+dropped onto the beats later.
+
+## Facts on screen
+
+Every figure is sourced and kept defensible:
+
+- `$262B` of U.S. medical claims denied in 2024 - Change Healthcare.
+- `30%` gap in the certified medical-coding workforce - American Medical Association.
+- EU AI Act high-risk obligations apply from 2 Aug 2026 - European Commission.
+- Benchmark numbers (Macro-F1, MIMIC-IV top-50) from `BenchmarkChart.tsx`.
+- The model is described as compact (built on a base-size clinical encoder,
+  BioClinical ModernBERT-base) rather than with a hard parameter count, which
+  the repo does not state. Add the paper's exact total to `Deployment` if you
+  want a number on screen.
 
 ## Preview & render
 
@@ -53,7 +68,7 @@ npx remotion render Full out/shifamind.mp4
 
 # Render via the Node API - recommended for CI / non-interactive shells,
 # where the CLI progress bar can crash (String.repeat(-1) on a zero-width
-# terminal). Takes the same composition id + output path.
+# terminal). Same composition id + output path.
 node remotion/render.mjs Full out/shifamind.mp4
 ```
 

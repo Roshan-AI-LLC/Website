@@ -14,10 +14,10 @@ import { TealGlow } from '../components/TealGlow';
 import { RevealText } from '../components/RevealText';
 
 const POINTS = [
-  { big: '119M', title: 'parameters', body: 'A fraction the size of frontier models.' },
+  { big: 'Compact', title: 'by design', body: 'A base-size clinical encoder, not a frontier-scale LLM.' },
   { big: 'On-prem', title: 'deployment', body: 'Runs fully on-premise. Minimal compute.' },
   { big: 'HIPAA', title: 'ready', body: 'Your data never trains our models.' },
-  { big: 'Traceable', title: 'end to end', body: 'Every prediction traceable, start to finish.' },
+  { big: 'Traceable', title: 'end to end', body: 'Every prediction tied to its concept evidence.' },
 ];
 
 const Card: React.FC<{ index: number }> = ({ index }) => {

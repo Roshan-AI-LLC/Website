@@ -73,29 +73,29 @@ export const Hook: React.FC = () => {
           appearAt={22}
           style={{
             fontFamily: FONTS.display,
-            fontSize: 86,
+            fontSize: 80,
             fontWeight: 700,
             color: COLORS.textPrimary,
             letterSpacing: '-0.025em',
             lineHeight: 1.05,
           }}
         >
-          AI that can't explain itself
+          Medicine doesn't just need predictions.
         </RevealText>
         <RevealText
           appearAt={48}
           style={{
             fontFamily: FONTS.display,
-            fontSize: 86,
+            fontSize: 92,
             fontWeight: 700,
             color: COLORS.accent,
             letterSpacing: '-0.025em',
             lineHeight: 1.08,
-            marginTop: 8,
+            marginTop: 12,
             textShadow: `0 0 70px ${COLORS.accentSoft}`,
           }}
         >
-          has no place in medicine.
+          It needs reasons.
         </RevealText>
       </div>
     </AbsoluteFill>

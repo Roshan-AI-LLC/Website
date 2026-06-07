@@ -12,6 +12,7 @@ import { Hook } from './segments/Hook';
 import { Stakes } from './segments/Stakes';
 import { Gap } from './segments/Gap';
 import { Reveal } from './segments/Reveal';
+import { GlassBox } from './segments/GlassBox';
 import { Architecture } from './segments/Architecture';
 import { Demo } from './segments/Demo';
 import { Benchmark } from './segments/Benchmark';
@@ -35,6 +36,7 @@ const HookS = onBackdrop(Hook);
 const StakesS = onBackdrop(Stakes);
 const GapS = onBackdrop(Gap);
 const RevealS = onBackdrop(Reveal);
+const GlassBoxS = onBackdrop(GlassBox);
 const ArchitectureS = onBackdrop(Architecture);
 const DemoS = onBackdrop(Demo);
 const BenchmarkS = onBackdrop(Benchmark);
@@ -51,6 +53,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Stakes" component={StakesS} durationInFrames={DURATIONS.stakes} {...base} />
       <Composition id="Gap" component={GapS} durationInFrames={DURATIONS.gap} {...base} />
       <Composition id="Reveal" component={RevealS} durationInFrames={DURATIONS.reveal} {...base} />
+      <Composition id="GlassBox" component={GlassBoxS} durationInFrames={DURATIONS.glassbox} {...base} />
       <Composition id="Architecture" component={ArchitectureS} durationInFrames={DURATIONS.architecture} {...base} />
       <Composition id="Demo" component={DemoS} durationInFrames={DURATIONS.demo} {...base} />
       <Composition id="Benchmark" component={BenchmarkS} durationInFrames={DURATIONS.benchmark} {...base} />
