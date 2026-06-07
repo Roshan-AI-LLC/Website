@@ -36,6 +36,21 @@ export const Reveal: React.FC = () => {
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
       <TealGlow x="50%" y="40%" size={820} opacity={glow} />
 
+      <RevealText
+        appearAt={2}
+        style={{
+          fontFamily: FONTS.mono,
+          fontSize: 26,
+          letterSpacing: '0.42em',
+          textTransform: 'uppercase',
+          color: COLORS.accent,
+          marginBottom: 36,
+          paddingLeft: '0.42em',
+        }}
+      >
+        Introducing
+      </RevealText>
+
       <div style={{ opacity: logoOpacity, transform: `scale(${scale})` }}>
         <Logo size={200} />
       </div>
