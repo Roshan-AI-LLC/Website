@@ -19,8 +19,11 @@ export const COLORS = {
   textSecondary: 'rgba(255, 255, 255, 0.66)',
   textMuted: 'rgba(255, 255, 255, 0.5)',
   grid: 'rgba(255, 255, 255, 0.04)',
-  // Logo fills, matching --logo-fg (dark theme) + the favicon's teal layer.
-  logoFg: '#f5f1e8',
+  // Logo fills + the favicon's teal layer. We use the navy "light mode"
+  // foreground (#0b1120) rather than the cream dark-theme one: on the teal
+  // glow the dark hemisphere lets the connectome lines read with far more
+  // contrast, which looks more premium than a flat cream fill.
+  logoFg: '#0b1120',
   logoTeal: '#5ECFC1',
 } as const;
 

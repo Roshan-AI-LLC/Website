@@ -7,7 +7,7 @@
  * key for reliable rendering is `retries`: if a render worker reloads its
  * page mid-render and a font fetch stalls, Remotion re-renders that frame
  * (re-evaluating this module) instead of wedging on an uncleared
- * delayRender. Note: a wall-clock setTimeout safety does NOT work here —
+ * delayRender. Note: a wall-clock setTimeout safety does NOT work here -
  * Remotion mocks timers to the composition clock during frame capture.
  */
 import { continueRender, delayRender, staticFile } from 'remotion';

@@ -1,5 +1,5 @@
 /**
- * Segment 8 · CLOSING — logo over a teal glow, a thin teal divider draws
+ * Segment 8 · CLOSING - logo over a teal glow, a thin teal divider draws
  * in, then the URL.
  */
 import {

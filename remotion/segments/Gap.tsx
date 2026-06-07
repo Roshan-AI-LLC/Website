@@ -1,5 +1,5 @@
 /**
- * Segment 2 · THE GAP — two glass panels reveal sequentially, then the
+ * Segment 2 · THE GAP - two glass panels reveal sequentially, then the
  * verdict line beneath: no system delivers both.
  */
 import {
@@ -85,13 +85,13 @@ export const Gap: React.FC = () => {
             appearAt={6}
             fromX={-40}
             label="Frontier LLMs"
-            lines={['Powerful — but a black box.', 'No explainability. No audit trail.']}
+            lines={['Powerful, but a black box.', 'No explainability. No audit trail.']}
           />
           <Panel
             appearAt={34}
             fromX={40}
             label="Research models"
-            lines={['Interpretable — but inaccurate.', 'Not deployable in production.']}
+            lines={['Interpretable, but inaccurate.', 'Not deployable in production.']}
           />
         </div>
 

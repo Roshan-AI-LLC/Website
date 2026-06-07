@@ -1,5 +1,5 @@
 /**
- * Segment 3 · REVEAL — the logo resolves at center over a teal glow, with
+ * Segment 3 · REVEAL - the logo resolves at center over a teal glow, with
  * the name and tagline beneath.
  */
 import {

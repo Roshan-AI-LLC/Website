@@ -2,7 +2,7 @@
  * Cardiology scenario, ported verbatim from
  * src/data/shifamindScenarios.ts (the 'cardiology' entry). Only the fields
  * the video needs are kept. Data is hand-curated demo data, not live
- * inference — same caveat as the source file.
+ * inference - same caveat as the source file.
  */
 export type NoteSection = { heading: string; text: string };
 

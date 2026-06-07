@@ -1,5 +1,5 @@
 /**
- * Segment 1 · PROBLEM — white lines snap in over the grid, the last one
+ * Segment 1 · PROBLEM - white lines snap in over the grid, the last one
  * teal: explainability is now the law.
  */
 import { AbsoluteFill } from 'remotion';
@@ -11,7 +11,7 @@ import { RevealText } from '../components/RevealText';
 const LINES = [
   '12% claim denial rate.',
   '30% certified-coder shortage.',
-  'August 2026 — the EU AI Act makes healthcare AI high-risk.',
+  'August 2026: the EU AI Act makes healthcare AI high-risk.',
 ];
 
 export const Problem: React.FC = () => {

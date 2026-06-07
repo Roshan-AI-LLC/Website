@@ -1,5 +1,5 @@
 /**
- * Segment 6 · BENCHMARK — animated bar chart, bars rising from zero, using
+ * Segment 6 · BENCHMARK - animated bar chart, bars rising from zero, using
  * the real BenchmarkChart data and competitor brand marks. ShifaMind teal
  * and tallest.
  */
@@ -19,6 +19,9 @@ import { COMPETITORS, Y_MAX, Y_TICKS } from '../data/benchmark';
 const CHART_H = 560;
 const BARS_START = 24;
 
+// A single bar, anchored to the chart's zero baseline. Its value label
+// floats just above the bar top. Marks/names are rendered separately in the
+// label row below the axis (so they never eat into the bar's measured height).
 const Bar: React.FC<{ index: number }> = ({ index }) => {
   const c = COMPETITORS[index];
   const frame = useCurrentFrame();
@@ -35,22 +38,19 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
   });
 
   return (
-    <div
-      style={{
-        flex: 1,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-      }}
-    >
+    <div style={{ position: 'relative', height: '100%' }}>
+      {/* Value label, pinned just above the bar top. */}
       <div
         style={{
-          opacity: labelOpacity,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: `${heightPct}%`,
           marginBottom: 10,
+          textAlign: 'center',
+          opacity: labelOpacity,
           fontFamily: FONTS.mono,
-          fontSize: 22,
+          fontSize: 24,
           fontVariantNumeric: 'tabular-nums',
           fontWeight: c.ours ? 700 : 400,
           color: c.ours ? COLORS.accent : COLORS.textSecondary,
@@ -58,9 +58,14 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
       >
         {value.toFixed(3)}
       </div>
+      {/* The bar, growing up from the baseline. */}
       <div
         style={{
-          width: 96,
+          position: 'absolute',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 104,
           height: `${heightPct}%`,
           borderRadius: 8,
           background: c.ours
@@ -70,10 +75,18 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
           boxShadow: c.ours ? `0 6px 40px -6px ${COLORS.accent}` : undefined,
         }}
       />
+    </div>
+  );
+};
+
+// Brand mark + name for one column, in the label row beneath the axis.
+const ColumnLabel: React.FC<{ index: number }> = ({ index }) => {
+  const c = COMPETITORS[index];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
       <div
         style={{
-          height: 40,
-          marginTop: 16,
+          height: 32,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -95,7 +108,6 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
       </div>
       <div
         style={{
-          marginTop: 8,
           fontSize: 18,
           textAlign: 'center',
           color: c.ours ? COLORS.textPrimary : COLORS.textMuted,
@@ -136,63 +148,81 @@ export const Benchmark: React.FC = () => {
             letterSpacing: '-0.02em',
           }}
         >
-          Macro-F1 — higher is better
+          Macro-F1, higher is better
         </RevealText>
 
-        <div style={{ display: 'flex', gap: 18, marginTop: 30, height: CHART_H }}>
-          {/* Y axis */}
-          <div
-            style={{
-              position: 'relative',
-              width: 46,
-              height: CHART_H,
-              fontFamily: FONTS.mono,
-              fontSize: 16,
-              color: COLORS.textMuted,
-            }}
-          >
-            {Y_TICKS.map((t) => (
-              <div
-                key={t}
-                style={{
-                  position: 'absolute',
-                  right: 0,
-                  top: `${(1 - t / Y_MAX) * 100}%`,
-                  transform: 'translateY(-50%)',
-                }}
-              >
-                {t.toFixed(1)}
-              </div>
-            ))}
-          </div>
-
-          {/* Plot area */}
-          <div style={{ position: 'relative', flex: 1, height: CHART_H }}>
-            {Y_TICKS.map((t) => (
-              <div
-                key={t}
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  top: `${(1 - t / Y_MAX) * 100}%`,
-                  height: 1,
-                  background: t === 0 ? COLORS.borderStrong : COLORS.borderSubtle,
-                }}
-              />
-            ))}
+        <div style={{ marginTop: 30 }}>
+          <div style={{ display: 'flex', gap: 18, height: CHART_H }}>
+            {/* Y axis */}
             <div
               style={{
-                position: 'absolute',
-                inset: 0,
-                display: 'flex',
-                alignItems: 'stretch',
+                position: 'relative',
+                width: 46,
+                height: CHART_H,
+                fontFamily: FONTS.mono,
+                fontSize: 16,
+                color: COLORS.textMuted,
+              }}
+            >
+              {Y_TICKS.map((t) => (
+                <div
+                  key={t}
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: `${(1 - t / Y_MAX) * 100}%`,
+                    transform: 'translateY(-50%)',
+                  }}
+                >
+                  {t.toFixed(1)}
+                </div>
+              ))}
+            </div>
+
+            {/* Plot area: gridlines + bars anchored to the zero baseline. */}
+            <div style={{ position: 'relative', flex: 1, height: CHART_H }}>
+              {Y_TICKS.map((t) => (
+                <div
+                  key={t}
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    top: `${(1 - t / Y_MAX) * 100}%`,
+                    height: 1,
+                    background: t === 0 ? COLORS.borderStrong : COLORS.borderSubtle,
+                  }}
+                />
+              ))}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(6, 1fr)',
+                  gap: 20,
+                }}
+              >
+                {COMPETITORS.map((_, i) => (
+                  <Bar key={COMPETITORS[i].label} index={i} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Label row, aligned under the bars (offset past the Y axis). */}
+          <div style={{ display: 'flex', gap: 18, marginTop: 16 }}>
+            <div style={{ width: 46 }} />
+            <div
+              style={{
+                flex: 1,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(6, 1fr)',
                 gap: 20,
-                paddingTop: 40,
               }}
             >
               {COMPETITORS.map((_, i) => (
-                <Bar key={COMPETITORS[i].label} index={i} />
+                <ColumnLabel key={COMPETITORS[i].label} index={i} />
               ))}
             </div>
           </div>
@@ -211,7 +241,7 @@ export const Benchmark: React.FC = () => {
         >
           Ranked <span style={{ color: COLORS.accent }}>#1</span> on MIMIC-IV top-50.
           <span style={{ color: COLORS.textSecondary, fontWeight: 400, fontSize: 32 }}>
-            {'   '}Macro-F1 0.712 — over 60% above the best frontier LLM.
+            {'   '}Macro-F1 0.712, over 60% above the best frontier LLM.
           </span>
         </RevealText>
       </AbsoluteFill>

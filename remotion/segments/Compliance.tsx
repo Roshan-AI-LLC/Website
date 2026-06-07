@@ -1,5 +1,5 @@
 /**
- * Segment 7 · COMPLIANCE / DEPLOYMENT — four deployment guarantees reveal
+ * Segment 7 · COMPLIANCE / DEPLOYMENT - four deployment guarantees reveal
  * as compact glass cards.
  */
 import {

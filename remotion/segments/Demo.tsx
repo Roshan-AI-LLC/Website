@@ -1,5 +1,5 @@
 /**
- * Segment 5 · DEMO — the core. A timed recreation of DemoBlock using the
+ * Segment 5 · DEMO - the core. A timed recreation of DemoBlock using the
  * cardiology scenario: the clinical note (left) with evidence phrases
  * highlighting in teal sequentially, concept activation bars growing in
  * (right), and the ICD-10 code card resolving with its confidence.
@@ -321,7 +321,7 @@ export const Demo: React.FC = () => {
         ShifaMind grounds its reading in named clinical concepts.
       </Caption>
       <Caption start={262} end={420}>
-        And returns ICD-10 codes — each backed by the evidence behind it.
+        And returns ICD-10 codes, each backed by the evidence behind it.
       </Caption>
     </Stage>
   );

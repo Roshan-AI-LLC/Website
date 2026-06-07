@@ -1,5 +1,5 @@
 /**
- * Segment 4 · EXPLAINABILITY / GLASS BOX — a black cube turns to glass,
+ * Segment 4 · EXPLAINABILITY / GLASS BOX - a black cube turns to glass,
  * revealing teal concept nodes inside, while the overlay explains that
  * ShifaMind opens the black box.
  */
@@ -45,7 +45,7 @@ export const GlassBox: React.FC = () => {
             textAlign: 'center',
           }}
         >
-          ShifaMind opens it — so clinicians see the reasoning.
+          ShifaMind opens it, so clinicians see the reasoning.
         </RevealText>
         <RevealText
           appearAt={130}

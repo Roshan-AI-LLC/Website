@@ -1,6 +1,6 @@
 /**
  * Glass panel matching the site's `.glass` surface: faint white fill,
- * hairline border (optionally teal), rounded. A thin style primitive — pass
+ * hairline border (optionally teal), rounded. A thin style primitive - pass
  * any extra style overrides.
  */
 import type { CSSProperties } from 'react';
