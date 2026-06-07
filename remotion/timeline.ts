@@ -19,7 +19,6 @@ export const DURATIONS = {
   demo: 14 * FPS, // cursor clicks Predict, then note -> concepts -> code
   benchmark: 8 * FPS, // the proof
   deployment: 6 * FPS, // moat: compact, on-prem, traceable
-  platform: 5 * FPS, // the company vision
   closing: 5 * FPS, // sign-off + CTA
 } as const;
 

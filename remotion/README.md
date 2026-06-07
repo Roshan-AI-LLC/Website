@@ -21,7 +21,7 @@ isolated preview / render.
 
 | id             | beat                                                   | audience |
 | -------------- | ------------------------------------------------------ | -------- |
-| `Full`         | the whole film (11 segments)                           | -        |
+| `Full`         | the whole film (10 segments)                           | -        |
 | `Hook`         | cold open: "Medicine needs reasons."                   | all      |
 | `Stakes`       | cited facts: $262B denied, 30% coder gap, EU AI Act    | investors|
 | `Gap`          | frontier LLMs vs research models: the false choice     | research |
@@ -31,7 +31,6 @@ isolated preview / render.
 | `Demo`         | HUD cursor clicks Predict; a real note is coded live   | clinical |
 | `Benchmark`    | MIMIC-IV top-50 Macro-F1, ShifaMind #1                 | investors/research |
 | `Deployment`   | compact, on-prem, HIPAA, traceable                     | hospitals|
-| `Platform`     | ShifaMind is just the first; the Roshan AI platform    | investors|
 | `Closing`      | sign-off + roshan-ai.com                               | all      |
 
 Continuity & transitions: a single `Backdrop` (dot grid + drifting teal glow)

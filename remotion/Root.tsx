@@ -17,7 +17,6 @@ import { Architecture } from './segments/Architecture';
 import { Demo } from './segments/Demo';
 import { Benchmark } from './segments/Benchmark';
 import { Compliance } from './segments/Compliance';
-import { Platform } from './segments/Platform';
 import { Closing } from './segments/Closing';
 
 const base = { width: WIDTH, height: HEIGHT, fps: FPS } as const;
@@ -41,7 +40,6 @@ const ArchitectureS = onBackdrop(Architecture);
 const DemoS = onBackdrop(Demo);
 const BenchmarkS = onBackdrop(Benchmark);
 const DeploymentS = onBackdrop(Compliance);
-const PlatformS = onBackdrop(Platform);
 const ClosingS = onBackdrop(Closing);
 
 export const RemotionRoot: React.FC = () => {
@@ -58,7 +56,6 @@ export const RemotionRoot: React.FC = () => {
       <Composition id="Demo" component={DemoS} durationInFrames={DURATIONS.demo} {...base} />
       <Composition id="Benchmark" component={BenchmarkS} durationInFrames={DURATIONS.benchmark} {...base} />
       <Composition id="Deployment" component={DeploymentS} durationInFrames={DURATIONS.deployment} {...base} />
-      <Composition id="Platform" component={PlatformS} durationInFrames={DURATIONS.platform} {...base} />
       <Composition id="Closing" component={ClosingS} durationInFrames={DURATIONS.closing} {...base} />
     </>
   );

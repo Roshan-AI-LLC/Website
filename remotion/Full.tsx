@@ -18,7 +18,6 @@ import { Architecture } from './segments/Architecture';
 import { Demo } from './segments/Demo';
 import { Benchmark } from './segments/Benchmark';
 import { Compliance } from './segments/Compliance';
-import { Platform } from './segments/Platform';
 import { Closing } from './segments/Closing';
 
 const SEGMENTS: { key: string; component: React.FC; duration: number }[] = [
@@ -31,7 +30,6 @@ const SEGMENTS: { key: string; component: React.FC; duration: number }[] = [
   { key: 'demo', component: Demo, duration: DURATIONS.demo },
   { key: 'benchmark', component: Benchmark, duration: DURATIONS.benchmark },
   { key: 'deployment', component: Compliance, duration: DURATIONS.deployment },
-  { key: 'platform', component: Platform, duration: DURATIONS.platform },
   { key: 'closing', component: Closing, duration: DURATIONS.closing },
 ];
 

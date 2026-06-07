@@ -106,7 +106,7 @@ export const Reveal: React.FC = () => {
           paddingLeft: '0.22em',
         }}
       >
-        Flagship model · Roshan AI platform
+        By Roshan AI
       </RevealText>
     </AbsoluteFill>
   );
