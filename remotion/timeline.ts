@@ -16,7 +16,7 @@ export const DURATIONS = {
   reveal: 5 * FPS, // ShifaMind resolves
   glassbox: 7 * FPS, // black box -> glass box metaphor
   architecture: 8.5 * FPS, // how it works: the MCB
-  demo: 12 * FPS, // real note -> concepts -> code
+  demo: 14 * FPS, // cursor clicks Predict, then note -> concepts -> code
   benchmark: 8 * FPS, // the proof
   deployment: 6 * FPS, // moat: compact, on-prem, traceable
   platform: 5 * FPS, // the company vision

@@ -28,17 +28,23 @@ isolated preview / render.
 | `Reveal`       | ShifaMind: interpretable AND state-of-the-art; flagship| all      |
 | `GlassBox`     | black box → glass box (concept nodes revealed)         | all      |
 | `Architecture` | the MCB - note → 160 concepts → ICD-10, by construction | research/clinical |
-| `Demo`         | a real cardiology note coded live                      | clinical |
+| `Demo`         | HUD cursor clicks Predict; a real note is coded live   | clinical |
 | `Benchmark`    | MIMIC-IV top-50 Macro-F1, ShifaMind #1                 | investors/research |
 | `Deployment`   | compact, on-prem, HIPAA, traceable                     | hospitals|
 | `Platform`     | ShifaMind is just the first; the Roshan AI platform    | investors|
 | `Closing`      | sign-off + roshan-ai.com                               | all      |
 
-Continuity: a single `Backdrop` (dot grid + drifting teal glow) sits behind
-the whole piece; segments are content-only and play back-to-back in a
-`Series`, each fading its own content in/out over the backdrop (see
-`components/Segment.tsx`). Only one segment is visible at a time, so there's
-no cross-segment overlap, but the canvas stays continuous.
+Continuity & transitions: a single `Backdrop` (dot grid + drifting teal glow)
+sits behind the whole piece; segments are content-only and play back-to-back
+in a `Series`. Each segment gets a designed "lift and settle" by
+`components/Segment.tsx` - content rises and sharpens into place on entry,
+then lifts, softens (blur) and recedes on exit, on eased curves. Only one
+segment is ever visible (it settles to the backdrop before the next rises),
+so there's no ghosted cross-fade, but the canvas stays continuous.
+
+The demo uses a frame-driven recreation of the website's HUD cursor
+(`components/Cursor.tsx`): it glides in, the hex frame blooms as it hovers the
+Predict button, then it clicks to trigger the prediction.
 
 Sound: the timing sits on a steady pulse with marked "sound slots" in each
 segment's header comment, so subtle sound design (no music bed, no VO) can be
