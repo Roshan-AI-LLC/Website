@@ -10,7 +10,6 @@ import {
   useVideoConfig,
 } from 'remotion';
 import { COLORS, FONTS } from '../theme';
-import { Stage } from '../components/Stage';
 import { TealGlow } from '../components/TealGlow';
 import { RevealText } from '../components/RevealText';
 
@@ -72,7 +71,7 @@ const Card: React.FC<{ index: number }> = ({ index }) => {
 
 export const Compliance: React.FC = () => {
   return (
-    <Stage>
+    <AbsoluteFill>
       <TealGlow x="50%" y="50%" size={1200} opacity={0.1} />
       <AbsoluteFill style={{ padding: '90px 120px', justifyContent: 'center' }}>
         <RevealText
@@ -100,6 +99,6 @@ export const Compliance: React.FC = () => {
           ))}
         </div>
       </AbsoluteFill>
-    </Stage>
+    </AbsoluteFill>
   );
 };

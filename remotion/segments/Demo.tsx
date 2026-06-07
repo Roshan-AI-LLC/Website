@@ -12,7 +12,6 @@ import {
   useVideoConfig,
 } from 'remotion';
 import { COLORS, FONTS } from '../theme';
-import { Stage } from '../components/Stage';
 import { TealGlow } from '../components/TealGlow';
 import { ConceptBar } from '../components/ConceptBar';
 import { CODE, CONCEPTS, EVIDENCE_PHRASES, NOTE } from '../data/scenario';
@@ -191,8 +190,8 @@ export const Demo: React.FC = () => {
   });
 
   return (
-    <Stage>
-      <TealGlow x="50%" y="55%" size={1400} opacity={0.12} />
+    <AbsoluteFill>
+      <TealGlow x="50%" y="55%" size={1400} opacity={0.1} />
 
       <AbsoluteFill style={{ padding: '70px 90px 0' }}>
         <div
@@ -320,9 +319,9 @@ export const Demo: React.FC = () => {
       <Caption start={96} end={246}>
         ShifaMind grounds its reading in named clinical concepts.
       </Caption>
-      <Caption start={262} end={420}>
+      <Caption start={262} end={390}>
         And returns ICD-10 codes, each backed by the evidence behind it.
       </Caption>
-    </Stage>
+    </AbsoluteFill>
   );
 };

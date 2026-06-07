@@ -11,7 +11,6 @@ import {
   useVideoConfig,
 } from 'remotion';
 import { COLORS, FONTS } from '../theme';
-import { Stage } from '../components/Stage';
 import { TealGlow } from '../components/TealGlow';
 import { RevealText } from '../components/RevealText';
 import { COMPETITORS, Y_MAX, Y_TICKS } from '../data/benchmark';
@@ -72,7 +71,9 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
             ? `linear-gradient(180deg, ${COLORS.accentStrong}, ${COLORS.accent})`
             : 'rgba(255,255,255,0.12)',
           border: c.ours ? 'none' : `1px solid ${COLORS.borderSubtle}`,
-          boxShadow: c.ours ? `0 6px 40px -6px ${COLORS.accent}` : undefined,
+          boxShadow: c.ours
+            ? `0 6px ${44 + 18 * (0.5 + 0.5 * Math.sin(frame * 0.12))}px -6px ${COLORS.accent}`
+            : undefined,
         }}
       />
     </div>
@@ -120,9 +121,50 @@ const ColumnLabel: React.FC<{ index: number }> = ({ index }) => {
   );
 };
 
+const Delta: React.FC = () => {
+  const frame = useCurrentFrame();
+  const o = interpolate(frame, [118, 138], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const y = interpolate(frame, [118, 138], [14, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 18,
+        right: 0,
+        width: 230,
+        textAlign: 'center',
+        opacity: o,
+        transform: `translateY(${y}px)`,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: FONTS.display,
+          fontSize: 52,
+          fontWeight: 700,
+          color: COLORS.accent,
+          letterSpacing: '-0.02em',
+          textShadow: `0 0 50px ${COLORS.accentSoft}`,
+        }}
+      >
+        +64%
+      </div>
+      <div style={{ marginTop: 2, fontSize: 18, color: COLORS.textSecondary }}>
+        vs the best frontier LLM
+      </div>
+    </div>
+  );
+};
+
 export const Benchmark: React.FC = () => {
   return (
-    <Stage>
+    <AbsoluteFill>
       <TealGlow x="78%" y="40%" size={900} opacity={0.12} />
       <AbsoluteFill style={{ padding: '64px 110px' }}>
         <RevealText
@@ -207,6 +249,7 @@ export const Benchmark: React.FC = () => {
                   <Bar key={COMPETITORS[i].label} index={i} />
                 ))}
               </div>
+              <Delta />
             </div>
           </div>
 
@@ -228,23 +271,45 @@ export const Benchmark: React.FC = () => {
           </div>
         </div>
 
-        <RevealText
-          appearAt={120}
-          style={{
-            marginTop: 26,
-            fontFamily: FONTS.display,
-            fontSize: 40,
-            fontWeight: 600,
-            color: COLORS.textPrimary,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          Ranked <span style={{ color: COLORS.accent }}>#1</span> on MIMIC-IV top-50.
-          <span style={{ color: COLORS.textSecondary, fontWeight: 400, fontSize: 32 }}>
-            {'   '}Macro-F1 0.712, over 60% above the best frontier LLM.
-          </span>
-        </RevealText>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40 }}>
+          <RevealText
+            appearAt={120}
+            style={{
+              marginTop: 26,
+              fontFamily: FONTS.display,
+              fontSize: 40,
+              fontWeight: 600,
+              color: COLORS.textPrimary,
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Ranked <span style={{ color: COLORS.accent }}>#1</span> on MIMIC-IV top-50.
+            <span style={{ color: COLORS.textSecondary, fontWeight: 400, fontSize: 30 }}>
+              {'   '}Beats every frontier LLM, and the best published clinical model.
+            </span>
+          </RevealText>
+
+          <RevealText appearAt={150}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '10px 18px',
+                borderRadius: 999,
+                whiteSpace: 'nowrap',
+                background: COLORS.glass,
+                border: `1px solid ${COLORS.borderSubtle}`,
+                fontFamily: FONTS.mono,
+                fontSize: 20,
+                color: COLORS.textSecondary,
+              }}
+            >
+              <span style={{ color: COLORS.accent }}>↗</span> Read the paper · arXiv
+            </div>
+          </RevealText>
+        </div>
       </AbsoluteFill>
-    </Stage>
+    </AbsoluteFill>
   );
 };

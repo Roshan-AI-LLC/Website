@@ -1,35 +1,62 @@
 /**
- * Composition registry. Exposes the assembled `Full` piece plus every
- * segment as its own composition for isolated preview/render.
+ * Composition registry. Exposes the assembled `Full` cut plus every segment
+ * on its own (wrapped in the shared Backdrop) for isolated preview / render.
  */
-import { Composition } from 'remotion';
+import { AbsoluteFill, Composition } from 'remotion';
 import './load-fonts';
+import { COLORS } from './theme';
 import { DURATIONS, HEIGHT, FPS, TOTAL_FRAMES, WIDTH } from './timeline';
+import { Backdrop } from './components/Backdrop';
 import { Full } from './Full';
-import { Problem } from './segments/Problem';
+import { Hook } from './segments/Hook';
+import { Stakes } from './segments/Stakes';
 import { Gap } from './segments/Gap';
 import { Reveal } from './segments/Reveal';
-import { GlassBox } from './segments/GlassBox';
+import { Architecture } from './segments/Architecture';
 import { Demo } from './segments/Demo';
 import { Benchmark } from './segments/Benchmark';
 import { Compliance } from './segments/Compliance';
+import { Platform } from './segments/Platform';
 import { Closing } from './segments/Closing';
 
 const base = { width: WIDTH, height: HEIGHT, fps: FPS } as const;
+
+// Wrap a content-only segment in the shared backdrop for standalone preview.
+const onBackdrop =
+  (Comp: React.FC): React.FC =>
+  () => (
+    <AbsoluteFill style={{ backgroundColor: COLORS.bg }}>
+      <Backdrop />
+      <Comp />
+    </AbsoluteFill>
+  );
+
+const HookS = onBackdrop(Hook);
+const StakesS = onBackdrop(Stakes);
+const GapS = onBackdrop(Gap);
+const RevealS = onBackdrop(Reveal);
+const ArchitectureS = onBackdrop(Architecture);
+const DemoS = onBackdrop(Demo);
+const BenchmarkS = onBackdrop(Benchmark);
+const DeploymentS = onBackdrop(Compliance);
+const PlatformS = onBackdrop(Platform);
+const ClosingS = onBackdrop(Closing);
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition id="Full" component={Full} durationInFrames={TOTAL_FRAMES} {...base} />
 
-      <Composition id="Problem" component={Problem} durationInFrames={DURATIONS.problem} {...base} />
-      <Composition id="Gap" component={Gap} durationInFrames={DURATIONS.gap} {...base} />
-      <Composition id="Reveal" component={Reveal} durationInFrames={DURATIONS.reveal} {...base} />
-      <Composition id="GlassBox" component={GlassBox} durationInFrames={DURATIONS.glassbox} {...base} />
-      <Composition id="Demo" component={Demo} durationInFrames={DURATIONS.demo} {...base} />
-      <Composition id="Benchmark" component={Benchmark} durationInFrames={DURATIONS.benchmark} {...base} />
-      <Composition id="Compliance" component={Compliance} durationInFrames={DURATIONS.compliance} {...base} />
-      <Composition id="Closing" component={Closing} durationInFrames={DURATIONS.closing} {...base} />
+      <Composition id="Hook" component={HookS} durationInFrames={DURATIONS.hook} {...base} />
+      <Composition id="Stakes" component={StakesS} durationInFrames={DURATIONS.stakes} {...base} />
+      <Composition id="Gap" component={GapS} durationInFrames={DURATIONS.gap} {...base} />
+      <Composition id="Reveal" component={RevealS} durationInFrames={DURATIONS.reveal} {...base} />
+      <Composition id="Architecture" component={ArchitectureS} durationInFrames={DURATIONS.architecture} {...base} />
+      <Composition id="Demo" component={DemoS} durationInFrames={DURATIONS.demo} {...base} />
+      <Composition id="Benchmark" component={BenchmarkS} durationInFrames={DURATIONS.benchmark} {...base} />
+      <Composition id="Deployment" component={DeploymentS} durationInFrames={DURATIONS.deployment} {...base} />
+      <Composition id="Platform" component={PlatformS} durationInFrames={DURATIONS.platform} {...base} />
+      <Composition id="Closing" component={ClosingS} durationInFrames={DURATIONS.closing} {...base} />
     </>
   );
 };

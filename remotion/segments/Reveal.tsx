@@ -1,6 +1,9 @@
 /**
- * Segment 3 · REVEAL - the logo resolves at center over a teal glow, with
- * the name and tagline beneath.
+ * Segment 4 · REVEAL. ShifaMind resolves over the glow: interpretable AND
+ * state-of-the-art, framed as the flagship of the Roshan AI platform.
+ * [All audiences: the turn]
+ *
+ * Sound slot: the signature impact + a held tone on the logo.
  */
 import {
   AbsoluteFill,
@@ -10,66 +13,86 @@ import {
   useVideoConfig,
 } from 'remotion';
 import { COLORS, FONTS } from '../theme';
-import { Stage } from '../components/Stage';
-import { TealGlow } from '../components/TealGlow';
 import { RevealText } from '../components/RevealText';
+import { TealGlow } from '../components/TealGlow';
 import { Logo } from '../components/Logo';
 
 export const Reveal: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const logoIn = spring({ frame, fps, config: { damping: 18, stiffness: 110, mass: 0.8 } });
-  const scale = interpolate(logoIn, [0, 1], [0.6, 1]);
-  const logoOpacity = interpolate(frame, [0, 16], [0, 1], {
+  const logoIn = spring({ frame, fps, config: { damping: 16, stiffness: 120, mass: 0.8 } });
+  const scale = interpolate(logoIn, [0, 1], [0.55, 1]);
+  const logoOpacity = interpolate(frame, [0, 14], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
-  const glowOpacity = interpolate(frame, [0, 30], [0, 0.55], {
+  const glow = interpolate(frame, [0, 26], [0, 0.6], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
   return (
-    <Stage>
-      <TealGlow x="50%" y="42%" size={900} opacity={glowOpacity} />
-      <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <div
-          style={{
-            opacity: logoOpacity,
-            transform: `scale(${scale})`,
-            marginBottom: 8,
-          }}
-        >
-          <Logo size={230} />
-        </div>
+    <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <TealGlow x="50%" y="40%" size={820} opacity={glow} />
 
-        <RevealText
-          appearAt={22}
-          style={{
-            fontFamily: FONTS.display,
-            fontSize: 96,
-            fontWeight: 700,
-            color: COLORS.textPrimary,
-            letterSpacing: '-0.02em',
-            marginTop: 10,
-          }}
-        >
-          ShifaMind
-        </RevealText>
+      <div style={{ opacity: logoOpacity, transform: `scale(${scale})` }}>
+        <Logo size={200} />
+      </div>
 
-        <RevealText
-          appearAt={40}
-          style={{
-            fontFamily: FONTS.body,
-            fontSize: 36,
-            color: COLORS.textSecondary,
-            marginTop: 18,
-          }}
-        >
-          Concept-grounded clinical coding.
-        </RevealText>
-      </AbsoluteFill>
-    </Stage>
+      <RevealText
+        appearAt={18}
+        style={{
+          fontFamily: FONTS.display,
+          fontSize: 100,
+          fontWeight: 700,
+          color: COLORS.textPrimary,
+          letterSpacing: '-0.02em',
+          marginTop: 14,
+        }}
+      >
+        ShifaMind
+      </RevealText>
+
+      <RevealText
+        appearAt={34}
+        style={{
+          fontFamily: FONTS.body,
+          fontSize: 38,
+          color: COLORS.textPrimary,
+          marginTop: 18,
+        }}
+      >
+        Concept-grounded clinical coding.
+      </RevealText>
+
+      <RevealText
+        appearAt={50}
+        style={{
+          fontFamily: FONTS.body,
+          fontSize: 30,
+          color: COLORS.accent,
+          marginTop: 10,
+          fontWeight: 500,
+        }}
+      >
+        Interpretable. And state-of-the-art.
+      </RevealText>
+
+      <RevealText
+        appearAt={84}
+        style={{
+          fontFamily: FONTS.mono,
+          fontSize: 19,
+          letterSpacing: '0.22em',
+          textTransform: 'uppercase',
+          color: COLORS.textMuted,
+          marginTop: 40,
+          paddingLeft: '0.22em',
+        }}
+      >
+        Flagship model · Roshan AI platform
+      </RevealText>
+    </AbsoluteFill>
   );
 };

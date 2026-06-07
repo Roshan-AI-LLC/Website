@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.473",
+    "@remotion/transitions": "^4.0.473",
     "@tailwindcss/vite": "^4.0.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
