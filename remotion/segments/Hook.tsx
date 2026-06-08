@@ -14,6 +14,7 @@ import {
 } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 import { RevealText } from '../components/RevealText';
+import { softGlow } from '../components/TealGlow';
 
 export const Hook: React.FC = () => {
   const frame = useCurrentFrame();
@@ -31,13 +32,12 @@ export const Hook: React.FC = () => {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          width: 700,
-          height: 700,
+          width: 1100,
+          height: 820,
           transform: 'translate(-50%, -50%)',
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${COLORS.accent} 0%, transparent 60%)`,
+          background: softGlow(COLORS.accent),
           opacity: glow * 0.6,
-          filter: 'blur(50px)',
+          filter: 'blur(90px)',
         }}
       />
       <div

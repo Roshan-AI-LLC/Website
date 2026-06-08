@@ -7,6 +7,7 @@
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 import { DotGrid } from './DotGrid';
+import { softGlow } from './TealGlow';
 
 export const Backdrop: React.FC = () => {
   const frame = useCurrentFrame();
@@ -25,20 +26,19 @@ export const Backdrop: React.FC = () => {
             position: 'absolute',
             left: `${gx}%`,
             top: `${gy}%`,
-            width: 1500,
+            width: 2200,
             height: 1500,
             transform: 'translate(-50%, -50%)',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${COLORS.accent} 0%, transparent 62%)`,
+            background: softGlow(COLORS.accent),
             opacity: breathe,
-            filter: 'blur(60px)',
+            filter: 'blur(130px)',
           }}
         />
       </AbsoluteFill>
       <AbsoluteFill
         style={{
           background:
-            'radial-gradient(85% 85% at 50% 45%, transparent 48%, rgba(0,0,0,0.72) 100%)',
+            'radial-gradient(120% 120% at 50% 42%, transparent 60%, rgba(0,0,0,0.6) 100%)',
         }}
       />
     </AbsoluteFill>
