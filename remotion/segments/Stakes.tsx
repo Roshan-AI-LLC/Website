@@ -1,36 +1,39 @@
 /**
- * Segment · STAKES ("why now"). Three cited facts: the cost of denials, the
- * coding workforce gap, and the EU AI Act turning point. Every figure carries
- * an on-screen source so it's defensible. [Investors + all: urgency]
- *
- * Sound slot: a tick as each row lands, a swell under the closing law line.
+ * Segment · STAKES ("why now"). Three cited facts, with the figures counting
+ * up as each row lands. Every number carries an on-screen source.
+ * [Investors + all: urgency]
  */
-import { AbsoluteFill } from 'remotion';
+import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 import { RevealText } from '../components/RevealText';
 
-const STATS: { big: string; rest: string; src: string }[] = [
-  {
-    big: '$262B',
-    rest: 'in U.S. medical claims were denied in 2024.',
-    src: 'Change Healthcare',
-  },
-  {
-    big: '30%',
-    rest: 'gap in the certified medical-coding workforce.',
-    src: 'American Medical Association',
-  },
-  {
-    big: 'Aug 2026',
-    rest: "the EU AI Act's high-risk rules take effect.",
-    src: 'European Commission',
-  },
+type Stat = {
+  prefix?: string;
+  to?: number;
+  suffix?: string;
+  text?: string; // non-numeric (no count-up)
+  rest: string;
+  src: string;
+};
+
+const STATS: Stat[] = [
+  { prefix: '$', to: 262, suffix: 'B', rest: 'in U.S. medical claims were denied in 2024.', src: 'Change Healthcare' },
+  { to: 30, suffix: '%', rest: 'gap in the certified medical-coding workforce.', src: 'American Medical Association' },
+  { text: 'Aug 2026', rest: "the EU AI Act's high-risk rules take effect.", src: 'European Commission' },
 ];
 
 const Row: React.FC<{ index: number }> = ({ index }) => {
   const s = STATS[index];
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const appearAt = 12 + index * 28;
+  const sp = spring({ frame: frame - appearAt, fps, config: { damping: 26, stiffness: 70, mass: 1 } });
+
+  const big =
+    s.text ?? `${s.prefix ?? ''}${Math.round(interpolate(sp, [0, 1], [0, s.to ?? 0]))}${s.suffix ?? ''}`;
+
   return (
-    <RevealText appearAt={12 + index * 28} y={24}>
+    <RevealText appearAt={appearAt} y={24}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 36 }}>
         <div
           style={{
@@ -42,10 +45,11 @@ const Row: React.FC<{ index: number }> = ({ index }) => {
             color: COLORS.accent,
             letterSpacing: '-0.03em',
             lineHeight: 1,
+            fontVariantNumeric: 'tabular-nums',
             textShadow: `0 0 50px ${COLORS.accentSoft}`,
           }}
         >
-          {s.big}
+          {big}
         </div>
         <div style={{ width: 2, height: 78, background: COLORS.borderTeal }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

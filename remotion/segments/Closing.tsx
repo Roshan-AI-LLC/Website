@@ -7,7 +7,7 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 import { TealGlow } from '../components/TealGlow';
-import { Logo } from '../components/Logo';
+import { LogoMark } from '../components/LogoMark';
 
 export const Closing: React.FC = () => {
   const frame = useCurrentFrame();
@@ -25,7 +25,7 @@ export const Closing: React.FC = () => {
       <TealGlow x="50%" y="42%" size={900} opacity={glow} />
 
       <div style={{ opacity: logoOpacity, transform: `scale(${scale})` }}>
-        <Logo size={150} />
+        <LogoMark size={150} appearAt={2} />
       </div>
 
       <div

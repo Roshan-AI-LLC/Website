@@ -159,6 +159,35 @@ const CodeCard: React.FC = () => {
   );
 };
 
+const SkeletonCard: React.FC<{ delay: number }> = ({ delay }) => {
+  const frame = useCurrentFrame();
+  const shimmer = (((frame - delay) * 2.2) % 220) - 60;
+  return (
+    <div
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 14,
+        border: `1px solid ${COLORS.borderSubtle}`,
+        background: COLORS.glass,
+        padding: 18,
+      }}
+    >
+      <div style={{ width: 64, height: 14, borderRadius: 6, background: COLORS.accentSoft }} />
+      <div style={{ marginTop: 12, width: '72%', height: 12, borderRadius: 6, background: 'rgba(255,255,255,0.08)' }} />
+      <div style={{ marginTop: 8, width: '46%', height: 12, borderRadius: 6, background: 'rgba(255,255,255,0.06)' }} />
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.07) 50%, transparent 60%)',
+          transform: `translateX(${shimmer}%)`,
+        }}
+      />
+    </div>
+  );
+};
+
 export const Demo: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -167,7 +196,30 @@ export const Demo: React.FC = () => {
   const panelsOpacity = interpolate(frame, [0, 14], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   const idleOpacity = interpolate(frame, [CLICK, CLICK + 12], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const resultsOpacity = interpolate(frame, [CLICK + 14, CLICK + 28], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  // After the click: a brief "analyzing" beat (note scan + skeleton), then results.
+  const PREDICT_IN = CLICK + 10; // 90
+  const PREDICT_OUT = CONCEPTS_START - 14; // ~162
+  const predictingOpacity = interpolate(
+    frame,
+    [PREDICT_IN, PREDICT_IN + 10, PREDICT_OUT - 10, PREDICT_OUT],
+    [0, 1, 1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
+  );
+  const resultsOpacity = interpolate(frame, [PREDICT_OUT - 4, PREDICT_OUT + 12], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  // Scan line sweeping down the note while predicting.
+  const scanY = interpolate(frame, [PREDICT_IN, PREDICT_OUT], [0, LEFT.h], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const scanOpacity = interpolate(
+    frame,
+    [PREDICT_IN, PREDICT_IN + 8, PREDICT_OUT - 10, PREDICT_OUT],
+    [0, 1, 1, 0],
+    { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' },
+  );
 
   // Cursor path: glide to the button, press, then drift away and fade out.
   // Tip aims at the left of the button so the chevron body reads clearly.
@@ -257,6 +309,34 @@ export const Demo: React.FC = () => {
             );
           })}
         </div>
+
+        {/* Scan line while predicting */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: scanY,
+            height: 80,
+            transform: 'translateY(-78px)',
+            background: `linear-gradient(180deg, transparent, ${COLORS.accentSofter})`,
+            opacity: scanOpacity,
+            pointerEvents: 'none',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: scanY,
+            height: 2,
+            background: `linear-gradient(90deg, transparent, ${COLORS.accent}, transparent)`,
+            boxShadow: `0 0 18px ${COLORS.accent}`,
+            opacity: scanOpacity,
+            pointerEvents: 'none',
+          }}
+        />
       </div>
 
       {/* Right panel */}
@@ -359,6 +439,48 @@ export const Demo: React.FC = () => {
             />
           </div>
         )}
+
+        {/* Predicting / analyzing */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            padding: 34,
+            opacity: predictingOpacity,
+            boxSizing: 'border-box',
+            pointerEvents: 'none',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              fontFamily: FONTS.mono,
+              fontSize: 16,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: COLORS.accent,
+            }}
+          >
+            <span
+              style={{
+                width: 9,
+                height: 9,
+                borderRadius: '50%',
+                background: COLORS.accent,
+                opacity: 0.5 + 0.5 * Math.sin(frame * 0.32),
+                boxShadow: `0 0 10px ${COLORS.accent}`,
+              }}
+            />
+            Assigning codes
+          </div>
+          <div style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 18 }}>
+            {[0, 1, 2].map((i) => (
+              <SkeletonCard key={i} delay={i * 6} />
+            ))}
+          </div>
+        </div>
 
         {/* Results */}
         <div style={{ position: 'absolute', inset: 0, padding: 34, opacity: resultsOpacity, boxSizing: 'border-box' }}>

@@ -15,7 +15,8 @@ import {
 import { COLORS, FONTS } from '../theme';
 import { RevealText } from '../components/RevealText';
 import { TealGlow } from '../components/TealGlow';
-import { Logo } from '../components/Logo';
+import { LogoMark } from '../components/LogoMark';
+import { ShineText } from '../components/ShineText';
 
 export const Reveal: React.FC = () => {
   const frame = useCurrentFrame();
@@ -52,21 +53,22 @@ export const Reveal: React.FC = () => {
       </RevealText>
 
       <div style={{ opacity: logoOpacity, transform: `scale(${scale})` }}>
-        <Logo size={200} />
+        <LogoMark size={200} appearAt={4} />
       </div>
 
-      <RevealText
-        appearAt={18}
-        style={{
-          fontFamily: FONTS.display,
-          fontSize: 100,
-          fontWeight: 700,
-          color: COLORS.textPrimary,
-          letterSpacing: '-0.02em',
-          marginTop: 14,
-        }}
-      >
-        ShifaMind
+      <RevealText appearAt={18} style={{ marginTop: 14 }}>
+        <ShineText
+          appearAt={30}
+          style={{
+            fontFamily: FONTS.display,
+            fontSize: 100,
+            fontWeight: 700,
+            color: COLORS.textPrimary,
+            letterSpacing: '-0.02em',
+          }}
+        >
+          ShifaMind
+        </ShineText>
       </RevealText>
 
       <RevealText

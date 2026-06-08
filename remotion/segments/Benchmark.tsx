@@ -67,14 +67,76 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
           width: 104,
           height: `${heightPct}%`,
           borderRadius: 8,
+          overflow: 'hidden',
           background: c.ours
             ? `linear-gradient(180deg, ${COLORS.accentStrong}, ${COLORS.accent})`
             : 'rgba(255,255,255,0.12)',
           border: c.ours ? 'none' : `1px solid ${COLORS.borderSubtle}`,
           boxShadow: c.ours ? `0 6px 48px -8px ${COLORS.accent}` : undefined,
         }}
-      />
+      >
+        {/* Brighter top-edge highlight as the bar settles. */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 3,
+            background: c.ours ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.25)',
+            opacity: interpolate(s, [0.6, 1], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+          }}
+        />
+        {/* One-time sheen sweeping up the winning bar after it settles. */}
+        {c.ours && (
+          <div
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              height: '60%',
+              bottom: `${interpolate(frame, [96, 124], [-60, 130], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}%`,
+              background:
+                'linear-gradient(0deg, transparent, rgba(255,255,255,0.55), transparent)',
+              opacity: interpolate(frame, [96, 100, 120, 124], [0, 1, 1, 0], {
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
+            }}
+          />
+        )}
+      </div>
     </div>
+  );
+};
+
+// Horizontal gridlines that draw in left-to-right.
+const GridLines: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <>
+      {Y_TICKS.map((t, i) => {
+        const draw = interpolate(frame, [2 + i * 2, 22 + i * 2], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
+        return (
+          <div
+            key={t}
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              top: `${(1 - t / Y_MAX) * 100}%`,
+              height: 1,
+              background: t === 0 ? COLORS.borderStrong : COLORS.borderSubtle,
+              transform: `scaleX(${draw})`,
+              transformOrigin: 'left',
+            }}
+          />
+        );
+      })}
+    </>
   );
 };
 
@@ -180,19 +242,7 @@ export const Benchmark: React.FC = () => {
 
             {/* Plot area: gridlines + bars anchored to the zero baseline. */}
             <div style={{ position: 'relative', flex: 1, height: CHART_H }}>
-              {Y_TICKS.map((t) => (
-                <div
-                  key={t}
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    right: 0,
-                    top: `${(1 - t / Y_MAX) * 100}%`,
-                    height: 1,
-                    background: t === 0 ? COLORS.borderStrong : COLORS.borderSubtle,
-                  }}
-                />
-              ))}
+              <GridLines />
               <div
                 style={{
                   position: 'absolute',

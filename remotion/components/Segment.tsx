@@ -35,8 +35,13 @@ export const Segment: React.FC<{ children: React.ReactNode }> = ({ children }) =
     easing: cubic,
   });
 
+  // Gentle perpetual drift so scenes never sit dead-still; parallaxes against
+  // the independently-drifting backdrop glow. Very small on purpose.
+  const floatY = Math.sin(frame * 0.024) * 3;
+  const floatX = Math.cos(frame * 0.017) * 2;
+
   const opacity = inP * (1 - outP);
-  const translateY = (1 - inP) * 26 + outP * -20;
+  const translateY = (1 - inP) * 26 + outP * -20 + floatY;
   const scale = 0.985 + inP * 0.015 - outP * 0.02;
   const blur = (1 - inP) * 8 + outP * 8;
 
@@ -44,7 +49,7 @@ export const Segment: React.FC<{ children: React.ReactNode }> = ({ children }) =
     <AbsoluteFill
       style={{
         opacity,
-        transform: `translateY(${translateY}px) scale(${scale})`,
+        transform: `translate(${floatX}px, ${translateY}px) scale(${scale})`,
         filter: blur > 0.15 ? `blur(${blur}px)` : undefined,
         transformOrigin: '50% 50%',
         willChange: 'transform, opacity, filter',
