@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
+import { PLATFORM_URL } from '../lib/config';
 
 const traits = [
   'Concept-grounded predictions',
@@ -80,7 +81,7 @@ export function ShifaMindHero() {
                   />
                 </a>
                 <a
-                  href="https://platform.shifamind.me"
+                  href={PLATFORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full border border-subtle bg-glass px-5 py-2.5 text-[0.88rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
