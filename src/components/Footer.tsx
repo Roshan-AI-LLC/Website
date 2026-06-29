@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PLATFORM_URL } from '../lib/config';
+import { SocialLinks } from './SocialLinks';
 
 const columns: {
   title: string;
@@ -60,6 +61,7 @@ export function Footer() {
             <p className="mt-3 text-[0.78rem] leading-relaxed text-muted">
               AI infrastructure for clinical reasoning.
             </p>
+            <SocialLinks className="mt-5" />
           </div>
 
           {columns.map((col) => (

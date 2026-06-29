@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CompanyMark } from './CompanyMark';
+import { SocialLinks } from './SocialLinks';
 
 export function Hero() {
   return (
@@ -72,6 +73,13 @@ export function Hero() {
               >
                 Talk to us
               </Link>
+            </div>
+
+            <div className="enter-fade-up enter-d-3 mt-8 flex items-center gap-3">
+              <span className="text-[0.72rem] font-medium uppercase tracking-[0.14em] text-muted">
+                Follow
+              </span>
+              <SocialLinks />
             </div>
           </div>
 
