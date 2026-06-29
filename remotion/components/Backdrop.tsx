@@ -41,6 +41,7 @@ export const Backdrop: React.FC = () => {
             'radial-gradient(120% 120% at 50% 42%, transparent 60%, rgba(0,0,0,0.6) 100%)',
         }}
       />
+
     </AbsoluteFill>
   );
 };

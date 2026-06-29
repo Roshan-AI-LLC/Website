@@ -11,6 +11,12 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
 import { COLORS, FONTS } from '../theme';
 import { RevealText } from '../components/RevealText';
+import { ConceptConstellation, type LitNode } from '../components/ConceptConstellation';
+
+// Bottleneck rendering. true = the 160-concept constellation with the 6 named
+// concepts igniting (matches the GlassBox look). Set to false to revert to the
+// original labeled pill column.
+const USE_DOTS: boolean = true;
 
 // Anchor geometry in the 1920x1080 space.
 const NOTE = { right: 560, ys: [470, 560, 650] };
@@ -24,6 +30,12 @@ const CONCEPTS: { label: string; y: number }[] = [
 ];
 const CONCEPT_LEFT = 812;
 const CONCEPT_RIGHT = 1092;
+// Center column for the dot bottleneck (lit concepts sit here).
+const LIT_X = (CONCEPT_LEFT + CONCEPT_RIGHT) / 2;
+// Connector endpoints depend on the bottleneck style: connect to the dot column
+// in 'dots' mode, or to the pill column edges in 'pills' mode.
+const A_END_X = USE_DOTS ? LIT_X - 12 : CONCEPT_LEFT;
+const B_START_X = USE_DOTS ? LIT_X + 12 : CONCEPT_RIGHT;
 const CODES: { code: string; y: number }[] = [
   { code: 'I50.23', y: 470 },
   { code: 'J91.8', y: 575 },
@@ -162,9 +174,66 @@ const CodeChip: React.FC<{ code: string; y: number; appearAt: number; primary?: 
   );
 };
 
+// A competitor "ghost path" that tries to shortcut from the note straight to a
+// code, skipping the concept layer — and is blocked at the bottleneck. Makes
+// "every prediction MUST flow through concepts" visible rather than asserted.
+const GhostPath: React.FC = () => {
+  const frame = useCurrentFrame();
+  const GATE_X = 786;
+  const Y = 565;
+  const draw = interpolate(frame, [58, 74], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const blocked = interpolate(frame, [74, 86], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const fade = interpolate(frame, [96, 116], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  if (frame < 56 || fade <= 0) return null;
+  return (
+    <div style={{ position: 'absolute', inset: 0, opacity: fade, pointerEvents: 'none' }}>
+      <svg width="1920" height="1080" style={{ position: 'absolute', inset: 0 }}>
+        <line
+          x1={NOTE.right}
+          y1={Y}
+          x2={GATE_X}
+          y2={Y}
+          stroke="rgba(255,255,255,0.5)"
+          strokeWidth={2}
+          strokeDasharray="6 7"
+          pathLength={1}
+          strokeDashoffset={1 - draw}
+        />
+        {/* blocked burst at the gate */}
+        <circle cx={GATE_X} cy={Y} r={6 + blocked * 26} fill="none" stroke="rgba(255,255,255,0.5)" strokeOpacity={1 - blocked} strokeWidth={2} />
+      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          left: GATE_X - 150,
+          top: Y - 64,
+          width: 150,
+          textAlign: 'right',
+          opacity: blocked,
+          fontFamily: FONTS.mono,
+          fontSize: 16,
+          letterSpacing: '0.1em',
+          color: COLORS.textMuted,
+        }}
+      >
+        ✕ no shortcut
+      </div>
+    </div>
+  );
+};
+
 export const Architecture: React.FC = () => {
   const frame = useCurrentFrame();
-  const bracketO = interpolate(frame, [40, 70], [0, 1], {
+  const bracketO = interpolate(frame, [30, 54], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -209,23 +278,25 @@ export const Architecture: React.FC = () => {
               key={`a${i}`}
               x1={NOTE.right}
               y1={NOTE.ys[n]}
-              x2={CONCEPT_LEFT}
+              x2={A_END_X}
               y2={CONCEPTS[c].y}
-              appearAt={42 + i * 5}
+              appearAt={32 + i * 4}
             />
           ))}
           {B_LINKS.map(([c, cd], i) => (
             <Connector
               key={`b${i}`}
-              x1={CONCEPT_RIGHT}
+              x1={B_START_X}
               y1={CONCEPTS[c].y}
               x2={CODE_LEFT}
               y2={CODES[cd].y}
-              appearAt={96 + i * 5}
+              appearAt={70 + i * 4}
             />
           ))}
         </svg>
       </AbsoluteFill>
+
+      <GhostPath />
 
       {/* Note card */}
       <div
@@ -270,7 +341,7 @@ export const Architecture: React.FC = () => {
                   borderRadius: 7,
                   color: row.hot ? COLORS.textPrimary : COLORS.textMuted,
                   background: row.hot
-                    ? `rgba(78,205,196,${interpolate(frame, [30 + i * 8, 44 + i * 8], [0, 0.16], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })})`
+                    ? `rgba(78,205,196,${interpolate(frame, [22 + i * 6, 34 + i * 6], [0, 0.16], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })})`
                     : 'transparent',
                 }}
               >
@@ -308,15 +379,24 @@ export const Architecture: React.FC = () => {
           opacity: bracketO,
         }}
       >
-        MCB · 160 concepts
+        MCB · concepts
       </div>
-      {CONCEPTS.map((c, i) => (
-        <Pill key={c.label} label={c.label} y={c.y} appearAt={48 + i * 5} />
-      ))}
+      {!USE_DOTS ? (
+        CONCEPTS.map((c, i) => <Pill key={c.label} label={c.label} y={c.y} appearAt={36 + i * 4} />)
+      ) : (
+        <ConceptConstellation
+          region={{ cx: LIT_X, cy: 565, rx: 150, ry: 230 }}
+          lit={CONCEPTS.map((c): LitNode => ({ x: LIT_X, y: c.y, label: c.label }))}
+          appearAt={20}
+          igniteAt={36}
+          seed={7}
+          labelPlacement="top"
+        />
+      )}
 
       {/* Codes */}
       {CODES.map((c, i) => (
-        <CodeChip key={c.code} code={c.code} y={c.y} appearAt={104 + i * 8} primary={i === 0} />
+        <CodeChip key={c.code} code={c.code} y={c.y} appearAt={78 + i * 6} primary={i === 0} />
       ))}
       <div
         style={{
@@ -328,16 +408,16 @@ export const Architecture: React.FC = () => {
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
           color: COLORS.textMuted,
-          opacity: interpolate(frame, [100, 116], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+          opacity: interpolate(frame, [76, 90], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
         }}
       >
         ICD-10 codes
       </div>
 
       {/* Closing lines */}
-      <div style={{ position: 'absolute', bottom: 86, left: 130, right: 130 }}>
+      <div style={{ position: 'absolute', bottom: 112, left: 130, right: 130 }}>
         <RevealText
-          appearAt={150}
+          appearAt={112}
           style={{
             fontFamily: FONTS.display,
             fontSize: 38,
@@ -346,13 +426,10 @@ export const Architecture: React.FC = () => {
             letterSpacing: '-0.015em',
           }}
         >
-          Multiplicative Concept Bottleneck (MCB).{' '}
-          <span style={{ color: COLORS.textSecondary, fontWeight: 400 }}>
-            160 clinical concepts. The same ones a doctor names out loud.
-          </span>
+          Multiplicative Concept Bottleneck (MCB).
         </RevealText>
         <RevealText
-          appearAt={172}
+          appearAt={132}
           style={{
             marginTop: 14,
             fontFamily: FONTS.display,
@@ -362,7 +439,7 @@ export const Architecture: React.FC = () => {
             letterSpacing: '-0.015em',
           }}
         >
-          No code without the evidence. Explainability by construction.
+          Interpretability, enforced. Not bolted on.
         </RevealText>
       </div>
     </AbsoluteFill>

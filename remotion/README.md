@@ -1,110 +1,110 @@
 # ShifaMind launch film (Remotion)
 
 The debut film for ShifaMind, the flagship model of the Roshan AI platform.
-~75 seconds, 1920×1080 / 30fps, animated entirely from scratch. No video
-recordings or new assets - it reuses the website's brand tokens, fonts, logo,
-demo data, and benchmark numbers.
+Animated entirely from scratch — no video recordings. It reuses the website's
+brand tokens, fonts, logo, demo data, and benchmark numbers.
 
-It's built to land for every part of the audience: investors (cited market +
-regulatory pressure, #1 benchmark, efficiency, platform), clinicians (a real
-note, "see the reasoning," trust by construction), and researchers (the MCB
-architecture, 160 concepts, highest Macro-F1 of every model evaluated).
+There are **two cuts**, both 1920×1080 / 30fps, sharing one foundation
+(`theme.ts`, `motion.ts`, `data/*`, and the components in `components/`):
 
-This project is fully isolated from the Vite website build: it lives in
-`remotion/`, has its own `tsconfig.json`, and is not part of `src/`, so the
-website's `tsc -b` / SSG build never touches it.
+| id      | name  | length | approach |
+| ------- | ----- | ------ | -------- |
+| `Full`  | TRACE | ~72.5s | evolves the original segment-based film |
+| `Glass` | GLASS | ~106s  | from-scratch, one continuous-camera flight |
 
-## Story / compositions
+Both tell **one note's journey** — a single clinical note followed from the
+night it's written (pre-context) through ShifaMind's reasoning to the insurance
+denial it prevents (post-context) — and are built to land for every audience
+(clinicians, researchers, founders, investors, recruiters), with minimal text:
+the story is shown via animation and counting numbers, not paragraphs.
 
-`Full` is the assembled film. Each segment is also registered on its own for
-isolated preview / render.
+This project is isolated from the Vite website build: it lives in `remotion/`,
+has its own `tsconfig.json`, and is not part of `src/`.
 
-| id             | beat                                                   | audience |
-| -------------- | ------------------------------------------------------ | -------- |
-| `Full`         | the whole film (10 segments)                           | -        |
-| `Hook`         | cold open: "Medicine needs reasons."                   | all      |
-| `Stakes`       | cited facts: $262B denied, 30% coder gap, EU AI Act    | investors|
-| `Gap`          | frontier LLMs vs research models: the false choice     | research |
-| `Reveal`       | ShifaMind: interpretable AND state-of-the-art; flagship| all      |
-| `GlassBox`     | black box → glass box (concept nodes revealed)         | all      |
-| `Architecture` | the MCB - note → 160 concepts → ICD-10, by construction | research/clinical |
-| `Demo`         | HUD cursor clicks Predict; a real note is coded live   | clinical |
-| `Benchmark`    | MIMIC-IV top-50 Macro-F1, ShifaMind #1                 | investors/research |
-| `Deployment`   | compact, on-prem, HIPAA, traceable                     | hospitals|
-| `Closing`      | sign-off + roshan-ai.com                               | all      |
+## Shared foundation
 
-Continuity & transitions: a single `Backdrop` (dot grid + drifting teal glow)
-sits behind the whole piece; segments are content-only and play back-to-back
-in a `Series`. Each segment gets a designed "lift and settle" by
-`components/Segment.tsx` - content rises and sharpens into place on entry,
-then lifts, softens (blur) and recedes on exit, on eased curves. Only one
-segment is ever visible (it settles to the backdrop before the next rises),
-so there's no ghosted cross-fade, but the canvas stays continuous.
+- `motion.ts` — the ONE motion signature (springs, stagger, easing, 100bpm beat
+  grid). Every segment imports from here so the whole piece moves as one hand.
+- `theme.ts` — brand tokens. Teal `#4ecdc4` is the system; the warm `human`
+  tone is used only for the patient thread in GLASS.
+- `components/Hud.tsx` — persistent HUD chrome (corner ticks, live pulse-dot +
+  wordmark, running chapter label, progress rail), on screen the whole film.
+- `components/ScanLine.tsx` — the signature scan/reading + transition primitive.
+- `components/Quadrant.tsx` — Accuracy × Interpretability scatter (the LAAT
+  reframe: ShifaMind rises alone into the "accurate AND auditable" corner).
+- `components/Receipts.tsx` — the interpretability metrics (CSTPR/CIM/CCR)
+  counting up — numbers a general LLM can't produce.
+- `components/AuditGate.tsx` — the post-context payoff: a coded, evidenced claim
+  clears the payer's audit gate (the denial that doesn't happen).
+- `components/PlatformStack.tsx` — the 5-layer platform reveal ("ShifaMind is
+  the first").
+- `data/benchmark.tsx` (pure data, incl. LAAT 0.711), `data/metrics.ts`,
+  `data/scenario.ts` (the cardiology note), `data/scenarios.ts` (multi-specialty).
 
-The demo uses a frame-driven recreation of the website's HUD cursor
-(`components/Cursor.tsx`): it glides in, the hex frame blooms as it hovers the
-Predict button, then it clicks to trigger the prediction.
+## TRACE (`Full`)
 
-Sound: the timing sits on a steady pulse with marked "sound slots" in each
-segment's header comment, so subtle sound design (no music bed, no VO) can be
-dropped onto the beats later.
+Eleven content-only segments play back-to-back in a `Series` over one persistent
+`Backdrop` + `Hud`; each does a "lift and settle" (`components/Segment.tsx`) and
+the through-line element is composed to sit at the same place across each seam:
 
-## Facts on screen
+`ColdOpen` (the problem; a note is born → condense to a point) → `Reveal`
+(blooms into the logo; "explains itself") → `GlassBox` (evidence streams into
+the box) → `Architecture` (the MCB; the shortcut "ghost path" is blocked) →
+`Demo` (cursor clicks Predict; note → concepts → code) → `Breadth` (works across
+cardiology/pulmonology/ED + you can interrogate it) → `Benchmark` (bars, LAAT
+added) → `Proof` (the quadrant + the receipts) → `Downstream` (the denial that
+doesn't happen) → `Compliance` (compact/on-prem/HIPAA + the platform stack) →
+`Closing` (sign-off + roshan-ai.com).
 
-Every figure is sourced and kept defensible:
+Each segment is also registered standalone (wrapped in the backdrop) for
+isolated preview.
 
-- `$262B` of U.S. medical claims denied in 2024 - Change Healthcare.
-- `30%` gap in the certified medical-coding workforce - American Medical Association.
-- EU AI Act high-risk obligations apply from 2 Aug 2026 - European Commission.
-- Benchmark numbers (Macro-F1, MIMIC-IV top-50) from `BenchmarkChart.tsx`.
-- The model is described as compact (built on a base-size clinical encoder,
-  BioClinical ModernBERT-base) rather than with a hard parameter count, which
-  the repo does not state. Add the paper's exact total to `Deployment` if you
-  want a number on screen.
+## GLASS (`glass/`)
+
+A from-scratch continuous-camera cut: one unbroken forward flight (a camera
+wrapper with a perpetual scale push), acts cross-dissolved over overlapping
+windows with shared match-cut anchors at the seams, and a two-color story (warm
+human → teal system). Nine acts: `Field` (a galaxy of denied claims → fall into
+one person) → `Intake` → `GlassBox` (the bottleneck) → `Verdict` → `Discuss` →
+`Proof` → `Downstream` → `Platform` → `SignOff`. Assembled in `glass/Glass.tsx`
+(timings/chapters in `glass/shared.ts`).
 
 ## Preview & render
 
 ```bash
-# Interactive studio
+# Interactive studio (both cuts + all segments show up in the sidebar)
 npx remotion studio
 
-# Render the full film (normal terminal)
-npx remotion render Full out/shifamind.mp4
+# Render each cut (Node API — reliable in any shell). Output is 4K (2x scale).
+node remotion/render.mjs Full  out/trace.mp4
+node remotion/render.mjs Glass out/glass.mp4
 
-# Render via the Node API - recommended for CI / non-interactive shells,
-# where the CLI progress bar can crash (String.repeat(-1) on a zero-width
-# terminal). Same composition id + output path.
-node remotion/render.mjs Full out/shifamind.mp4
+# Or render both at once:
+bash remotion/finalize.sh
 ```
 
-`out/` is gitignored - render artifacts are not committed.
+Both cuts are **silent** by design — score them in your editor. `out/` is
+gitignored. (`make-audio.py` is a stale score for an earlier edit; ignore it
+until you want to regenerate audio against the current boundaries.)
 
 ### Rendering without Chrome download access
 
-Remotion downloads its own Chrome Headless Shell on first render. If that's
-blocked, point it at an existing Chromium **headless shell** (the full
-`chrome` binary won't work - it removed the old headless mode Remotion uses):
+Remotion downloads its own Chrome Headless Shell on first render. If blocked,
+point it at an existing Chromium **headless shell**:
 
 ```bash
-# CLI
-npx remotion render Full out/shifamind.mp4 \
-  --browser-executable=/path/to/chromium_headless_shell/headless_shell
-
-# Node API
-REMOTION_BROWSER=/path/to/headless_shell node remotion/render.mjs
+node remotion/render.mjs Full out/trace.mp4 \
+  # CLI form: npx remotion render Full out/trace.mp4 --browser-executable=/path/to/headless_shell
+REMOTION_BROWSER=/path/to/headless_shell node remotion/render.mjs Glass out/glass.mp4
 ```
 
 ## Notes
 
-- Fonts (Tomorrow + Inter) load from the website's `public/fonts` via
-  `load-fonts.ts`, under a `delayRender` with `retries` so a stalled font
-  fetch on a recycled render worker is retried rather than failing.
-- All brand values live in `theme.ts` (mirrored from `src/index.css`'s
-  `html.dark` block). Background is always pure black; teal `#4ecdc4` is the
-  only accent. The logo uses the navy "light-mode" foreground so its
-  connectome lines read against the glow. Competitor brand marks keep their
-  original colors.
-- Demo + architecture content come from the cardiology scenario in
-  `src/data/shifamindScenarios.ts`; benchmark numbers and brand marks from
-  `src/components/BenchmarkChart.tsx` and `src/components/brand-marks.tsx`;
-  architecture language (MCB, 160 concepts) from the Platform page.
+- Fonts (Tomorrow + Inter) load from embedded base64 (`fonts-embedded.ts`) via
+  `load-fonts.ts`, so renders don't depend on a network fetch.
+- All brand values live in `theme.ts` (mirrored from `src/index.css`). Keep JSX
+  OUT of `data/*` modules — store data + a discriminator and render marks in the
+  segments (a data-module JSX element flips the JSX runtime to classic and
+  breaks the bundle).
+- The benchmark's `interp` axis values are an editorial qualitative positioning
+  for the quadrant, not measured metrics — tune in `data/benchmark.tsx`.

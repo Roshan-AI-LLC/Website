@@ -32,10 +32,29 @@ export const Reveal: React.FC = () => {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
+  // Bloom ring: continues the point ColdOpen condensed to, expanding open.
+  const bloom = interpolate(frame, [0, 20], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
       <TealGlow x="50%" y="40%" size={820} opacity={glow} />
+      {bloom < 1 && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '40%',
+            left: '50%',
+            width: 40 + bloom * 620,
+            height: 40 + bloom * 620,
+            transform: 'translate(-50%, -50%)',
+            borderRadius: '50%',
+            border: `1px solid rgba(125,232,225,${0.5 * (1 - bloom)})`,
+          }}
+        />
+      )}
 
       <RevealText
         appearAt={2}
@@ -80,11 +99,11 @@ export const Reveal: React.FC = () => {
           marginTop: 18,
         }}
       >
-        Concept-grounded clinical coding.
+        Clinical AI that explains itself.
       </RevealText>
 
       <RevealText
-        appearAt={50}
+        appearAt={42}
         style={{
           fontFamily: FONTS.body,
           fontSize: 30,
@@ -97,7 +116,7 @@ export const Reveal: React.FC = () => {
       </RevealText>
 
       <RevealText
-        appearAt={84}
+        appearAt={62}
         style={{
           fontFamily: FONTS.mono,
           fontSize: 19,

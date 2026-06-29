@@ -97,14 +97,14 @@ export const Gap: React.FC = () => {
 
       <div style={{ display: 'flex', gap: 48 }}>
         <Panel
-          appearAt={8}
+          appearAt={6}
           fromX={-40}
           label="Frontier LLMs"
           head="Powerful, but a black box."
           sub="No explainability. No audit trail."
         />
         <Panel
-          appearAt={32}
+          appearAt={20}
           fromX={40}
           label="Research models"
           head="Interpretable, but inaccurate."
@@ -113,7 +113,7 @@ export const Gap: React.FC = () => {
       </div>
 
       <RevealText
-        appearAt={92}
+        appearAt={60}
         style={{
           marginTop: 56,
           textAlign: 'center',

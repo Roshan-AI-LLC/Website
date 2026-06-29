@@ -13,20 +13,21 @@ import { ConceptBar } from '../components/ConceptBar';
 import { Cursor } from '../components/Cursor';
 import { CODE, CONCEPTS, EVIDENCE_PHRASES, NOTE } from '../data/scenario';
 
-// Layout geometry (1920x1080).
-const LEFT = { x: 90, y: 168, w: 880, h: 838 };
-const RIGHT = { x: 1000, y: 168, w: 830, h: 838 };
-const BTN = { cx: RIGHT.x + RIGHT.w / 2, cy: RIGHT.y + 430, w: 320, h: 76 };
+// Layout geometry (1920x1080). Panels end at y=910 so the caption band
+// (bottom 88, clear of the YouTube/LinkedIn scrubber band) never overlaps them.
+const LEFT = { x: 90, y: 140, w: 880, h: 770 };
+const RIGHT = { x: 1000, y: 140, w: 830, h: 770 };
+const BTN = { cx: RIGHT.x + RIGHT.w / 2, cy: RIGHT.y + 396, w: 320, h: 76 };
 
 // Timeline.
-const CLICK = 80;
+const CLICK = 56;
 const PHRASE_APPEAR: Record<string, number> = {
-  [EVIDENCE_PHRASES[0]]: CLICK + 26,
-  [EVIDENCE_PHRASES[1]]: CLICK + 52,
-  [EVIDENCE_PHRASES[2]]: CLICK + 78,
+  [EVIDENCE_PHRASES[0]]: CLICK + 18,
+  [EVIDENCE_PHRASES[1]]: CLICK + 34,
+  [EVIDENCE_PHRASES[2]]: CLICK + 50,
 };
-const CONCEPTS_START = CLICK + 96;
-const CODE_START = CLICK + 180;
+const CONCEPTS_START = CLICK + 62;
+const CODE_START = CLICK + 116;
 
 const cubicInOut = Easing.bezier(0.65, 0, 0.35, 1);
 
@@ -90,14 +91,14 @@ const Caption: React.FC<{ start: number; end: number; children: React.ReactNode 
     <div
       style={{
         position: 'absolute',
-        bottom: 44,
+        bottom: 88,
         left: 0,
         right: 0,
         textAlign: 'center',
         opacity,
         transform: `translateY(${y}px)`,
         fontFamily: FONTS.body,
-        fontSize: 30,
+        fontSize: 32,
         color: COLORS.textSecondary,
       }}
     >
@@ -227,19 +228,19 @@ export const Demo: React.FC = () => {
   const targetY = BTN.cy - 2;
   let cx: number;
   let cy: number;
-  if (frame < 90) {
-    cx = interpolate(frame, [10, 70], [1800, targetX], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
-    cy = interpolate(frame, [10, 70], [1030, targetY], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
+  if (frame < 64) {
+    cx = interpolate(frame, [8, 46], [1800, targetX], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
+    cy = interpolate(frame, [8, 46], [1030, targetY], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
   } else {
-    cx = interpolate(frame, [90, 124], [targetX, 1760], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
-    cy = interpolate(frame, [90, 124], [targetY, 1010], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
+    cx = interpolate(frame, [64, 94], [targetX, 1760], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
+    cy = interpolate(frame, [64, 94], [targetY, 1010], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: cubicInOut });
   }
-  const cursorHover = interpolate(frame, [54, 68, 92, 102], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const cursorPress = interpolate(frame, [74, CLICK, 88], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const cursorOpacity = interpolate(frame, [4, 16, 112, 126], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const cursorHover = interpolate(frame, [34, 46, 66, 76], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const cursorPress = interpolate(frame, [50, CLICK, 64], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const cursorOpacity = interpolate(frame, [4, 14, 86, 100], [0, 1, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   // Button press + click ripple.
-  const btnPress = interpolate(frame, [74, CLICK, 88], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const btnPress = interpolate(frame, [50, CLICK, 64], [0, 1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const ripple = interpolate(frame, [CLICK, CLICK + 30], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   return (
@@ -292,15 +293,15 @@ export const Demo: React.FC = () => {
           <span>clinical note</span>
           <span>{NOTE.length} sections</span>
         </div>
-        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
           {NOTE.map((section) => {
             const parts = splitByPhrases(section.text, EVIDENCE_PHRASES);
             return (
               <div key={section.heading}>
-                <div style={{ fontSize: 21, fontWeight: 600, color: COLORS.textPrimary, letterSpacing: '-0.01em' }}>
+                <div style={{ fontSize: 20, fontWeight: 600, color: COLORS.textPrimary, letterSpacing: '-0.01em' }}>
                   {section.heading}
                 </div>
-                <div style={{ marginTop: 5, fontSize: 20, lineHeight: 1.5, color: COLORS.textSecondary }}>
+                <div style={{ marginTop: 5, fontSize: 19, lineHeight: 1.45, color: COLORS.textSecondary }}>
                   {parts.map((p, i) => (
                     <Highlight key={i} part={p} />
                   ))}
@@ -497,7 +498,7 @@ export const Demo: React.FC = () => {
           </div>
           <div style={{ marginTop: 26, display: 'flex', flexDirection: 'column', gap: 22 }}>
             {CONCEPTS.map((c, i) => (
-              <ConceptBar key={c.label} label={c.label} activation={c.activation} appearAt={CONCEPTS_START + i * 16} />
+              <ConceptBar key={c.label} label={c.label} activation={c.activation} appearAt={CONCEPTS_START + i * 12} />
             ))}
           </div>
           <CodeCard />
@@ -510,7 +511,7 @@ export const Demo: React.FC = () => {
       <Caption start={CLICK + 20} end={CODE_START - 6}>
         ShifaMind grounds its reading in named clinical concepts.
       </Caption>
-      <Caption start={CODE_START + 2} end={420}>
+      <Caption start={CODE_START + 2} end={294}>
         And returns ICD-10 codes, each backed by the evidence.
       </Caption>
 

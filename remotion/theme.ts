@@ -25,6 +25,14 @@ export const COLORS = {
   // contrast, which looks more premium than a flat cream fill.
   logoFg: '#0b1120',
   logoTeal: '#5ECFC1',
+
+  // Warm "human" accent — used ONLY for the patient/person thread in the GLASS
+  // cut (the heartbeat, the words a person says, the people paid + treated
+  // downstream). Teal is the system; this warm tone is the human the system
+  // serves. Deployed sparingly so the contrast stays meaningful.
+  human: '#f3c79a',
+  humanStrong: '#ffdcb0',
+  humanSoft: 'rgba(243, 199, 154, 0.14)',
 } as const;
 
 export const FONTS = {

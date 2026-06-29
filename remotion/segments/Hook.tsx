@@ -55,7 +55,7 @@ export const Hook: React.FC = () => {
 
       <div style={{ position: 'relative', textAlign: 'center', padding: '0 160px' }}>
         <RevealText
-          appearAt={6}
+          appearAt={4}
           style={{
             fontFamily: FONTS.mono,
             fontSize: 24,
@@ -70,10 +70,10 @@ export const Hook: React.FC = () => {
         </RevealText>
 
         <RevealText
-          appearAt={22}
+          appearAt={14}
           style={{
             fontFamily: FONTS.display,
-            fontSize: 80,
+            fontSize: 86,
             fontWeight: 700,
             color: COLORS.textPrimary,
             letterSpacing: '-0.025em',
@@ -83,10 +83,10 @@ export const Hook: React.FC = () => {
           Medicine doesn't just need predictions.
         </RevealText>
         <RevealText
-          appearAt={48}
+          appearAt={34}
           style={{
             fontFamily: FONTS.display,
-            fontSize: 92,
+            fontSize: 102,
             fontWeight: 700,
             color: COLORS.accent,
             letterSpacing: '-0.025em',

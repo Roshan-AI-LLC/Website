@@ -32,12 +32,20 @@ await renderMedia({
   serveUrl,
   composition,
   codec: 'h264',
-  crf: 18,
+  crf: 16,
+  x264Preset: 'slow',
+  jpegQuality: 95,
+  // Supersample: render at 2x (3840x2160). Platforms give 4K uploads a much
+  // higher bitrate tier, and the downscale on playback hides any banding.
+  scale: 2,
   outputLocation,
   browserExecutable,
   // Per-frame delayRender budget; font loading also self-retries (see
   // load-fonts.ts) so a stalled fetch on a recycled worker recovers.
-  timeoutInMilliseconds: 60000,
+  timeoutInMilliseconds: 180000,
+  // Fewer parallel tabs = fewer simultaneous font decodes and less memory
+  // pressure at 4K. Slightly slower, dramatically more stable.
+  concurrency: 4,
   onProgress: ({ progress }) => {
     const pct = Math.round(progress * 100);
     if (pct >= last + 5) {

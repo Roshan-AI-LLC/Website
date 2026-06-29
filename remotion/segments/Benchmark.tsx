@@ -10,13 +10,28 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from 'remotion';
+import { BarChart3, IceCream2, Network } from 'lucide-react';
 import { COLORS, FONTS } from '../theme';
 import { TealGlow } from '../components/TealGlow';
 import { RevealText } from '../components/RevealText';
-import { COMPETITORS, Y_MAX, Y_TICKS } from '../data/benchmark';
+import { COMPETITORS, Y_MAX, Y_TICKS, type Competitor } from '../data/benchmark';
+import { AnthropicMark, GoogleMark, OpenAIMark } from '../data/brand-marks';
+
+// Resolve a competitor's mark from its brand/icon discriminator. Kept here (a
+// segment, automatic JSX runtime) rather than in the data module.
+const CompetitorMark: React.FC<{ c: Competitor }> = ({ c }) => {
+  const muted = 'rgba(255,255,255,0.66)';
+  if (c.brand === 'anthropic') return <AnthropicMark size={28} />;
+  if (c.brand === 'google') return <GoogleMark size={28} />;
+  if (c.brand === 'openai') return <OpenAIMark size={28} />;
+  if (c.icon === 'cbm') return <IceCream2 size={28} strokeWidth={1.7} color={muted} />;
+  if (c.icon === 'gki') return <BarChart3 size={28} strokeWidth={1.8} color={muted} />;
+  if (c.icon === 'laat') return <Network size={28} strokeWidth={1.7} color={muted} />;
+  return null;
+};
 
 const CHART_H = 560;
-const BARS_START = 24;
+const BARS_START = 16;
 
 // A single bar, anchored to the chart's zero baseline. Its value label
 // floats just above the bar top. Marks/names are rendered separately in the
@@ -64,7 +79,7 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: 104,
+          width: 88,
           height: `${heightPct}%`,
           borderRadius: 8,
           overflow: 'hidden',
@@ -95,10 +110,10 @@ const Bar: React.FC<{ index: number }> = ({ index }) => {
               left: 0,
               right: 0,
               height: '60%',
-              bottom: `${interpolate(frame, [96, 124], [-60, 130], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}%`,
+              bottom: `${interpolate(frame, [72, 100], [-60, 130], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })}%`,
               background:
                 'linear-gradient(0deg, transparent, rgba(255,255,255,0.55), transparent)',
-              opacity: interpolate(frame, [96, 100, 120, 124], [0, 1, 1, 0], {
+              opacity: interpolate(frame, [72, 76, 96, 100], [0, 1, 1, 0], {
                 extrapolateLeft: 'clamp',
                 extrapolateRight: 'clamp',
               }),
@@ -164,7 +179,7 @@ const ColumnLabel: React.FC<{ index: number }> = ({ index }) => {
             }}
           />
         ) : (
-          c.mark
+          <CompetitorMark c={c} />
         )}
       </div>
       <div
@@ -248,7 +263,7 @@ export const Benchmark: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(6, 1fr)',
+                  gridTemplateColumns: 'repeat(7, 1fr)',
                   gap: 20,
                 }}
               >
@@ -266,7 +281,7 @@ export const Benchmark: React.FC = () => {
               style={{
                 flex: 1,
                 display: 'grid',
-                gridTemplateColumns: 'repeat(6, 1fr)',
+                gridTemplateColumns: 'repeat(7, 1fr)',
                 gap: 20,
               }}
             >
@@ -278,7 +293,7 @@ export const Benchmark: React.FC = () => {
         </div>
 
         <RevealText
-          appearAt={120}
+          appearAt={92}
           style={{
             marginTop: 30,
             fontFamily: FONTS.display,
@@ -288,9 +303,9 @@ export const Benchmark: React.FC = () => {
             letterSpacing: '-0.02em',
           }}
         >
-          Ranked <span style={{ color: COLORS.accent }}>#1</span> on MIMIC-IV top-50.
+          The highest Macro-F1.
           <span style={{ color: COLORS.textSecondary, fontWeight: 400, fontSize: 32 }}>
-            {'   '}The highest Macro-F1 of every model evaluated.
+            {'   '}0.712 on MIMIC-IV top-50.
           </span>
         </RevealText>
       </AbsoluteFill>

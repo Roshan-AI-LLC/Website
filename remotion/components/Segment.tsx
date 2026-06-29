@@ -15,8 +15,8 @@ import {
 } from 'remotion';
 import { FADE } from '../timeline';
 
-const IN = FADE + 6;
-const OUT = FADE + 6;
+const IN = FADE + 4;
+const OUT = FADE + 4;
 
 export const Segment: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const frame = useCurrentFrame();
@@ -41,9 +41,9 @@ export const Segment: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const floatX = Math.cos(frame * 0.017) * 2;
 
   const opacity = inP * (1 - outP);
-  const translateY = (1 - inP) * 26 + outP * -20 + floatY;
+  const translateY = (1 - inP) * 20 + outP * -16 + floatY;
   const scale = 0.985 + inP * 0.015 - outP * 0.02;
-  const blur = (1 - inP) * 8 + outP * 8;
+  const blur = (1 - inP) * 6 + outP * 6;
 
   return (
     <AbsoluteFill

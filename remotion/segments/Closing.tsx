@@ -17,8 +17,8 @@ export const Closing: React.FC = () => {
   const scale = interpolate(logoIn, [0, 1], [0.7, 1]);
   const logoOpacity = interpolate(frame, [0, 16], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
   const glow = interpolate(frame, [0, 30], [0, 0.5], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const dividerW = interpolate(frame, [34, 60], [0, 360], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
-  const ctaOpacity = interpolate(frame, [62, 82], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const dividerW = interpolate(frame, [24, 44], [0, 360], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
+  const ctaOpacity = interpolate(frame, [44, 62], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' });
 
   return (
     <AbsoluteFill style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -41,6 +41,18 @@ export const Closing: React.FC = () => {
       >
         ShifaMind{' '}
         <span style={{ color: COLORS.textMuted, fontWeight: 400, fontSize: 28 }}>by Roshan AI</span>
+      </div>
+
+      <div
+        style={{
+          opacity: ctaOpacity,
+          marginTop: 14,
+          fontFamily: FONTS.body,
+          fontSize: 30,
+          color: COLORS.textSecondary,
+        }}
+      >
+        Clinical AI that explains itself.
       </div>
 
       <div

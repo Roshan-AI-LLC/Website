@@ -1,6 +1,7 @@
 /**
- * Segment 7 · COMPLIANCE / DEPLOYMENT - four deployment guarantees reveal
- * as compact glass cards.
+ * Segment · COMPLIANCE / DEPLOYMENT. Four deployment guarantees (compact,
+ * on-prem, HIPAA, traceable) as glass cards. A product demo for ShifaMind — no
+ * platform/company-scaling framing.
  */
 import {
   AbsoluteFill,
@@ -24,7 +25,7 @@ const Card: React.FC<{ index: number }> = ({ index }) => {
   const p = POINTS[index];
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const local = frame - 16 - index * 14;
+  const local = frame - 10 - index * 10;
   const s = spring({ frame: local, fps, config: { damping: 22, stiffness: 100, mass: 0.8 } });
   const opacity = interpolate(local, [0, 12], [0, 1], {
     extrapolateLeft: 'clamp',
@@ -58,13 +59,9 @@ const Card: React.FC<{ index: number }> = ({ index }) => {
         >
           {p.big}
         </span>
-        <span style={{ fontFamily: FONTS.mono, fontSize: 22, color: COLORS.textMuted }}>
-          {p.title}
-        </span>
+        <span style={{ fontFamily: FONTS.mono, fontSize: 22, color: COLORS.textMuted }}>{p.title}</span>
       </div>
-      <div style={{ fontSize: 28, color: COLORS.textSecondary, lineHeight: 1.35 }}>
-        {p.body}
-      </div>
+      <div style={{ fontSize: 28, color: COLORS.textSecondary, lineHeight: 1.35 }}>{p.body}</div>
     </div>
   );
 };
@@ -87,13 +84,7 @@ export const Compliance: React.FC = () => {
         >
           Built to deploy in the real world.
         </RevealText>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 32,
-          }}
-        >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
           {POINTS.map((_, i) => (
             <Card key={POINTS[i].big} index={i} />
           ))}

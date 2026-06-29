@@ -24,8 +24,11 @@ const FACES: [string, string, string][] = [
 
 if (typeof document !== 'undefined' && typeof FontFace !== 'undefined') {
   const handle = delayRender('Loading brand fonts', {
-    timeoutInMilliseconds: 30000,
-    retries: 2,
+    // Generous budget: under high concurrency (especially at 2x scale) many
+    // worker tabs decode ~1MB of base64 font data at once; 30s was too tight
+    // and produced "timed out ... will be retried" noise + risk of failures.
+    timeoutInMilliseconds: 120000,
+    retries: 3,
   });
 
   Promise.all(

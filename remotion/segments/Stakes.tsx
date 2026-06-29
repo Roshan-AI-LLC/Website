@@ -26,7 +26,7 @@ const Row: React.FC<{ index: number }> = ({ index }) => {
   const s = STATS[index];
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const appearAt = 12 + index * 28;
+  const appearAt = 8 + index * 20;
   const sp = spring({ frame: frame - appearAt, fps, config: { damping: 26, stiffness: 70, mass: 1 } });
 
   const big =
@@ -97,7 +97,7 @@ export const Stakes: React.FC = () => {
       </div>
 
       <RevealText
-        appearAt={132}
+        appearAt={96}
         style={{
           marginTop: 72,
           fontFamily: FONTS.display,
