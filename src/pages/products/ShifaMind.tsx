@@ -2,6 +2,7 @@ import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
 import { ProductHero } from '../../components/shifamind/ProductHero';
 import { DemoBlock } from '../../components/shifamind/DemoBlock';
+import { VideoBlock } from '../../components/shifamind/VideoBlock';
 import { BenchmarkSection } from '../../components/shifamind/BenchmarkSection';
 import { InterpretabilityMetrics } from '../../components/shifamind/InterpretabilityMetrics';
 import { FeatureColumns } from '../../components/shifamind/FeatureColumns';
@@ -33,6 +34,8 @@ export default function ShifaMindProduct() {
 
       <ProductHero />
 
+      <VideoSection />
+
       <DemoSection />
 
       <BenchmarkSection />
@@ -50,6 +53,38 @@ export default function ShifaMindProduct() {
       <FAQ />
       <ClosingCTA />
     </>
+  );
+}
+
+function VideoSection() {
+  return (
+    <section className="relative py-12 sm:py-16">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="mb-6 flex flex-col items-start gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
+                Watch
+              </div>
+              <h2 className="mt-3 text-balance font-display text-[1.7rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.2rem]">
+                ShifaMind, end to end.
+              </h2>
+            </div>
+            <p className="max-w-sm text-[0.92rem] text-secondary">
+              A short walkthrough of the platform: paste a note, run the coder,
+              and trace every code back to the concepts that produced it.
+            </p>
+          </div>
+
+          <VideoBlock />
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
