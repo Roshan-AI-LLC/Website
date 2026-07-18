@@ -41,19 +41,31 @@ export function VideoBlock() {
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(180deg, transparent 30%, color-mix(in oklab, #05100d 70%, transparent) 100%)',
+                'linear-gradient(180deg, transparent 45%, color-mix(in oklab, #05100d 80%, transparent) 100%)',
             }}
           />
-          <span
-            className="absolute left-1/2 top-1/2 inline-flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full transition will-change-transform group-hover:scale-105"
-            style={{
-              background:
-                'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-              boxShadow: 'var(--shadow-glow)',
-              color: 'var(--on-accent)',
-            }}
-          >
-            <Play size={22} strokeWidth={2.2} className="ml-0.5" fill="currentColor" />
+          {/* Bottom-left rather than centred: the poster frame is a title card
+              with a centred wordmark, which a centred button would sit on top of. */}
+          <span className="absolute bottom-5 left-5 inline-flex items-center gap-3 sm:bottom-6 sm:left-6">
+            <span
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full transition will-change-transform group-hover:scale-105"
+              style={{
+                background:
+                  'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
+                boxShadow: 'var(--shadow-glow)',
+                color: 'var(--on-accent)',
+              }}
+            >
+              <Play
+                size={18}
+                strokeWidth={2.2}
+                className="ml-0.5"
+                fill="currentColor"
+              />
+            </span>
+            <span className="text-[0.86rem] font-semibold text-white/90">
+              Watch the walkthrough
+            </span>
           </span>
         </button>
       )}
