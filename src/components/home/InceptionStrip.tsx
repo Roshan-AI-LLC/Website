@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { InceptionBadge } from '../InceptionBadge';
+import { InceptionBadge, NvidiaLegalLine } from '../InceptionBadge';
 
 export function InceptionStrip() {
   return (
@@ -25,6 +25,13 @@ export function InceptionStrip() {
             </p>
           </div>
         </motion.div>
+
+        {/*
+          Required NVIDIA attribution. It lives here rather than in the site
+          footer so it appears on exactly the pages that reference NVIDIA. If
+          this strip is ever removed, the legal line goes with it.
+        */}
+        <NvidiaLegalLine className="mt-3 text-pretty text-[0.66rem] leading-relaxed text-muted opacity-60" />
       </div>
     </section>
   );

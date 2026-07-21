@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { PLATFORM_URL } from '../lib/config';
-import { NvidiaLegalLine } from './InceptionBadge';
 import { SocialLinks } from './SocialLinks';
 
 const columns: {
@@ -105,8 +104,6 @@ export function Footer() {
           </div>
           <div>© {new Date().getFullYear()} Roshan AI. All rights reserved.</div>
         </div>
-
-        <NvidiaLegalLine className="mt-4 max-w-3xl text-[0.68rem] leading-relaxed text-muted opacity-70" />
       </div>
     </footer>
   );
