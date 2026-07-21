@@ -1,6 +1,7 @@
 import { Head } from 'vite-react-ssg';
 import { CTA } from '../components/CTA';
 import { Hero } from '../components/Hero';
+import { InceptionStrip } from '../components/home/InceptionStrip';
 import { PlatformDiagram } from '../components/home/PlatformDiagram';
 import { ProductStrip } from '../components/home/ProductStrip';
 import { Proof } from '../components/home/Proof';
@@ -27,6 +28,7 @@ export default function Home() {
       </Head>
 
       <Hero />
+      <InceptionStrip />
       <ProductStrip />
       <Divider />
       <Proof />

@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden pt-32 pb-20 sm:pt-40 sm:pb-28"
+      className="relative isolate overflow-hidden pt-28 pb-10 sm:pt-32 sm:pb-12"
     >
       <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
         <div className="aurora h-[460px] w-[1200px] max-w-full opacity-70" />
