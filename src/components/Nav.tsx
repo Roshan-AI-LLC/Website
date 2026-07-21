@@ -25,6 +25,7 @@ const productItems: DropdownItem[] = [
 const companyItems: DropdownItem[] = [
   { label: 'About', href: '/company/about' },
   { label: 'Team', href: '/company/team' },
+  { label: 'Press', href: '/company/press' },
 ];
 
 const flatLinks = [

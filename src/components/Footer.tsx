@@ -27,6 +27,7 @@ const columns: {
     links: [
       { label: 'About', to: '/company/about' },
       { label: 'Team', to: '/company/team' },
+      { label: 'Press', to: '/company/press' },
       { label: 'Contact', to: '/contact' },
     ],
   },

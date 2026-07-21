@@ -8,6 +8,9 @@ import Platform from './pages/Platform';
 import Developers from './pages/Developers';
 import CompanyAbout from './pages/company/About';
 import CompanyTeam from './pages/company/Team';
+import CompanyPress from './pages/company/Press';
+import CompanyPressRelease from './pages/company/PressRelease';
+import { PRESS_RELEASES } from './data/press';
 import Contact from './pages/Contact';
 import Privacy from './pages/legal/Privacy';
 import Terms from './pages/legal/Terms';
@@ -35,6 +38,19 @@ export const routes: RouteRecord[] = [
         children: [
           { path: 'about', Component: CompanyAbout, entry: 'src/pages/company/About.tsx' },
           { path: 'team', Component: CompanyTeam, entry: 'src/pages/company/Team.tsx' },
+          {
+            path: 'press',
+            children: [
+              { index: true, Component: CompanyPress, entry: 'src/pages/company/Press.tsx' },
+              {
+                path: ':slug',
+                Component: CompanyPressRelease,
+                entry: 'src/pages/company/PressRelease.tsx',
+                // Prerenders one static page per release.
+                getStaticPaths: () => PRESS_RELEASES.map((r) => r.slug),
+              },
+            ],
+          },
         ],
       },
       { path: 'contact', Component: Contact, entry: 'src/pages/Contact.tsx' },
