@@ -47,17 +47,14 @@ export function Nav() {
 
   return (
     <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-[background,border,box-shadow,padding] duration-500',
-        scrolled
-          ? 'border-b border-subtle backdrop-blur-xl py-2'
-          : 'border-b border-transparent py-4',
-      )}
-      style={{
-        backgroundColor: scrolled ? 'var(--bg-glass-strong)' : 'transparent',
-      }}
+      className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
+      <div
+        className={cn(
+          'nav-rail mx-auto flex max-w-6xl items-center justify-between rounded-2xl border px-4 py-2.5 backdrop-blur-xl sm:px-5',
+          scrolled ? 'nav-rail-scrolled' : 'border-transparent bg-transparent',
+        )}
+      >
         <Link
           to="/"
           className="group inline-flex items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em]"
@@ -77,7 +74,7 @@ export function Nav() {
               className={({ isActive }) =>
                 cn(
                   'nav-link rounded-md px-3 py-1.5 text-[0.86rem] font-medium transition-colors hover:text-primary',
-                  isActive ? 'text-primary' : 'text-secondary',
+                  isActive ? 'is-active text-primary' : 'text-secondary',
                 )
               }
             >
@@ -88,7 +85,9 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <ThemeToggle className="hidden sm:inline-flex" />
+          <div className="hidden sm:block">
+            <ThemeToggle />
+          </div>
           <a
             href={PLATFORM_URL}
             target="_blank"
@@ -104,11 +103,15 @@ export function Nav() {
           </a>
 
           <button
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-subtle bg-glass text-secondary md:hidden"
+            className="inline-flex h-9 items-center gap-2 rounded-full border border-subtle bg-glass px-3 text-secondary transition hover:border-strong hover:text-primary md:hidden"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
           >
-            {open ? <X size={16} /> : <Menu size={16} />}
+            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.12em]">
+              {open ? 'Close' : 'Menu'}
+            </span>
+            {open ? <X size={15} /> : <Menu size={15} />}
           </button>
         </div>
       </div>
@@ -122,22 +125,27 @@ export function Nav() {
             transition={{ duration: 0.2 }}
             className="md:hidden"
           >
-            <div className="mx-4 mt-2 rounded-2xl border border-subtle bg-glass-strong p-3 backdrop-blur-xl">
+            <div className="mx-0 mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-3xl border border-subtle bg-glass-strong p-3 shadow-[0_18px_60px_-20px_rgba(11,17,32,0.32)] backdrop-blur-xl">
               <MobileGroup label="Products" items={productItems} onClose={() => setOpen(false)} />
               {flatLinks.map((l) => (
                 <Link
                   key={l.href}
                   to={l.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-between rounded-lg px-3 py-2.5 text-[0.92rem] text-secondary hover:bg-accent-soft hover:text-primary"
+                  className="flex min-h-11 items-center justify-between rounded-lg px-3 py-2.5 text-[0.92rem] text-secondary transition hover:bg-accent-soft hover:text-primary"
                 >
                   {l.label}
                   <ArrowUpRight size={14} strokeWidth={1.6} />
                 </Link>
               ))}
               <MobileGroup label="Company" items={companyItems} onClose={() => setOpen(false)} />
-              <div className="mt-2 flex items-center justify-between border-t border-subtle pt-3">
-                <ThemeToggle />
+              <div className="mt-3 flex items-center justify-between border-t border-subtle pt-3">
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted">
+                    Appearance
+                  </span>
+                </div>
                 <a
                   href={PLATFORM_URL}
                   target="_blank"
@@ -199,7 +207,7 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
         onClick={() => setOpen((v) => !v)}
         className={cn(
           'nav-link inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[0.86rem] font-medium transition-colors hover:text-primary',
-          open || isActive ? 'text-primary' : 'text-secondary',
+          open || isActive ? 'is-active text-primary' : 'text-secondary',
         )}
         aria-expanded={open}
         aria-haspopup="menu"
@@ -265,12 +273,12 @@ function MobileGroup({
           key={item.href}
           to={item.href}
           onClick={onClose}
-          className="flex items-center justify-between rounded-lg px-3 py-2.5 text-[0.92rem] text-secondary hover:bg-accent-soft hover:text-primary"
+          className="flex min-h-11 items-center justify-between rounded-lg px-3 py-2.5 text-[0.92rem] text-secondary transition hover:bg-accent-soft hover:text-primary"
         >
           <span>
             {item.label}
             {item.desc && (
-              <span className="ml-2 text-[0.74rem] text-muted">· {item.desc}</span>
+              <span className="ml-2 hidden text-[0.74rem] text-muted sm:inline">· {item.desc}</span>
             )}
           </span>
           <ArrowUpRight size={14} strokeWidth={1.6} />

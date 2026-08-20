@@ -266,10 +266,6 @@ html.dark .theme-nabzgraph {
     transition: background-color 0.4s var(--ease-spring), color 0.3s var(--ease-spring);
   }
 
-  body.has-cursor * {
-    cursor: none !important;
-  }
-
   ::selection {
     background: var(--accent-soft);
     color: var(--accent-strong);
@@ -400,15 +396,6 @@ html.dark .theme-nabzgraph {
   .enter-d-stack-3 { animation-delay: 0.41s; }
   .enter-d-stack-4 { animation-delay: 0.49s; }
 
-  @keyframes cursor-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes cursor-spin-rev {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
-  }
-
   /* Marquee for tech list */
   @keyframes marquee {
     from { transform: translateX(0); }
@@ -444,5 +431,201 @@ html.dark .theme-nabzgraph {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Milestone 4: restrained premium interaction layer. */
+html.dark .glass,
+html.dark .glass-strong {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 18px 48px -30px rgba(0, 0, 0, 0.78);
+}
+
+.glass,
+.glass-strong {
+  transition:
+    border-color 220ms var(--ease-spring),
+    background-color 220ms var(--ease-spring),
+    box-shadow 220ms var(--ease-spring);
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.nav-rail {
+  position: relative;
+  isolation: isolate;
+  transition:
+    background-color 320ms var(--ease-spring),
+    border-color 320ms var(--ease-spring),
+    box-shadow 320ms var(--ease-spring),
+    padding 320ms var(--ease-spring);
+}
+
+.nav-rail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    color-mix(in oklab, var(--accent) 10%, transparent),
+    transparent 28%,
+    transparent 72%,
+    color-mix(in oklab, var(--color-iris-500) 8%, transparent)
+  );
+  opacity: 0;
+  transition: opacity 320ms var(--ease-spring);
+}
+
+.nav-rail-scrolled {
+  border-color: var(--border-subtle);
+  background: var(--bg-glass-strong);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--text-primary) 5%, transparent),
+    0 16px 44px -28px color-mix(in oklab, var(--text-primary) 65%, transparent);
+}
+
+.nav-rail-scrolled::after {
+  opacity: 1;
+}
+
+.nav-link[aria-current='page']::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .glass:hover {
+    border-color: color-mix(in oklab, var(--accent) 26%, var(--border-subtle));
+  }
+}
+
+/* Mobile performance and density safeguards. */
+@media (max-width: 639px) {
+  html {
+    scroll-padding-top: 5.5rem;
+  }
+
+  .glass {
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  .glass-strong {
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  .aurora {
+    filter: blur(42px);
+    opacity: 0.42;
+  }
+
+  .bg-orb-1 {
+    filter: blur(108px);
+    opacity: 0.12;
+  }
+
+  .bg-grid-layer {
+    opacity: 0.22;
+  }
+}
+
+/* Final mobile-native composition pass. */
+@media (max-width: 639px) {
+  .mobile-snap-rail {
+    display: flex !important;
+    gap: 0.75rem !important;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    scrollbar-width: none;
+    margin-inline: -1.25rem;
+    padding: 0 1.25rem 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-snap-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-snap-rail > * {
+    flex: 0 0 min(82vw, 22rem);
+    min-width: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    border: 1px solid var(--border-subtle) !important;
+    border-radius: 1rem;
+  }
+
+  .mobile-snap-rail > * + * {
+    border-top-width: 1px !important;
+  }
+
+  .mobile-snap-rail > *:first-child {
+    border-left-width: 1px !important;
+  }
+
+  .mobile-compact-copy {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .mobile-native-section {
+    padding-top: 2.75rem !important;
+    padding-bottom: 2.75rem !important;
+  }
+
+  .mobile-native-hero {
+    padding-bottom: 2.25rem !important;
+  }
+
+  .mobile-native-cta {
+    position: sticky;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    z-index: 20;
+  }
+
+  .mobile-native-cta > * {
+    box-shadow: 0 16px 40px -24px rgba(0, 0, 0, 0.72);
+  }
+
+  .aurora {
+    filter: blur(28px) !important;
+    opacity: 0.42 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-snap-rail {
+    scroll-behavior: auto;
+  }
+}
+
+@media (max-width: 639px) {
+  /* Every route composes its content as direct main sections. This establishes a
+     phone-specific cadence instead of inheriting the desktop landing-page gaps. */
+  main > section {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  main > section:first-child {
+    padding-top: 5.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  main > section.mobile-native-section {
+    padding-top: 2.75rem !important;
+    padding-bottom: 2.75rem !important;
   }
 }

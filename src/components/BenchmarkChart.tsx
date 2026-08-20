@@ -1,62 +1,20 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, BarChart3, FileText, IceCream2 } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { AnthropicMark, GoogleMark, OpenAIMark } from './brand-marks';
+import { ArrowUpRight, FileText, ShieldCheck, Trophy } from 'lucide-react';
 
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
+const Y_MAX = 0.8;
 
-type Competitor = {
-  /** Short display name, shown under the brand mark */
-  label: string;
-  /** Macro-F1 on MIMIC-IV top-50 (paper Table 1) */
-  value: number;
-  /** Brand mark or thematic icon */
-  mark: ReactNode;
-  /** Whether this is ShifaMind (highlighted) */
-  ours?: boolean;
-};
-
-// Ordered low → high for visual ascent, ShifaMind last and highlighted.
-// LAAT (0.711) is dropped: it's the old clinical specialist baseline and the
-// 0.001 lead reads as a tie. The story we want to tell is "beats every
-// frontier LLM AND the latest published clinical model (GKI-ICD) AND the
-// capacity-matched architectural baseline (Vanilla CBM)".
-const competitors: Competitor[] = [
-  {
-    label: 'Vanilla CBM',
-    value: 0.164,
-    mark: <IceCream2 size={18} strokeWidth={1.7} />,
-  },
-  {
-    label: 'Claude 4.6',
-    value: 0.343,
-    mark: <AnthropicMark size={18} />,
-  },
-  {
-    label: 'GPT-5.4',
-    value: 0.417,
-    mark: <OpenAIMark size={18} />,
-  },
-  {
-    label: 'Gemini 2.5 Pro',
-    value: 0.435,
-    mark: <GoogleMark size={18} />,
-  },
-  {
-    label: 'GKI-ICD',
-    value: 0.649,
-    mark: <BarChart3 size={18} strokeWidth={1.8} />,
-  },
-  {
-    label: 'ShifaMind',
-    value: 0.712,
-    mark: null,
-    ours: true,
-  },
+const benchmarks = [
+  { label: 'Vanilla CBM', value: 0.164 },
+  { label: 'Claude 4.6', value: 0.343 },
+  { label: 'GPT-5.4', value: 0.417 },
+  { label: 'Gemini 2.5 Pro', value: 0.435 },
+  { label: 'GKI-ICD', value: 0.649 },
+  { label: 'ShifaMind', value: 0.712, ours: true },
 ];
 
-const Y_MAX = 0.8;
-const Y_TICKS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8];
+const EASE = [0.22, 1, 0.36, 1] as const;
+const mobileBenchmarks = [benchmarks[5], benchmarks[4], benchmarks[3]];
 
 export function BenchmarkChart() {
   return (
@@ -64,266 +22,181 @@ export function BenchmarkChart() {
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="glass relative overflow-hidden rounded-3xl p-6 sm:p-9"
+      transition={{ duration: 0.65, ease: EASE }}
+      className="glass relative overflow-hidden rounded-[1.75rem] sm:rounded-[2rem]"
     >
-      <div className="grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14">
-        <ChartPanel />
-        <CalloutStack />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-12 h-80 w-80 rounded-full opacity-55 blur-3xl"
+        style={{
+          background:
+            'radial-gradient(circle, color-mix(in oklab, var(--accent) 22%, transparent), transparent 68%)',
+        }}
+      />
+
+      <div className="relative grid lg:grid-cols-[0.84fr_1.16fr]">
+        <div className="border-b border-subtle p-5 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
+          <div className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-accent">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-soft">
+              <Trophy size={14} strokeWidth={2.1} />
+            </span>
+            Benchmark signal
+          </div>
+          <h2 className="mt-4 max-w-md text-balance font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-5 sm:text-[2.7rem]">
+            A performance lead built for{' '}
+            <span className="gradient-text">clinical trust.</span>
+          </h2>
+          <p className="mt-3 max-w-md text-[0.9rem] leading-relaxed text-secondary sm:mt-4 sm:text-[0.96rem]">
+            ShifaMind pairs the top Macro-F1 in this comparison with
+            concept-mediated evidence that can be inspected alongside every
+            prediction.
+          </p>
+
+          <div className="mt-6 rounded-2xl border border-subtle bg-glass-strong p-4 sm:mt-8 sm:p-6">
+            <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
+              MIMIC-IV top-50 · Macro-F1
+            </div>
+            <div className="mt-3 flex items-end gap-3">
+              <div className="font-display text-[3.2rem] font-semibold leading-none tracking-[-0.06em] text-primary sm:text-[4.25rem]">
+                0.712
+              </div>
+              <div className="pb-1 text-[0.74rem] font-semibold uppercase tracking-[0.12em] text-accent">
+                Higher is better
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:mt-4 sm:gap-3">
+            <Metric label="Lead over GKI-ICD" value="+0.063" />
+            <Metric label="Evidence on every output" value="By design" />
+          </div>
+
+          <a
+            href={PAPER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-5 inline-flex min-h-10 items-center gap-1.5 rounded-full border border-subtle bg-glass px-4 py-2 text-[0.8rem] font-semibold text-secondary transition hover:border-strong hover:text-primary sm:mt-7 sm:text-[0.82rem]"
+          >
+            <FileText size={14} />
+            Read the paper
+            <ArrowUpRight
+              size={13}
+              className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          </a>
+        </div>
+
+        <div className="p-5 sm:p-8 lg:p-10">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <div className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-secondary">
+                <ShieldCheck size={14} className="text-accent" strokeWidth={2.2} />
+                Full scorecard
+              </div>
+              <h3 className="mt-1.5 font-display text-[1.25rem] font-semibold tracking-[-0.025em] sm:mt-2 sm:text-[1.65rem]">
+                Six models. One clear leader.
+              </h3>
+            </div>
+            <span className="rounded-full border border-subtle bg-glass px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-muted">
+              Same evaluation
+            </span>
+          </div>
+
+          <div className="mt-5 space-y-2.5 sm:mt-8 sm:space-y-4">
+            <div className="hidden space-y-4 sm:block">
+              {benchmarks.map((benchmark, index) => (
+                <BenchmarkRow key={benchmark.label} benchmark={benchmark} delay={index * 0.06} />
+              ))}
+            </div>
+            <div className="space-y-2.5 sm:hidden">
+              {mobileBenchmarks.map((benchmark, index) => (
+                <BenchmarkRow key={benchmark.label} benchmark={benchmark} delay={index * 0.06} />
+              ))}
+              <details className="group rounded-xl border border-subtle bg-glass px-3 py-2.5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.74rem] font-semibold text-secondary [&::-webkit-details-marker]:hidden">
+                  View all six models
+                  <span className="text-accent transition-transform duration-200 group-open:rotate-45">+</span>
+                </summary>
+                <div className="mt-3 space-y-2.5 border-t border-subtle pt-3">
+                  {benchmarks.slice(0, 3).map((benchmark, index) => (
+                    <BenchmarkRow key={benchmark.label} benchmark={benchmark} delay={index * 0.04} />
+                  ))}
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <div className="mt-8 hidden rounded-2xl border border-subtle bg-elev p-4 sm:flex sm:items-start sm:gap-3 sm:p-5">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <ShieldCheck size={14} strokeWidth={2.2} />
+            </span>
+            <p className="mt-3 text-[0.82rem] leading-relaxed text-secondary sm:mt-0">
+              ShifaMind is the only architecture in this comparison designed to
+              return clinical concepts and supporting evidence alongside a ranked
+              output.
+            </p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 }
 
-function ChartPanel() {
+function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h3 className="font-display text-[1.2rem] font-semibold tracking-[-0.015em] sm:text-[1.4rem]">
-            Accuracy comparison
-          </h3>
-          <div className="mt-1 text-[0.82rem] text-muted">
-            Macro-F1 on MIMIC-IV top-50 (higher is better)
-          </div>
-        </div>
-        <span
-          className="inline-flex items-center rounded-full px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent"
-          style={{
-            background: 'var(--accent-soft)',
-            border: '1px solid color-mix(in oklab, var(--accent) 30%, transparent)',
-          }}
-        >
-          MIMIC-IV
-        </span>
+    <div className="rounded-xl border border-subtle bg-glass px-2.5 py-2.5 sm:px-3 sm:py-3">
+      <div className="font-display text-[0.96rem] font-semibold tracking-[-0.02em] text-primary sm:text-[1.05rem]">
+        {value}
       </div>
-
-      <div className="mt-7 grid grid-cols-[28px_1fr] gap-x-3 sm:gap-x-4">
-        <YAxis />
-        <div>
-          <Bars />
-          <LabelRow />
-        </div>
+      <div className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-muted">
+        {label}
       </div>
     </div>
   );
 }
 
-function YAxis() {
-  return (
-    <div className="relative h-64 font-mono text-[0.7rem] text-muted">
-      {Y_TICKS.slice()
-        .reverse()
-        .map((tick) => (
-          <div
-            key={tick}
-            className="absolute right-0 -translate-y-1/2 tabular-nums"
-            style={{ top: `${(1 - tick / Y_MAX) * 100}%` }}
-          >
-            {tick.toFixed(1)}
-          </div>
-        ))}
-    </div>
-  );
-}
-
-function Bars() {
-  return (
-    <div className="relative h-64">
-      {/* Horizontal gridlines */}
-      {Y_TICKS.map((tick) => (
-        <div
-          key={tick}
-          aria-hidden
-          className="absolute inset-x-0 h-px"
-          style={{
-            top: `${(1 - tick / Y_MAX) * 100}%`,
-            background:
-              tick === 0
-                ? 'var(--border-strong)'
-                : 'var(--border-subtle)',
-          }}
-        />
-      ))}
-
-      {/* Bars */}
-      <div className="relative grid h-full grid-cols-6 items-end gap-2 sm:gap-3">
-        {competitors.map((c, i) => (
-          <BarColumn key={c.label} competitor={c} delay={i * 0.08} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function BarColumn({
-  competitor,
+function BenchmarkRow({
+  benchmark,
   delay,
 }: {
-  competitor: Competitor;
+  benchmark: (typeof benchmarks)[number];
   delay: number;
 }) {
-  const heightPct = (competitor.value / Y_MAX) * 100;
-  const isOurs = competitor.ours;
+  const width = `${(benchmark.value / Y_MAX) * 100}%`;
 
   return (
-    <div className="relative flex h-full flex-col items-center justify-end">
-      {/* Value label above the bar */}
+    <div className="grid grid-cols-[minmax(76px,0.6fr)_minmax(0,1fr)_44px] items-center gap-3 sm:grid-cols-[112px_minmax(0,1fr)_48px] sm:gap-4">
       <div
-        className={`absolute font-mono text-[0.72rem] tabular-nums sm:text-[0.78rem] ${
-          isOurs ? 'font-semibold text-accent' : 'text-secondary'
+        className={`truncate text-[0.68rem] font-semibold sm:text-[0.8rem] ${
+          benchmark.ours ? 'text-primary' : 'text-secondary'
         }`}
-        style={{
-          bottom: `calc(${heightPct}% + 6px)`,
-        }}
       >
-        {competitor.value.toFixed(3)}
+        {benchmark.label}
       </div>
-
-      {/* The bar itself */}
-      <motion.div
-        initial={{ height: 0 }}
-        whileInView={{ height: `${heightPct}%` }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 1.0, delay, ease: [0.22, 1, 0.36, 1] }}
-        role="img"
-        aria-label={`${competitor.label}: Macro-F1 ${competitor.value.toFixed(3)}`}
-        className={`w-full max-w-[56px] rounded-md ${
-          isOurs ? '' : 'border border-subtle'
+      <div className="h-2.5 overflow-hidden rounded-full border border-subtle bg-glass sm:h-3">
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.8, delay, ease: EASE }}
+          className="h-full rounded-full"
+          style={{
+            background: benchmark.ours
+              ? 'linear-gradient(90deg, color-mix(in oklab, var(--accent) 56%, white), var(--accent))'
+              : 'color-mix(in oklab, var(--text-secondary) 22%, transparent)',
+            boxShadow: benchmark.ours
+              ? '0 0 16px -3px color-mix(in oklab, var(--accent) 75%, transparent)'
+              : undefined,
+          }}
+        />
+      </div>
+      <div
+        className={`text-right font-mono text-[0.74rem] tabular-nums sm:text-[0.8rem] ${
+          benchmark.ours ? 'font-semibold text-accent' : 'text-secondary'
         }`}
-        style={{
-          background: isOurs
-            ? 'linear-gradient(180deg, color-mix(in oklab, var(--accent) 95%, white), var(--accent))'
-            : 'color-mix(in oklab, var(--text-secondary) 12%, transparent)',
-          boxShadow: isOurs
-            ? '0 4px 18px -4px color-mix(in oklab, var(--accent) 50%, transparent)'
-            : undefined,
-        }}
-      />
-    </div>
-  );
-}
-
-function LabelRow() {
-  return (
-    <div className="mt-4 grid grid-cols-6 gap-2 sm:gap-3">
-      {competitors.map((c) => (
-        <div
-          key={c.label}
-          className="flex flex-col items-center gap-1.5 text-center"
-        >
-          <div
-            className={`flex h-7 w-7 items-center justify-center rounded-md ${
-              c.ours ? '' : 'text-secondary'
-            }`}
-          >
-            {c.mark}
-          </div>
-          <div
-            className={`text-[0.66rem] leading-tight sm:text-[0.72rem] ${
-              c.ours ? 'font-semibold text-primary' : 'text-muted'
-            }`}
-          >
-            {c.label}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CalloutStack() {
-  return (
-    <div className="flex flex-col">
-      <div className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-secondary">
-        Benchmarks
+      >
+        {benchmark.value.toFixed(3)}
       </div>
-
-      <h2 className="mt-3 text-balance font-display text-[1.6rem] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[2rem]">
-        Ranked <span className="gradient-text">#1</span> on automated medical coding.
-      </h2>
-
-      <p className="mt-3 text-[0.92rem] font-light leading-relaxed text-secondary">
-        Highest Macro-F1 across frontier general-purpose LLMs and the latest
-        published clinical-coding work.
-      </p>
-
-      <Divider />
-      <Callout
-        big="0.712"
-        title="Macro-F1, highest in class."
-        body={
-          <>
-            Beating Anthropic (0.343), OpenAI (0.417), and Google (0.435) on
-            the same MIMIC-IV top-50 ICD-10 evaluation.
-          </>
-        }
-      />
-
-      <Divider />
-      <Callout
-        big=">60%"
-        title="Improvement vs. the best general-purpose LLM."
-        body={
-          <>
-            Frontier models stretch into healthcare; ShifaMind is built for it.
-            Same evaluation, ~0.28 absolute Macro-F1 lead.
-          </>
-        }
-      />
-
-      <Divider />
-      <Callout
-        big="#1"
-        title="Concept-grounded by construction."
-        body={
-          <>
-            The only architecture in the comparison that produces verifiable
-            clinical-concept evidence alongside every prediction.
-          </>
-        }
-      />
-
-      <div className="mt-7">
-        <a
-          href={PAPER_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-subtle bg-glass px-3.5 py-1.5 text-[0.8rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
-        >
-          <FileText size={13} />
-          Read the paper
-          <ArrowUpRight size={12} />
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function Divider() {
-  return <div className="my-5 h-px bg-[color:var(--border-subtle)]" />;
-}
-
-function Callout({
-  big,
-  title,
-  body,
-}: {
-  big: string;
-  title: ReactNode;
-  body: ReactNode;
-}) {
-  return (
-    <div>
-      <div className="font-display text-[2rem] font-semibold leading-none tracking-[-0.025em] text-primary sm:text-[2.4rem]">
-        {big}
-      </div>
-      <div className="mt-2 text-[0.92rem] font-semibold text-primary">
-        {title}
-      </div>
-      <p className="mt-1 text-[0.86rem] font-light leading-relaxed text-secondary">
-        {body}
-      </p>
     </div>
   );
 }

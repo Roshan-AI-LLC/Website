@@ -166,7 +166,7 @@ export function GraphDemoBlock() {
       />
 
       <div className="grid gap-0 lg:grid-cols-[1.5fr_1fr]">
-        <div className="border-b border-subtle p-4 sm:p-6 lg:border-b-0 lg:border-r">
+        <div className="border-b border-subtle p-3 sm:p-6 lg:border-b-0 lg:border-r">
           <GraphCanvas
             scenario={scenario}
             state={state}
@@ -175,7 +175,7 @@ export function GraphDemoBlock() {
             onBuild={handleBuild}
           />
         </div>
-        <div className="p-5 sm:p-6">
+        <div className="p-4 sm:p-6">
           <EvidencePanel scenario={scenario} state={state} node={node} />
         </div>
       </div>
@@ -207,7 +207,7 @@ function TabBar({
 }) {
   return (
     <div className="border-b border-subtle">
-      <div className="flex flex-wrap items-center gap-1 px-4 pt-4 sm:px-6">
+      <div className="flex flex-nowrap items-center gap-1 overflow-x-auto px-3 pt-3 no-scrollbar sm:flex-wrap sm:px-6 sm:pt-4">
         {scenarios.map((s) => {
           const active = s.id === activeId;
           return (
@@ -215,7 +215,7 @@ function TabBar({
               key={s.id}
               type="button"
               onClick={() => onSelect(s.id)}
-              className="relative rounded-full px-4 py-1.5 text-[0.84rem] font-medium transition-colors"
+              className="relative shrink-0 rounded-full px-3 py-1.5 text-[0.78rem] font-medium transition-colors sm:px-4 sm:text-[0.84rem]"
               style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)' }}
             >
               {active && (

@@ -6,68 +6,72 @@ const features: { icon: ElementType; title: string; desc: string }[] = [
   {
     icon: Target,
     title: 'Predict',
-    desc: 'Ranked ICD-10 codes from free-text discharge summaries. Each code carries a confidence and a list of alternatives the model considered.',
+    desc: 'Ranked ICD-10 codes with confidence and considered alternatives.',
   },
   {
     icon: Brain,
     title: 'Explain',
-    desc: 'Concept activation shows why each code was assigned: the same clinical concepts a coder would reach for, surfaced as verifiable evidence.',
+    desc: 'Activated clinical concepts make the decision inspectable.',
   },
   {
     icon: MessageSquare,
     title: 'Discuss',
-    desc: 'Grounded chat lets clinicians and coders interrogate any prediction in context of the note. No off-topic generation, no hallucinated concepts.',
+    desc: 'Grounded follow-up inside the note context, without off-topic generation.',
   },
 ];
 
 export function FeatureColumns() {
   return (
-    <section className="relative py-20 sm:py-28">
+    <section className="mobile-native-section relative py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <SectionEyebrow>What ShifaMind does</SectionEyebrow>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-3xl text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]"
-        >
-          Three primitives, designed to be{' '}
-          <span className="gradient-text">defended.</span>
-        </motion.h2>
-
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 16 }}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+          <div>
+            <SectionEyebrow>What ShifaMind does</SectionEyebrow>
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
-              transition={{
-                duration: 0.55,
-                delay: i * 0.08,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="glass relative overflow-hidden rounded-3xl p-6 sm:p-7"
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-3 max-w-2xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
             >
-              <div
-                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl"
-                style={{
-                  background: 'var(--accent-soft)',
-                  color: 'var(--accent)',
-                }}
-              >
-                <f.icon size={20} strokeWidth={1.7} />
-              </div>
-              <h3 className="mt-5 text-[1.2rem] font-semibold tracking-[-0.015em]">
-                {f.title}
-              </h3>
-              <p className="mt-2 text-[0.92rem] font-light leading-relaxed text-secondary">
-                {f.desc}
-              </p>
-            </motion.div>
-          ))}
+              Three primitives, designed to be{' '}
+              <span className="gradient-text">defended.</span>
+            </motion.h2>
+          </div>
+          <p className="max-w-sm text-[0.86rem] leading-relaxed text-secondary sm:text-right sm:text-[0.92rem]">
+            The demo above shows the first two. Grounded discussion keeps the same evidence in view.
+          </p>
+        </div>
+
+        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex gap-3 px-4 py-4 sm:px-5 sm:py-5 md:block"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                    <Icon size={17} strokeWidth={1.8} />
+                  </span>
+                  <div className="min-w-0 md:mt-4">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[0.62rem] font-semibold tracking-[0.12em] text-muted">0{index + 1}</span>
+                      <h3 className="text-[0.98rem] font-semibold tracking-[-0.01em]">{feature.title}</h3>
+                    </div>
+                    <p className="mt-1 text-[0.8rem] leading-relaxed text-secondary sm:text-[0.84rem]">
+                      {feature.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
@@ -76,7 +80,7 @@ export function FeatureColumns() {
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
+    <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
       <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
       {children}
     </div>

@@ -6,7 +6,6 @@ import { EdgeTypes } from '../../components/nabzgraph/EdgeTypes';
 import { FeatureColumns } from '../../components/nabzgraph/FeatureColumns';
 import { Metrics } from '../../components/nabzgraph/Metrics';
 import { BreadthGrid } from '../../components/nabzgraph/BreadthGrid';
-import { DeveloperBlock } from '../../components/nabzgraph/DeveloperBlock';
 import { ComplianceStrip } from '../../components/shifamind/ComplianceStrip';
 import { FAQ } from '../../components/nabzgraph/FAQ';
 import { ClosingCTA } from '../../components/nabzgraph/ClosingCTA';
@@ -43,8 +42,6 @@ export default function NabzGraphProduct() {
       <Divider />
       <BreadthGrid />
       <Divider />
-      <DeveloperBlock />
-      <Divider />
       <ComplianceStrip />
       <Divider />
       <FAQ />
@@ -55,7 +52,7 @@ export default function NabzGraphProduct() {
 
 function DemoSection() {
   return (
-    <section className="relative py-12 sm:py-16">
+    <section className="relative py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -63,17 +60,17 @@ function DemoSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-6 flex flex-col items-start gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-5 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
                 <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
                 Try it
               </div>
-              <h2 className="mt-3 text-balance font-display text-[1.7rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.2rem]">
+              <h2 className="mt-3 text-balance font-display text-[1.55rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
                 See NabzGraph build a patient graph.
               </h2>
             </div>
-            <p className="max-w-sm text-[0.92rem] text-secondary">
+            <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
               Pick a patient, build the graph, then click any concept node to
               trace it to the raw signal. Prerendered for the demo; the platform
               runs against real waveform data.

@@ -58,10 +58,17 @@ export function DemoBlock() {
       />
 
       <div className="grid gap-0 lg:grid-cols-[1.05fr_1fr]">
-        <div className="border-b border-subtle p-6 sm:p-8 lg:border-b-0 lg:border-r">
-          <NoteView scenario={scenario} state={state} activeCode={activeCode} />
+        <div className="border-b border-subtle p-4 sm:p-8 lg:border-b-0 lg:border-r">
+          <details className="group lg:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-subtle bg-glass px-3 py-2.5 text-[0.78rem] font-semibold text-accent [&::-webkit-details-marker]:hidden">
+              Review clinical note · {scenario.note.length} sections
+              <ChevronDown size={16} className="transition-transform duration-200 group-open:rotate-180" />
+            </summary>
+            <div className="pt-4"><NoteView scenario={scenario} state={state} activeCode={activeCode} /></div>
+          </details>
+          <div className="hidden lg:block"><NoteView scenario={scenario} state={state} activeCode={activeCode} /></div>
         </div>
-        <div className="p-6 sm:p-8">
+        <div className="p-4 sm:p-8">
           <ResultsPane
             scenario={scenario}
             state={state}
@@ -91,7 +98,7 @@ function TabBar({
 }) {
   return (
     <div className="border-b border-subtle">
-      <div className="flex flex-wrap items-center gap-1 px-4 pt-4 sm:px-6">
+      <div className="flex flex-nowrap items-center gap-1 overflow-x-auto px-3 pt-3 no-scrollbar sm:flex-wrap sm:px-6 sm:pt-4">
         {scenarios.map((s) => {
           const active = s.id === activeId;
           return (
@@ -99,7 +106,7 @@ function TabBar({
               key={s.id}
               type="button"
               onClick={() => onSelect(s.id)}
-              className="relative rounded-full px-4 py-1.5 text-[0.84rem] font-medium transition-colors"
+              className="relative shrink-0 rounded-full px-3 py-1.5 text-[0.78rem] font-medium transition-colors sm:px-4 sm:text-[0.84rem]"
               style={{
                 color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
               }}

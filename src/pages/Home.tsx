@@ -3,8 +3,8 @@ import { CTA } from '../components/CTA';
 import { Hero } from '../components/Hero';
 import { InceptionStrip } from '../components/home/InceptionStrip';
 import { PlatformDiagram } from '../components/home/PlatformDiagram';
-import { ProductStrip } from '../components/home/ProductStrip';
 import { Proof } from '../components/home/Proof';
+import { ShifaMindProof } from '../components/home/ShifaMindProof';
 import { WhyRoshanAI } from '../components/home/WhyRoshanAI';
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
 
       <Hero />
       <InceptionStrip />
-      <ProductStrip />
+      <ShifaMindProof />
       <Divider />
       <Proof />
       <Divider />

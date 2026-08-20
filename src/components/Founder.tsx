@@ -33,7 +33,7 @@ export function Founder() {
 
             <div className="flex flex-wrap gap-2 lg:flex-col">
               <FounderLink
-                href="https://mohammedsameersyed.me"
+                href="https://mohammedsameersyed.com"
                 icon={Globe}
                 label="Portfolio"
               />
@@ -43,7 +43,7 @@ export function Founder() {
                 label="LinkedIn"
               />
               <FounderLink
-                href="mailto:founder@roshan-ai.com"
+                href="mailto:mohammed@roshan-ai.com"
                 icon={Mail}
                 label="Get in touch"
               />

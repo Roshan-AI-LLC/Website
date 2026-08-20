@@ -16,7 +16,7 @@ export function Background() {
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || window.matchMedia('(pointer: coarse)').matches) return;
     let raf = 0;
     const target = { x: 0.5, y: 0.4 };
     const cur = { x: 0.5, y: 0.4 };
@@ -32,10 +32,10 @@ export function Background() {
     };
 
     const tick = () => {
-      cur.x += (target.x - cur.x) * 0.04;
-      cur.y += (target.y - cur.y) * 0.04;
-      const dx = (cur.x - 0.5) * 60;
-      const dy = (cur.y - 0.5) * 60;
+      cur.x += (target.x - cur.x) * 0.025;
+      cur.y += (target.y - cur.y) * 0.025;
+      const dx = (cur.x - 0.5) * 26;
+      const dy = (cur.y - 0.5) * 26;
 
       if (orb1.current) orb1.current.style.transform = `translate3d(${dx}px, ${dy * 0.7}px, 0)`;
       if (orb2.current) orb2.current.style.transform = `translate3d(${-dx * 0.8}px, ${-dy * 0.5}px, 0)`;

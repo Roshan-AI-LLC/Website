@@ -57,8 +57,8 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               This document is a working draft, written for the public website
               before launch. It will be reviewed by counsel and may change before
               it is final. For questions email{' '}
-              <a href="mailto:founder@roshan-ai.com" className="underline">
-                founder@roshan-ai.com
+              <a href="mailto:mohammed@roshan-ai.com" className="underline">
+                mohammed@roshan-ai.com
               </a>
               .
             </div>

@@ -1,6 +1,6 @@
 import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Brain, Database, Layers, Plug, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Brain, ChevronDown, Database, Layers, Plug } from 'lucide-react';
 import type { ElementType } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -19,11 +19,11 @@ const layers: Layer[] = [
     icon: Database,
     title: 'Ingestion',
     oneLiner: 'Clinical data, normalized into something models can read.',
-    body: 'Discharge summaries, progress notes, ED notes, structured EHR fields, imaging reports. Notes arrive over API or batch; the ingestion layer normalizes formatting, strips or preserves PHI per customer policy, and produces the canonical text representation downstream models consume.',
+    body: 'Notes arrive through API or batch, are normalized under customer policy, and become the canonical clinical representation downstream models consume.',
     capabilities: [
       'Free-text notes and discharge summaries',
-      'Structured EHR exports (FHIR-flavored)',
-      'PHI tagging and de-identification (configurable)',
+      'FHIR-flavored EHR exports',
+      'Configurable PHI tagging',
       'Per-tenant data isolation',
     ],
   },
@@ -32,11 +32,11 @@ const layers: Layer[] = [
     icon: Brain,
     title: 'Models',
     oneLiner: 'Clinical encoders trained on real clinical text.',
-    body: 'BioClinical ModernBERT-base today, with larger backbones under evaluation. The encoder is paired with a learnable concept-query bank trained against an explicit set of clinical concepts: the same concepts a coder or clinician would name out loud. The encoder is the substrate; the concept-grounded representation is the contract.',
+    body: 'The encoder is paired with a learnable concept-query bank trained against explicit clinical concepts: the substrate for a grounded representation contract.',
     capabilities: [
-      'BioClinical ModernBERT-base, 8,192-token context',
+      'BioClinical ModernBERT-base · 8,192 tokens',
       '160 grounded clinical concepts',
-      'Multiplicative Concept Bottleneck (MCB)',
+      'Multiplicative Concept Bottleneck',
       'Larger backbones under evaluation',
     ],
   },
@@ -45,12 +45,12 @@ const layers: Layer[] = [
     icon: Layers,
     title: 'Reasoning',
     oneLiner: 'A concept bottleneck every prediction must flow through.',
-    body: 'The reasoning layer takes an encoded note, activates the concepts present, and routes prediction signal exclusively through those concepts. No prediction is produced without the concept evidence that supports it. The bottleneck is the feature: it forces explainability by construction.',
+    body: 'The reasoning layer activates the concepts present in a note and routes prediction signal exclusively through them, making evidence a requirement rather than an afterthought.',
     capabilities: [
-      'Concept activation per note',
-      'Code prediction grounded in concepts',
+      'Per-note concept activation',
+      'Concept-grounded code prediction',
       'Confidence and alternatives',
-      'Concept-Supported True Positive Rate (CSTPR) telemetry',
+      'CSTPR telemetry',
     ],
   },
   {
@@ -58,24 +58,12 @@ const layers: Layer[] = [
     icon: Plug,
     title: 'APIs',
     oneLiner: 'One integration shape, many products downstream.',
-    body: 'Every product on the platform exposes the same response shape: predictions, evidence, concepts, alternatives. Integrators write to a single integration surface; products plug in mechanically. The API is the boundary between Roshan AI infrastructure and the workflows clinicians actually use.',
+    body: 'Every product returns predictions, evidence, concepts, and alternatives through the same response shape—one integration surface for evolving clinical workflows.',
     capabilities: [
-      'REST endpoints, JSON responses',
-      'Token-based auth',
+      'REST endpoints and JSON responses',
+      'Token-based authentication',
       'Per-prediction audit logs',
-      'Webhooks for async pipelines (roadmap)',
-    ],
-  },
-  {
-    index: '05',
-    icon: Sparkles,
-    title: 'App surface',
-    oneLiner: 'The first product on the stack, today.',
-    body: 'ShifaMind is the first consumer of the platform: a coder and reasoning workspace clinicians use directly. The same platform layers power the products that come next. Adding a new product is a content and policy exercise, not a re-architecture.',
-    capabilities: [
-      'ShifaMind · live',
-      'More clinical-reasoning products in development',
-      'Customer-facing UI surfaces share the design system',
+      'Async webhooks on roadmap',
     ],
   },
 ];
@@ -91,9 +79,8 @@ export default function Platform() {
         />
         <link rel="canonical" href="https://roshan-ai.com/platform" />
       </Head>
-
       <Hero />
-      <LayerList />
+      <PlatformStack />
       <Closing />
     </>
   );
@@ -101,28 +88,22 @@ export default function Platform() {
 
 function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-32 pb-12 sm:pt-40 sm:pb-16">
+    <section className="relative isolate overflow-hidden pt-[5.5rem] pb-9 sm:pt-40 sm:pb-14">
       <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
-        <div className="aurora h-[420px] w-[1100px] max-w-full opacity-60" />
+        <div className="aurora h-[360px] w-[1000px] max-w-full opacity-55 sm:h-[420px] sm:w-[1100px]" />
       </div>
-
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
-        <div className="enter-fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="enter-fade-up max-w-3xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
             Platform
           </div>
-
-          <h1 className="mt-5 max-w-3xl text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[3rem]">
+          <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The platform under{' '}
             <span className="gradient-text">every Roshan AI product.</span>
           </h1>
-
-          <p className="mt-6 max-w-2xl text-[1.05rem] font-light leading-relaxed text-secondary">
-            Roshan AI is a platform company. Every product we ship (ShifaMind
-            today, more in development) reads from the same ingestion layer,
-            runs on the same clinical encoders, and explains itself through the
-            same concept reasoning layer. This page is the stack.
+          <p className="mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+            One clinical core turns ingestion, model intelligence, grounded reasoning, and APIs into products that can compound without a re-architecture.
           </p>
         </div>
       </div>
@@ -130,98 +111,92 @@ function Hero() {
   );
 }
 
-function LayerList() {
+function PlatformStack() {
   return (
-    <section className="relative py-16 sm:py-20">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
-        <div className="space-y-12 sm:space-y-16">
-          {layers.map((layer, i) => (
-            <LayerBlock key={layer.index} layer={layer} index={i} />
+    <section className="relative py-10 sm:py-16">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <div className="grid gap-3 lg:grid-cols-[150px_minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-5">
+          <div className="hidden lg:block" />
+          <div>
+            <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Architecture map</div>
+            <h2 className="mt-2 max-w-2xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
+              Four layers.{' '}
+              <span className="gradient-text">One clinical contract.</span>
+            </h2>
+          </div>
+          <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary lg:pt-7 lg:text-[0.9rem]">
+            Each layer remains reusable as products, workflows, and integrations grow.
+          </p>
+        </div>
+
+        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          {layers.map((layer, index) => (
+            <StackRow key={layer.index} layer={layer} index={index} />
           ))}
+          <div className="flex flex-col gap-3 bg-accent-soft/30 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div>
+              <div className="text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">Live today</div>
+              <div className="mt-1 text-[0.9rem] font-semibold text-primary">ShifaMind</div>
+              <div className="mt-0.5 text-[0.78rem] text-secondary">The first product built on the shared stack.</div>
+            </div>
+            <Link
+              to="/products/shifamind"
+              className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-4 text-[0.8rem] font-semibold text-secondary transition hover:border-strong hover:text-primary"
+            >
+              Explore ShifaMind
+              <ArrowUpRight size={14} />
+            </Link>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function LayerBlock({ layer, index }: { layer: Layer; index: number }) {
-  const reversed = index % 2 === 1;
+function StackRow({ layer, index }: { layer: Layer; index: number }) {
+  const Icon = layer.icon;
+  const Detail = () => (
+    <>
+      <p className="mt-2 max-w-3xl text-[0.78rem] leading-relaxed text-secondary sm:mt-1.5 sm:text-[0.84rem]">{layer.body}</p>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {layer.capabilities.map((capability) => (
+          <span key={capability} className="rounded-full border border-subtle bg-glass px-2.5 py-1 text-[0.68rem] text-secondary">
+            {capability}
+          </span>
+        ))}
+      </div>
+    </>
+  );
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className={`grid items-start gap-8 lg:gap-14 ${
-        reversed ? 'lg:grid-cols-[1.05fr_1fr]' : 'lg:grid-cols-[1fr_1.05fr]'
-      }`}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.45, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      className="grid gap-2 border-b border-subtle px-4 py-3.5 last:border-b-0 sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-5 sm:px-5 sm:py-5"
     >
-      <div className={reversed ? 'lg:order-2' : ''}>
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-[0.78rem] uppercase tracking-[0.18em] text-muted">
-            Layer {layer.index}
-          </span>
-          <div
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl"
-            style={{
-              background: 'var(--accent-soft)',
-              color: 'var(--accent)',
-            }}
-          >
-            <layer.icon size={16} strokeWidth={1.8} />
-          </div>
+      <div className="flex items-start gap-3">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-soft text-accent">
+          <Icon size={17} strokeWidth={1.8} />
+        </span>
+        <div>
+          <div className="font-mono text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-muted">Layer {layer.index}</div>
+          <div className="text-[0.92rem] font-semibold text-primary">{layer.title}</div>
         </div>
-
-        <h2 className="mt-4 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.2rem]">
-          {layer.title}
-        </h2>
-        <p className="mt-3 text-[1rem] font-medium text-accent">
-          {layer.oneLiner}
-        </p>
-        <p className="mt-4 text-[0.96rem] font-light leading-relaxed text-secondary">
-          {layer.body}
-        </p>
       </div>
 
-      <div className={reversed ? 'lg:order-1' : ''}>
-        <div className="glass rounded-3xl p-6 sm:p-7">
-          <div className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary">
-            In this layer today
-          </div>
-          <ul className="mt-4 space-y-2">
-            {layer.capabilities.map((c) => (
-              <li
-                key={c}
-                className="flex items-center gap-2.5 rounded-lg border border-subtle bg-glass px-3 py-2.5 text-[0.92rem] text-secondary"
-              >
-                <span
-                  className="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full"
-                  style={{ background: 'var(--accent)' }}
-                />
-                {c}
-              </li>
-            ))}
-          </ul>
-          {layer.title === 'App surface' && (
-            <div className="mt-4 flex items-center gap-2 rounded-2xl border border-subtle bg-glass px-3 py-2.5">
-              <div className="flex-1">
-                <div className="text-[0.86rem] font-semibold text-primary">
-                  ShifaMind
-                </div>
-                <div className="text-[0.74rem] text-muted">
-                  Live · the first product on the stack
-                </div>
-              </div>
-              <Link
-                to="/products/shifamind"
-                className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-subtle bg-glass text-secondary transition hover:border-strong hover:text-primary"
-                aria-label="Open ShifaMind"
-              >
-                <ArrowUpRight size={12} />
-              </Link>
-            </div>
-          )}
-        </div>
+      <details className="group sm:hidden" open={index === 0}>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.8rem] font-medium text-accent [&::-webkit-details-marker]:hidden">
+          <span>{layer.oneLiner}</span>
+          <ChevronDown size={16} className="shrink-0 transition-transform duration-200 group-open:rotate-180" />
+        </summary>
+        <div className="pb-1"><Detail /></div>
+      </details>
+
+      <div className="hidden min-w-0 sm:block">
+        <div className="text-[0.84rem] font-medium text-accent">{layer.oneLiner}</div>
+        <Detail />
       </div>
     </motion.div>
   );
@@ -229,63 +204,53 @@ function LayerBlock({ layer, index }: { layer: Layer; index: number }) {
 
 function Closing() {
   return (
-    <section className="relative py-20 sm:py-24">
-      <div className="mx-auto max-w-5xl px-5 sm:px-8">
+    <section className="relative py-12 sm:py-16">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-3xl p-10 sm:p-14"
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className="glass relative overflow-hidden rounded-2xl px-5 py-5 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-8 lg:grid-cols-[1.3fr_auto] lg:items-center">
+          <div className="relative z-10 grid gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
-              <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
-                Build on the platform
-              </div>
-              <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.2rem]">
-                Integrate ShifaMind today. Build on what's next.
+              <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Build on the platform</div>
+              <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">
+                Integrate ShifaMind today.{' '}
+                <span className="gradient-text">Build on what&apos;s next.</span>
               </h2>
-              <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
-                The same platform that powers ShifaMind will power the products
-                that come after it. If you're building a clinical workflow
-                that needs grounded reasoning, talk to us early. Partner
-                deployments shape the roadmap.
+              <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
+                If your clinical workflow needs grounded reasoning, partner deployments can shape the next product on the stack.
               </p>
             </div>
-
-            <div className="flex flex-wrap gap-2 lg:justify-end">
+            <div className="flex flex-col gap-2 sm:flex-row lg:justify-end">
               <Link
                 to="/developers"
-                className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
+                className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
                 style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
+                  background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
                   boxShadow: 'var(--shadow-glow)',
                   color: 'var(--on-accent)',
                 }}
               >
                 Developer overview
-                <ArrowUpRight
-                  size={15}
-                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
+                <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-subtle bg-glass px-5 py-3 text-[0.88rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
               >
                 Talk to us
               </Link>
             </div>
           </div>
-
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0"
+            className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-70"
             style={{
               background:
-                'radial-gradient(ellipse at 80% 0%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%)',
+                'radial-gradient(ellipse at 80% 50%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 66%)',
             }}
           />
         </motion.div>

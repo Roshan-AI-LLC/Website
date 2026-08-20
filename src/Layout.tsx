@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Background } from './components/Background';
-import { Cursor } from './components/Cursor';
 import { Footer } from './components/Footer';
 import { Nav } from './components/Nav';
 
@@ -24,7 +23,6 @@ export default function Layout() {
   return (
     <div className="relative min-h-screen">
       <Background />
-      <Cursor />
       <Nav />
       <main>
         <Outlet />

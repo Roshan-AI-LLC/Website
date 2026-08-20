@@ -47,10 +47,10 @@ const columns: {
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-subtle pt-14 pb-10">
+    <footer className="relative border-t border-subtle pt-10 pb-7 sm:pt-14 sm:pb-10">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-6">
-          <div className="lg:col-span-1">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-7 sm:gap-10 lg:grid-cols-6">
+          <div className="col-span-2 lg:col-span-1">
             <Link
               to="/"
               className="inline-flex items-center gap-2 font-display text-[0.95rem] font-semibold tracking-[-0.015em]"
@@ -59,10 +59,10 @@ export function Footer() {
                 Roshan<span className="text-secondary">·AI</span>
               </span>
             </Link>
-            <p className="mt-3 text-[0.78rem] leading-relaxed text-muted">
+            <p className="mt-2.5 text-[0.76rem] leading-relaxed text-muted sm:mt-3 sm:text-[0.78rem]">
               AI infrastructure for clinical reasoning.
             </p>
-            <SocialLinks className="mt-5" />
+            <SocialLinks className="mt-4 sm:mt-5" />
           </div>
 
           {columns.map((col) => (
@@ -70,7 +70,7 @@ export function Footer() {
               <div className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary">
                 {col.title}
               </div>
-              <ul className="mt-3 space-y-2 text-[0.84rem]">
+              <ul className="mt-2.5 space-y-1.5 text-[0.8rem] sm:mt-3 sm:space-y-2 sm:text-[0.84rem]">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     {l.to ? (
@@ -97,7 +97,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-subtle pt-6 text-[0.74rem] text-muted sm:flex-row sm:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-2 border-t border-subtle pt-5 text-[0.7rem] text-muted sm:mt-12 sm:flex-row sm:items-center sm:gap-3 sm:pt-6 sm:text-[0.74rem]">
           <div>
             <span className="font-medium text-secondary">Roshan AI LLC</span>{' '}
             · Arizona, USA
