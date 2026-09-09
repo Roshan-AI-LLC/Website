@@ -1,17 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  CircleDot,
-  FileText,
-  Network,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowUpRight, Check, ChevronDown, CircleDot, FileText, Network } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SCENARIOS } from '../../data/shifamindScenarios';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { SectionLabel } from '../SectionLabel';
 
 type StageId = 'note' | 'concepts' | 'output';
 
@@ -62,12 +55,7 @@ export function ShifaMindProof() {
     <section id="evidence-field" className="mobile-native-section relative py-14 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-[color:var(--accent)] text-[color:var(--on-accent)]">
-              <Sparkles size={9} strokeWidth={2.5} />
-            </span>
-            Evidence field
-          </div>
+          <SectionLabel>Evidence field</SectionLabel>
           <h2 className="mt-3 text-balance font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-[3rem]">
             See the evidence behind{' '}
             <span className="gradient-text">the output.</span>

@@ -1,26 +1,34 @@
 import { motion } from 'framer-motion';
+import { SectionLabel } from '../SectionLabel';
 
 const metrics = [
   {
     code: 'CF',
-    value: '0.92',
+    value: '0.922',
     name: 'Concept fidelity',
     ref: 'Koh et al. 2020',
-    desc: 'Held-out AUROC for the concept bottleneck against rule-defined ground truth.',
+    desc: 'Mean held-out AUROC for the concept bottleneck against physiologically grounded reference labels.',
   },
   {
     code: 'ERASER',
-    value: '0.64',
+    value: '+0.37',
     name: 'Faithfulness',
     ref: 'DeYoung et al. 2020',
-    desc: 'Removing cited signal evidence reduces node activation, testing whether the explanation is causal.',
+    desc: 'Comprehensiveness: removing the cited windows degrades the concept activation substantially, while those windows alone reproduce it (sufficiency near zero).',
   },
   {
-    code: 'GR',
-    value: '0.70',
-    name: 'Granger replication',
+    code: 'GRANGER',
+    value: '0.696',
+    name: 'Granger edge replication',
     ref: 'Seth 2010',
-    desc: 'Derived causal edges recur in held-out portions of the ICU stay.',
+    desc: 'Granger edges derived on one half of a patient’s windows reappear on the held-out half.',
+  },
+  {
+    code: 'CO-EV',
+    value: '0.657',
+    name: 'Co-evidence edge replication',
+    ref: 'Split-half resampling',
+    desc: 'Edges from source-window overlap reappear under the same split-half test.',
   },
 ];
 
@@ -30,10 +38,7 @@ export function Metrics() {
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              Evaluation · preprint AAAI 2027
-            </div>
+            <SectionLabel>Evaluation · preprint in preparation</SectionLabel>
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +82,7 @@ export function Metrics() {
         </div>
 
         <p className="mt-4 text-[0.72rem] leading-relaxed text-muted sm:mt-5 sm:text-[0.78rem]">
-          Figures are from the single-seed held-out test split, pending the camera-ready preprint. Cohort: 200 MIMIC-IV-WDB patients (167 with built graphs); V2 targets full MIMIC-IV with external validation.
+          Temporal (precedes/follows) edges replicate weakly on the same test, at 0.214. We report that as a limitation of the method and have not patched it: single-patient activation series appear too short and too bursty for stable cross-correlation lags, while Granger inference on the continuous features is better powered. Figures are from the single-seed held-out test split, with the multi-seed run in progress. Cohort: 200 MIMIC-IV-WDB patients, 167 with built graphs; V2 targets full MIMIC-IV with external validation.
         </p>
       </div>
     </section>

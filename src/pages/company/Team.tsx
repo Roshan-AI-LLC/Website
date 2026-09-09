@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Globe, Linkedin, Mail } from 'lucide-react';
 import type { ElementType } from 'react';
 import { CONTACT_EMAIL } from '../../lib/config';
+import { SectionLabel } from '../../components/SectionLabel';
 
 type SocialLink = { icon: ElementType; label: string; href: string };
 
@@ -55,10 +56,7 @@ function Hero() {
       </div>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            Team
-          </div>
+          <SectionLabel>Team</SectionLabel>
           <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The people building{' '}
             <span className="gradient-text">Roshan AI.</span>

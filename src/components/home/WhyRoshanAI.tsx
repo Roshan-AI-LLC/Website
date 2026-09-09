@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Brain, Plug, ShieldCheck } from 'lucide-react';
 import type { ElementType } from 'react';
+import { SectionLabel } from '../SectionLabel';
 
 const pillars: { icon: ElementType; title: string; desc: string }[] = [
   {
@@ -24,10 +25,7 @@ export function WhyRoshanAI() {
   return (
     <section className="mobile-native-section relative py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-          Why Roshan AI
-        </div>
+        <SectionLabel>Why Roshan AI</SectionLabel>
 
         <motion.h2
           initial={{ opacity: 0, y: 12 }}

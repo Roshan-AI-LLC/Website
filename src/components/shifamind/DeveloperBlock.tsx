@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Terminal } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+import { SectionLabel } from '../SectionLabel';
 
 const curlExample = `curl -X POST https://api.roshan-ai.com/v1/shifamind/predict \\
   -H "Authorization: Bearer $TOKEN" \\
@@ -28,10 +29,7 @@ export function DeveloperBlock() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.2fr]">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <Terminal size={11} strokeWidth={2.4} />
-              For developers
-            </div>
+            <SectionLabel>For developers</SectionLabel>
 
             <motion.h2
               initial={{ opacity: 0, y: 12 }}

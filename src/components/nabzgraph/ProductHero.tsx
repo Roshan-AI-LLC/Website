@@ -1,4 +1,5 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
+import { SectionLabel } from '../SectionLabel';
 
 export function ProductHero() {
   return (
@@ -8,9 +9,9 @@ export function ProductHero() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="enter-fade-up inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur">
+        <SectionLabel tone="muted" className="enter-fade-up">
           NabzGraph · A Roshan AI product
-        </div>
+        </SectionLabel>
 
         <h1 className="enter-fade-up enter-d-1 mt-4 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
           From ICU sensor streams to an{' '}

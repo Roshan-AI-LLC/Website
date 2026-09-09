@@ -1,6 +1,13 @@
-import { ArrowRight, ArrowUpRight, Check, FileText, Network } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { CompanyMark } from './CompanyMark';
+
+/**
+ * Hero right-hand visual.
+ *   'proof' renders one real note-to-code trace.
+ *   'none'  drops it and the hero becomes a single centred column.
+ * Change this one value to switch. Nothing else needs to move.
+ */
+const HERO_VISUAL: 'proof' | 'none' = 'proof';
 
 const proofPoints = [
   { value: '0.712', label: 'Macro-F1' },
@@ -9,6 +16,8 @@ const proofPoints = [
 ];
 
 export function Hero() {
+  const withVisual = HERO_VISUAL === 'proof';
+
   return (
     <section
       id="top"
@@ -19,11 +28,17 @@ export function Hero() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid items-center gap-7 sm:gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
-          <div className="min-w-0">
+        <div
+          className={
+            withVisual
+              ? 'grid items-center gap-8 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14'
+              : ''
+          }
+        >
+          <div className={withVisual ? 'min-w-0' : 'min-w-0 max-w-3xl'}>
             <Link
               to="/products/shifamind"
-              className="enter-fade-up group inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+              className="enter-fade-up group inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-secondary transition hover:text-primary"
             >
               <span className="relative inline-flex h-1.5 w-1.5">
                 <span
@@ -45,15 +60,21 @@ export function Hero() {
             <div className="mt-4 text-[0.66rem] font-semibold uppercase tracking-[0.15em] text-secondary sm:mt-6 sm:text-[0.7rem]">
               AI infrastructure for clinical reasoning
             </div>
-            <h1 className="enter-fade-up enter-d-1 mt-2.5 max-w-2xl text-balance font-display text-[2.15rem] font-bold leading-[1.03] tracking-[-0.045em] sm:mt-4 sm:text-[3.3rem] lg:text-[4rem]">
+
+            <h1
+              className={`enter-fade-up enter-d-1 mt-2.5 text-balance font-display font-bold leading-[1.03] tracking-[-0.045em] sm:mt-4 ${
+                withVisual
+                  ? 'max-w-2xl text-[2.15rem] sm:text-[3.3rem] lg:text-[4rem]'
+                  : 'max-w-3xl text-[2.4rem] sm:text-[3.8rem] lg:text-[4.75rem]'
+              }`}
+            >
               Clinical AI you can{' '}
               <span className="gradient-text">verify.</span>
             </h1>
 
             <p className="enter-fade-up enter-d-2 mt-4 max-w-xl text-pretty text-[0.96rem] leading-relaxed text-secondary sm:mt-6 sm:text-[1.1rem]">
-              Roshan AI builds clinical-grade models that surface the concepts and
-              evidence behind every prediction. ShifaMind turns clinical reasoning
-              into a defensible coding workflow.
+              Roshan AI builds clinical-grade models that surface the concepts
+              and evidence behind every prediction.
             </p>
 
             <div className="enter-fade-up enter-d-3 mt-6 grid gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-3">
@@ -108,91 +129,90 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="enter-fade-up enter-d-3 relative mx-auto w-full max-w-[430px] lg:max-w-none">
-            <InferencePreview />
-          </div>
+          {withVisual && (
+            <div className="enter-fade-up enter-d-3 relative mx-auto w-full max-w-[430px] lg:max-w-none">
+              <NoteTrace />
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function InferencePreview() {
+/**
+ * One trace, start to finish: a note fragment, the span that fired, the concept
+ * it grounded, and the code that came out. Synthetic text, labelled as such.
+ */
+function NoteTrace() {
   return (
     <div className="relative">
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-10 rounded-full opacity-60 blur-3xl"
+        className="pointer-events-none absolute -inset-10 rounded-full opacity-50 blur-3xl"
         style={{
           background:
-            'radial-gradient(circle, color-mix(in oklab, var(--accent) 22%, transparent), transparent 66%)',
+            'radial-gradient(circle, color-mix(in oklab, var(--accent) 20%, transparent), transparent 68%)',
         }}
       />
 
-      <div className="glass relative overflow-hidden rounded-[1.5rem] p-3.5 sm:rounded-[2rem] sm:p-6">
+      <div className="glass relative overflow-hidden rounded-[1.5rem] p-5 sm:rounded-[2rem] sm:p-7">
         <div className="flex items-center justify-between gap-4">
-          <div className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-secondary">
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-accent-soft text-accent">
-              <Network size={13} strokeWidth={2} />
-            </span>
-            Evidence flow
-          </div>
-          <span className="rounded-full border border-subtle px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.13em] text-accent">
+          <span className="text-[0.64rem] font-semibold uppercase tracking-[0.14em] text-accent">
             ShifaMind
+          </span>
+          <span className="text-[0.6rem] font-medium uppercase tracking-[0.12em] text-muted">
+            Synthetic note
           </span>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-subtle bg-elev p-3.5 sm:mt-6 sm:p-5">
-          <div className="flex items-center justify-between gap-3">
-            <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
-              Clinical note
-            </div>
-            <FileText size={14} className="text-muted" strokeWidth={1.8} />
-          </div>
-          <p className="mt-2.5 max-w-[17rem] text-[0.82rem] leading-relaxed text-secondary sm:text-[0.94rem]">
-            Relevant clinical signals are surfaced, grounded in the source note,
-            and carried forward as verifiable evidence.
-          </p>
-        </div>
+        <p className="mt-5 text-[0.92rem] leading-[1.75] text-secondary sm:mt-6 sm:text-[1rem]">
+          Progressive dyspnea on exertion over three weeks with bilateral lower
+          extremity edema. Echocardiogram demonstrates{' '}
+          <mark
+            className="rounded px-1 py-0.5 font-medium"
+            style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
+          >
+            reduced ejection fraction at 30%
+          </mark>
+          .
+        </p>
 
-        <div className="relative mx-3 h-5 sm:mx-5 sm:h-7">
-          <div className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-[color:var(--border-strong)]" />
-          <div
-            className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full ring-4 ring-[color:var(--bg-glass)]"
-            style={{ background: 'var(--accent)' }}
-          />
-        </div>
+        <div className="mt-5 border-t border-subtle pt-5 sm:mt-6 sm:pt-6">
+          <Row label="Concept">
+            <span className="text-primary">Reduced ejection fraction</span>
+            <span className="ml-2 text-[0.72rem] text-muted">affirmed</span>
+          </Row>
 
-        <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
-          {['Clinical concepts', 'Source evidence', 'Ranked output'].map((step, index) => (
-            <div
-              key={step}
-              className="block min-w-0 rounded-xl border border-subtle bg-glass-strong px-2 py-2 sm:px-3 sm:py-3"
-            >
-              <span
-                className="flex h-5 w-5 items-center justify-center rounded-full text-[0.62rem] font-bold"
-                style={{
-                  background: index === 2 ? 'var(--accent)' : 'var(--accent-soft)',
-                  color: index === 2 ? 'var(--on-accent)' : 'var(--accent)',
-                }}
-              >
-                {index + 1}
-              </span>
-              <span className="mt-1.5 block min-w-0 text-[0.58rem] font-semibold leading-tight text-secondary sm:mt-2 sm:text-[0.72rem]">
-                {step}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-subtle px-3 py-2.5 sm:mt-5">
-          <div className="flex items-center gap-2 text-[0.76rem] font-medium text-secondary">
-            <Check size={14} className="text-accent" strokeWidth={2.4} />
-            Every prediction retains its evidence trail.
-          </div>
-          <CompanyMark className="h-7 w-7 shrink-0 opacity-80" />
+          <Row label="Code" className="mt-3.5">
+            <span className="font-mono text-primary">I50.22</span>
+            <span className="mt-0.5 block text-[0.78rem] leading-snug text-secondary">
+              Chronic systolic (congestive) heart failure
+            </span>
+          </Row>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Row({
+  label,
+  children,
+  className = '',
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`grid grid-cols-[4.5rem_1fr] items-start gap-3 ${className}`}>
+      <span className="pt-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-muted">
+        {label}
+      </span>
+      <span className="min-w-0 text-[0.88rem] font-medium sm:text-[0.92rem]">
+        {children}
+      </span>
     </div>
   );
 }

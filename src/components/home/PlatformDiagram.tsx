@@ -1,14 +1,8 @@
 import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BrainCircuit,
-  DatabaseZap,
-  Network,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowRight, ArrowUpRight, DatabaseZap, Network, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from '../SectionLabel';
 
 type Product = {
   name: string;
@@ -57,10 +51,10 @@ const products: Product[] = [
     href: '/products/shifamind',
   },
   {
-    name: 'NabzGraph',
-    description: 'Interpretable ICU knowledge graphs',
+    name: 'Nabz',
+    description: 'Model family for ICU signal streams',
     status: 'progress',
-    href: '/products/nabzgraph',
+    href: '/products/nabz',
   },
   {
     name: 'Next products',
@@ -82,12 +76,7 @@ export function PlatformDiagram() {
     <section id="platform" className="relative py-14 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[color:var(--accent)] text-[color:var(--on-accent)]">
-              <BrainCircuit size={9} strokeWidth={2.5} />
-            </span>
-            Shared clinical infrastructure
-          </div>
+          <SectionLabel>Shared clinical infrastructure</SectionLabel>
           <motion.h2
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}

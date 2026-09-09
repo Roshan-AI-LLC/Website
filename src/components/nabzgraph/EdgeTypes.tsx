@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { GitBranch, Layers, Workflow } from 'lucide-react';
 import type { ElementType } from 'react';
+import { SectionLabel } from '../SectionLabel';
 
 type EdgeKind = {
   icon: ElementType;
@@ -16,7 +17,7 @@ const edges: EdgeKind[] = [
     code: 'TEMPORAL',
     name: 'Temporal',
     derived: 'Lagged cross-correlation of concept activation series',
-    desc: 'A directed relationship when one concept reliably precedes another.',
+    desc: 'A directed relationship when one concept reliably precedes another. This family replicates weakly within a patient and we report it as a limitation.',
   },
   {
     icon: Layers,
@@ -40,10 +41,7 @@ export function EdgeTypes() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              The research contribution
-            </div>
+            <SectionLabel>The research contribution</SectionLabel>
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -35,6 +35,12 @@
     Content-Type = "application/xml; charset=utf-8"
     Cache-Control = "public, max-age=3600"
 
+# The Nabz family moved under /products/nabz. Preserve the old product URL.
+[[redirects]]
+  from = "/products/nabzgraph"
+  to = "/products/nabz/graph"
+  status = 301
+
 # Parent paths without a dedicated page send users somewhere useful.
 [[redirects]]
   from = "/company"

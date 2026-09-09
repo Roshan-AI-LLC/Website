@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { PLATFORM_URL } from '../lib/config';
+import { SectionLabel } from './SectionLabel';
 
 const traits = [
   'Concept-grounded predictions',
@@ -21,10 +22,7 @@ export function ShifaMindHero() {
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-accent">
-                <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
-                Flagship product
-              </div>
+              <SectionLabel>Flagship product</SectionLabel>
 
               <div className="mt-4 flex items-center gap-3">
                 <span className="font-display text-[1.6rem] font-semibold tracking-[-0.025em] sm:text-[2rem]">

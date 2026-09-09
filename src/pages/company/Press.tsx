@@ -4,6 +4,7 @@ import { ArrowUpRight, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { CONTACT_EMAIL } from '../../lib/config';
 import { COMPANY_BOILERPLATE, formatPressDate, sortedReleases } from '../../data/press';
+import { SectionLabel } from '../../components/SectionLabel';
 
 const pressKit: { label: string; desc: string; href: string }[] = [
   { label: 'Logo, dark backgrounds', desc: 'PNG · transparent', href: '/logo-dark.png' },
@@ -36,10 +37,7 @@ function Hero() {
       </div>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            Press
-          </div>
+          <SectionLabel>Press</SectionLabel>
           <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">News from <span className="gradient-text">Roshan AI.</span></h1>
           <p className="mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">Announcements, accurate company context, and the assets journalists need to cover Roshan AI.</p>
         </div>

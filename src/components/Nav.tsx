@@ -16,9 +16,9 @@ const productItems: DropdownItem[] = [
     desc: 'Clinical coding & reasoning for physicians',
   },
   {
-    label: 'NabzGraph',
-    href: '/products/nabzgraph',
-    desc: 'Interpretable knowledge graphs from ICU signals',
+    label: 'Nabz',
+    href: '/products/nabz',
+    desc: 'A model family for continuous physiological signals',
   },
 ];
 
@@ -125,7 +125,7 @@ export function Nav() {
             transition={{ duration: 0.2 }}
             className="md:hidden"
           >
-            <div className="mx-0 mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-3xl border border-subtle bg-glass-strong p-3 shadow-[0_18px_60px_-20px_rgba(11,17,32,0.32)] backdrop-blur-xl">
+            <div className="mx-0 mt-2 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-3xl border border-subtle popover-surface p-3">
               <MobileGroup label="Products" items={productItems} onClose={() => setOpen(false)} />
               {flatLinks.map((l) => (
                 <Link
@@ -228,7 +228,7 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
             exit={{ opacity: 0, y: 4 }}
             transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
             role="menu"
-            className="absolute left-0 top-full mt-2 min-w-[260px] rounded-2xl border border-subtle bg-glass-strong p-2 backdrop-blur-xl"
+            className="absolute left-0 top-full mt-2 min-w-[260px] rounded-2xl border border-subtle popover-surface p-2"
           >
             {items.map((item) => (
               <Link

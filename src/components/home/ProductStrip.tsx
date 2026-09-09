@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from '../SectionLabel';
 
 type Product = {
   status: 'live' | 'next';
@@ -21,11 +22,11 @@ const products: Product[] = [
   },
   {
     status: 'live',
-    name: 'NabzGraph',
-    descriptor: 'Interpretable ICU knowledge graphs',
+    name: 'Nabz',
+    descriptor: 'A model family for physiological signals',
     longDesc:
-      'Turns continuous ICU sensor streams into patient-specific, traceable concept graphs.',
-    href: '/products/nabzgraph',
+      'NabzGraph builds patient-specific, traceable concept graphs from continuous ICU streams. NabzSentry decides which alarms reach a clinician.',
+    href: '/products/nabz',
   },
   {
     status: 'next',
@@ -42,10 +43,7 @@ export function ProductStrip() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              Products
-            </div>
+            <SectionLabel>Products</SectionLabel>
             <h2 className="mt-3 max-w-2xl text-balance font-display text-[1.9rem] font-semibold leading-[1.06] tracking-[-0.035em] sm:text-[2.6rem]">
               Built on the platform.{' '}
               <span className="gradient-text">Proven in the workflow.</span>

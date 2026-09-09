@@ -3,7 +3,9 @@ import Layout from './Layout';
 import Home from './pages/Home';
 import ProductsIndex from './pages/products/Index';
 import ShifaMindProduct from './pages/products/ShifaMind';
-import NabzGraphProduct from './pages/products/NabzGraph';
+import NabzFamily from './pages/products/nabz/Index';
+import NabzGraphProduct from './pages/products/nabz/Graph';
+import NabzSentryProduct from './pages/products/nabz/Sentry';
 import Platform from './pages/Platform';
 import Developers from './pages/Developers';
 import CompanyAbout from './pages/company/About';
@@ -28,7 +30,14 @@ export const routes: RouteRecord[] = [
         children: [
           { index: true, Component: ProductsIndex, entry: 'src/pages/products/Index.tsx' },
           { path: 'shifamind', Component: ShifaMindProduct, entry: 'src/pages/products/ShifaMind.tsx' },
-          { path: 'nabzgraph', Component: NabzGraphProduct, entry: 'src/pages/products/NabzGraph.tsx' },
+          {
+            path: 'nabz',
+            children: [
+              { index: true, Component: NabzFamily, entry: 'src/pages/products/nabz/Index.tsx' },
+              { path: 'graph', Component: NabzGraphProduct, entry: 'src/pages/products/nabz/Graph.tsx' },
+              { path: 'sentry', Component: NabzSentryProduct, entry: 'src/pages/products/nabz/Sentry.tsx' },
+            ],
+          },
         ],
       },
       { path: 'platform', Component: Platform, entry: 'src/pages/Platform.tsx' },

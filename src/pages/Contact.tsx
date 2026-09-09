@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Head } from 'vite-react-ssg';
 import { ArrowRight, CheckCircle2, Mail } from 'lucide-react';
 import { CONTACT_EMAIL } from '../lib/config';
+import { SectionLabel } from '../components/SectionLabel';
 
 const ROLES = [
   { value: 'clinician', label: 'Clinician' },
@@ -65,10 +66,7 @@ export default function Contact() {
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
             <div className="enter-fade-up">
-              <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-                <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
-                Contact
-              </div>
+              <SectionLabel>Contact</SectionLabel>
 
               <h1 className="mt-5 text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[2.8rem]">
                 Talk to{' '}

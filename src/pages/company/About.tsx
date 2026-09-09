@@ -2,6 +2,7 @@ import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Brain, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from '../../components/SectionLabel';
 
 const thesis = [
   {
@@ -45,10 +46,7 @@ function Hero() {
       </div>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            About Roshan AI
-          </div>
+          <SectionLabel>About Roshan AI</SectionLabel>
           <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             Building clinical AI{' '}
             <span className="gradient-text">doctors can defend.</span>
@@ -114,10 +112,7 @@ function PlatformAmbition() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              What we are building toward
-            </div>
+            <SectionLabel>What we are building toward</SectionLabel>
             <h2 className="mt-3 text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
               One platform.{' '}
               <span className="gradient-text">A family of clinical products.</span>

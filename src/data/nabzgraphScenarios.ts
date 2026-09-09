@@ -1,5 +1,5 @@
 /**
- * Demo scenarios for the /products/nabzgraph interactive knowledge graph.
+ * Demo scenarios for the /products/nabz/graph interactive knowledge graph.
  *
  * All data is hand-curated for the demo. No live inference. The concept nodes,
  * persistence tiers, edge types, and statistics are clinically reasonable but

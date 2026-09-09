@@ -1,6 +1,7 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
 import { PLATFORM_URL } from '../../lib/config';
 import { VideoBlock } from './VideoBlock';
+import { SectionLabel } from '../SectionLabel';
 
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
 
@@ -14,9 +15,9 @@ export function ProductHero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid items-center gap-7 sm:gap-10 lg:grid-cols-[1fr_0.92fr] lg:gap-12">
           <div>
-            <div className="enter-fade-up inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.74rem] font-medium uppercase tracking-[0.14em] text-secondary backdrop-blur">
+            <SectionLabel tone="muted" className="enter-fade-up">
               ShifaMind · A Roshan AI product
-            </div>
+            </SectionLabel>
 
             <h1 className="enter-fade-up enter-d-1 mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.2rem]">
               Concept-grounded ICD-10 coding{' '}
@@ -25,8 +26,10 @@ export function ProductHero() {
 
             <p className="enter-fade-up enter-d-2 mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-6 sm:text-[1.1rem]">
               ShifaMind reads a clinical note and returns ranked ICD-10 codes
-              with the concept evidence behind each one. Interpretability is
-              enforced architecturally, not bolted on after training.
+              across the full code space, each one carrying the clinical
+              concepts and quoted spans that produced it. Interpretability is
+              enforced architecturally, and every displayed number is a
+              quantity the model actually computed.
             </p>
 
             <div className="enter-fade-up enter-d-3 mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
@@ -73,16 +76,16 @@ export function ProductHero() {
         </div>
 
         <div className="enter-fade-up enter-d-4 mt-8 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
-          <Stat value="0.71" label="Macro-F1" sub="50-code MIMIC-IV" />
+          <Stat value="7,940" label="ICD-10 codes" sub="Full code space" />
           <Stat
-            value="160"
-            label="Clinical concepts"
-            sub="Grounded vocabulary"
+            value="98.5"
+            label="Micro-AUC"
+            sub="Held-out test"
           />
           <Stat
-            value="113K"
-            label="Linked admissions"
-            sub="MIMIC-IV labeled corpus"
+            value="100%"
+            label="Logit attributable"
+            sub="By construction"
           />
         </div>
       </div>

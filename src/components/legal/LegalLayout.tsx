@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
+import { SectionLabel } from '../SectionLabel';
 
 export type LegalSection = {
   /** Anchor id (kebab-case). */
@@ -30,10 +31,7 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              {eyebrow}
-            </div>
+            <SectionLabel>{eyebrow}</SectionLabel>
 
             <h1 className="mt-5 font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[2.6rem]">
               {title}

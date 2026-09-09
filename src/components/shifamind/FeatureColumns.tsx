@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Brain, MessageSquare, Target } from 'lucide-react';
 import type { ElementType } from 'react';
+import { SectionLabel } from '../SectionLabel';
 
 const features: { icon: ElementType; title: string; desc: string }[] = [
   {
@@ -80,9 +81,6 @@ export function FeatureColumns() {
 
 function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-      <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-      {children}
-    </div>
+    <SectionLabel>{children}</SectionLabel>
   );
 }

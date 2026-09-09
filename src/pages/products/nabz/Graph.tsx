@@ -1,14 +1,15 @@
 import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
-import { ProductHero } from '../../components/nabzgraph/ProductHero';
-import { GraphDemoBlock } from '../../components/nabzgraph/GraphDemoBlock';
-import { EdgeTypes } from '../../components/nabzgraph/EdgeTypes';
-import { FeatureColumns } from '../../components/nabzgraph/FeatureColumns';
-import { Metrics } from '../../components/nabzgraph/Metrics';
-import { BreadthGrid } from '../../components/nabzgraph/BreadthGrid';
-import { ComplianceStrip } from '../../components/shifamind/ComplianceStrip';
-import { FAQ } from '../../components/nabzgraph/FAQ';
-import { ClosingCTA } from '../../components/nabzgraph/ClosingCTA';
+import { ProductHero } from '../../../components/nabzgraph/ProductHero';
+import { GraphDemoBlock } from '../../../components/nabzgraph/GraphDemoBlock';
+import { EdgeTypes } from '../../../components/nabzgraph/EdgeTypes';
+import { FeatureColumns } from '../../../components/nabzgraph/FeatureColumns';
+import { Metrics } from '../../../components/nabzgraph/Metrics';
+import { BreadthGrid } from '../../../components/nabzgraph/BreadthGrid';
+import { ComplianceStrip } from '../../../components/shifamind/ComplianceStrip';
+import { FAQ } from '../../../components/nabzgraph/FAQ';
+import { ClosingCTA } from '../../../components/nabzgraph/ClosingCTA';
+import { SectionLabel } from '../../../components/SectionLabel';
 
 export default function NabzGraphProduct() {
   return (
@@ -27,7 +28,7 @@ export default function NabzGraphProduct() {
           property="og:description"
           content="Patient-specific knowledge graphs with concept nodes and measured temporal, co-occurrence, and Granger edges, every node traceable to the raw signal window."
         />
-        <link rel="canonical" href="https://roshan-ai.com/products/nabzgraph" />
+        <link rel="canonical" href="https://roshan-ai.com/products/nabz/graph" />
       </Head>
 
       <ProductHero />
@@ -62,10 +63,7 @@ function DemoSection() {
         >
           <div className="mb-5 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-                <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
-                Try it
-              </div>
+              <SectionLabel>Try it</SectionLabel>
               <h2 className="mt-3 text-balance font-display text-[1.55rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
                 See NabzGraph build a patient graph.
               </h2>

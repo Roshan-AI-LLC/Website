@@ -2,6 +2,7 @@ import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from '../../components/SectionLabel';
 
 type Product = {
   status: 'live' | 'next';
@@ -20,8 +21,8 @@ const products: Product[] = [
     descriptor: 'Concept-grounded ICD-10 coding for clinicians and coders',
     body: 'ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. The interpretability is enforced architecturally: each prediction must flow through an explicit clinical-concept layer before a code can be assigned.',
     highlights: [
-      'ICD-10-CM coding from discharge summaries',
-      '160 grounded clinical concepts',
+      'Full ICD-10-CM code space, 7,940 codes',
+      '16,227 grounded clinical concepts',
       'Evidence phrases from the source note',
       'Ranked alternatives with confidences',
     ],
@@ -30,16 +31,16 @@ const products: Product[] = [
   },
   {
     status: 'live',
-    name: 'NabzGraph',
-    descriptor: 'Interpretable knowledge graphs from ICU signals',
-    body: 'NabzGraph turns continuous multi-modal sensor streams (ECG, PPG, arterial pressure, respiration) into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. Every node and edge traces back to the exact signal windows behind it.',
+    name: 'Nabz',
+    descriptor: 'A model family for continuous physiological signals',
+    body: 'Nabz is our family of models for the ICU signal stream. NabzGraph turns continuous multi-modal waveforms (ECG, PPG, arterial pressure, respiration) into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. NabzSentry decides which arrhythmia alarms reach a clinician and which stay quiet. Every claim traces back to the exact signal windows behind it.',
     highlights: [
-      'Patient-specific knowledge graph from raw waveforms',
-      '7 SNOMED-grounded signal concepts',
-      'Temporal, co-occurrence & Granger edges',
+      'NabzGraph: patient-specific knowledge graphs',
+      'NabzSentry: three-way alarm triage',
+      'ECG, PPG, arterial pressure, respiration',
       'Every node traceable to the signal window',
     ],
-    href: '/products/nabzgraph',
+    href: '/products/nabz',
     visual: 'nabzgraph',
   },
   {
@@ -84,10 +85,7 @@ function Hero() {
 
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <div className="enter-fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            Products
-          </div>
+          <SectionLabel>Products</SectionLabel>
 
           <h1 className="mt-5 max-w-3xl text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[3rem]">
             One platform.{' '}

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Brain, ChevronDown, Database, Layers, Plug } from 'lucide-react';
 import type { ElementType } from 'react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from '../components/SectionLabel';
 
 type Layer = {
   index: string;
@@ -94,10 +95,7 @@ function Hero() {
       </div>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            Platform
-          </div>
+          <SectionLabel>Platform</SectionLabel>
           <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The platform under{' '}
             <span className="gradient-text">every Roshan AI product.</span>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Clock, Network, Radio } from 'lucide-react';
 import type { ElementType } from 'react';
+import { SectionLabel } from '../SectionLabel';
 
 const features: { icon: ElementType; title: string; desc: string }[] = [
   {
@@ -26,10 +27,7 @@ export function FeatureColumns() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              The dashboard
-            </div>
+            <SectionLabel>The dashboard</SectionLabel>
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -1,8 +1,9 @@
 import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Boxes, ShieldCheck, Terminal, Zap } from 'lucide-react';
+import { ArrowUpRight, Boxes, ShieldCheck, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { ElementType } from 'react';
+import { SectionLabel } from '../components/SectionLabel';
 
 const predictExample = `curl -X POST https://api.roshan-ai.com/v1/shifamind/predict \\
   -H "Authorization: Bearer $ROSHAN_TOKEN" \\
@@ -70,10 +71,7 @@ function Hero() {
       </div>
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <Terminal size={11} strokeWidth={2.4} />
-            Developers
-          </div>
+          <SectionLabel>Developers</SectionLabel>
           <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             Clinical reasoning,{' '}
             <span className="gradient-text">in your product.</span>
@@ -162,10 +160,7 @@ function Principles() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-              API contract
-            </div>
+            <SectionLabel>API contract</SectionLabel>
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}

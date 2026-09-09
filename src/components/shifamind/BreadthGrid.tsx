@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { SectionLabel } from '../SectionLabel';
 
 type Cell = {
   label: string;
@@ -9,7 +10,7 @@ const groups: { title: string; cells: Cell[] }[] = [
   {
     title: 'Code systems',
     cells: [
-      { label: 'ICD-10-CM', status: 'live' },
+      { label: 'ICD-10-CM · full code space', status: 'live' },
       { label: 'ICD-10-PCS', status: 'planned' },
       { label: 'CPT', status: 'planned' },
       { label: 'SNOMED CT', status: 'planned' },
@@ -41,10 +42,7 @@ export function BreadthGrid() {
   return (
     <section className="mobile-native-section relative py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-accent">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
-          Breadth
-        </div>
+        <SectionLabel>Breadth</SectionLabel>
 
         <motion.h2
           initial={{ opacity: 0, y: 12 }}

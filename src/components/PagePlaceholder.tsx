@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SectionLabel } from './SectionLabel';
 
 type Props = {
   eyebrow?: string;
@@ -22,10 +23,7 @@ export function PagePlaceholder({
 
       <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
         <div className="enter-fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-subtle bg-accent-soft px-3 py-1 text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-accent">
-            <span className="pulse-dot inline-block h-1.5 w-1.5 rounded-full bg-current" />
-            {status}
-          </div>
+          <SectionLabel>{status}</SectionLabel>
 
           <p className="mt-6 text-[0.78rem] font-medium uppercase tracking-[0.16em] text-secondary">
             {eyebrow}

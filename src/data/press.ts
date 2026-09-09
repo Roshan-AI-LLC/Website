@@ -27,6 +27,37 @@ export type PressRelease = {
 
 export const PRESS_RELEASES: PressRelease[] = [
   {
+    slug: 'lambda-gpu-credits',
+    date: '2026-09-09',
+    kind: 'Announcement',
+    title: 'Thank you to Lambda for backing ShifaMind with GPU credits',
+    summary:
+      'Lambda has awarded Roshan AI a grant of GPU credits through the NVIDIA Inception program. The credits go directly into scaling ShifaMind and strengthening the interpretability work at its core.',
+    dek: 'The award funds larger training runs for ShifaMind and deeper validation of the concept layer that makes every prediction checkable.',
+    body: [
+      'Roshan AI LLC today announced that it has received a grant of GPU credits from Lambda, awarded through the company\u2019s membership in the NVIDIA Inception program. We are grateful to both. Compute is the constraint that decides how quickly a small research company can move from an idea to a model a clinician can actually use, and this award moves that constraint.',
+      'Our thanks go to the Lambda team for backing early-stage clinical AI that does not look like the rest of the field. Roshan AI does not wrap a general-purpose language model in longer prompts. It trains clinical encoders on clinical data and routes every prediction through an explicit concept layer, so the model cannot produce an output without also producing the evidence behind it. That design is harder to train and more expensive to validate than the alternative, and support of this kind is what makes it practical to pursue.',
+      'The credits go first to scaling ShifaMind, the concept-grounded ICD-10 coding model at the core of the platform. Concept-bottlenecked models are trained, not prompted, which means every improvement is a training run: longer schedules, wider code coverage, and the sweeps a structural bottleneck demands before it settles.',
+      'The second use is the interpretability work itself. A concept layer is only worth having if its claims hold up under testing: concept fidelity measurement, faithfulness ablations, and counterfactual checks. Every one of those checks is an evaluation run of its own, and the credits pay for them.',
+      'Roshan AI LLC is based in Arizona, USA.',
+    ],
+    quote: {
+      text: 'ShifaMind will cover more of the ICD-10 code space, with the same evidence attached to every prediction, and it will be ready for deployment in a real coding workflow soon.',
+      attribution: 'Mohammed Sameer Syed, Founder, Roshan AI',
+    },
+    requiresNvidiaLegalLine: true,
+    links: [
+      {
+        label: 'Lambda',
+        href: 'https://lambda.ai/',
+      },
+      {
+        label: 'About the NVIDIA Inception program',
+        href: 'https://www.nvidia.com/en-us/startups/',
+      },
+    ],
+  },
+  {
     slug: 'nvidia-inception',
     date: '2026-07-21',
     kind: 'Announcement',
