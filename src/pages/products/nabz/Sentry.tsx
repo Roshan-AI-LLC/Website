@@ -46,7 +46,7 @@ const decisions: { icon: ElementType; code: string; name: string; desc: string }
 
 export default function NabzSentryProduct() {
   return (
-    <>
+    <div className="theme-nabz">
       <Head>
         <title>NabzSentry: alarm triage for intensive care | Roshan AI</title>
         <meta
@@ -287,7 +287,7 @@ export default function NabzSentryProduct() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

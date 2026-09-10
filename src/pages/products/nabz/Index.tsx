@@ -58,7 +58,7 @@ const principles = [
 
 export default function NabzFamily() {
   return (
-    <>
+    <div className="theme-nabz">
       <Head>
         <title>Nabz: clinical reasoning on physiological signals | Roshan AI</title>
         <meta
@@ -225,7 +225,7 @@ export default function NabzFamily() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

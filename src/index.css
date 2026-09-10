@@ -111,6 +111,14 @@ html.mz-reveal-fallback [style*='opacity:0;transform:translateY'] {
   --accent-gold: #8a6b0e;
   --logo-fg: #0b1120;
   --on-accent: #04201e;
+  /* Button = the brand teal: the same --accent that .gradient-text paints
+     "verify." with. The label is white, NOT --on-accent (#04201e) — dark text
+     on this teal is 3.2:1 and reads muddy, which is exactly what the old
+     gradient hid by sweeping up to a light mint behind the text. White is
+     5.4:1; hover darkens to --accent-strong at 8.1:1. */
+  --btn-primary-bg: var(--accent);
+  --btn-primary-fg: #ffffff;
+  --btn-primary-hover: var(--accent-strong);
   --shadow-glow: 0 0 60px -16px rgba(31, 140, 133, 0.28);
   --shadow-card: 0 1px 2px rgba(11, 17, 32, 0.04), 0 8px 24px -12px rgba(11, 17, 32, 0.08);
   --grid-color: rgba(11, 17, 32, 0.05);
@@ -136,6 +144,11 @@ html.dark {
   --accent-gold: #ffd93d;
   --logo-fg: #f5f1e8;
   --on-accent: #03070a;
+  /* Dark mode flips: --accent is a bright mint here, so --on-accent (dark) is
+     the legible label at 10.4:1 and white would fail. Hover lightens. */
+  --btn-primary-bg: var(--accent);
+  --btn-primary-fg: var(--on-accent);
+  --btn-primary-hover: color-mix(in oklab, var(--accent) 88%, white);
   --shadow-glow: 0 0 80px -10px rgba(78, 205, 196, 0.28);
   --grid-color: rgba(255, 255, 255, 0.04);
   --noise-opacity: 0.03;
@@ -209,13 +222,15 @@ html:not(.dark) .font-light {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   NabzGraph product theme, scoped.
+   Nabz FAMILY theme, scoped.
    Ocean cyan: the same cool family as ShifaMind's teal, shifted toward cyan
-   and sky blue so NabzGraph reads as a sibling, not a clone. Applied via a
-   .theme-nabzgraph wrapper on the product page only; the rest of the site
-   (and ShifaMind) keeps the teal accent. Overrides both light and dark.
+   and sky blue so Nabz reads as a sibling, not a clone. Applied via a
+   .theme-nabz wrapper on every page in the family — the family index,
+   NabzGraph and NabzSentry — so a visitor can tell which product they are
+   looking at by colour alone. ShifaMind and the rest of the site keep teal.
+   Overrides both light and dark.
    ───────────────────────────────────────────────────────────────────────── */
-.theme-nabzgraph {
+.theme-nabz {
   /* Light mode: deep ocean cyan for contrast on the cream base. */
   --accent: #0a8fb0;
   --accent-soft: rgba(10, 143, 176, 0.12);
@@ -224,10 +239,18 @@ html:not(.dark) .font-light {
   --color-iris-500: #1f9fc9;
   --color-iris-600: #167da3;
   --on-accent: #ffffff;
+  /* White on --accent #0a8fb0 is 3.8:1. The deeper cyan clears AA at 5.9:1
+     and still reads unmistakably as the Nabz colour. */
+  --btn-primary-bg: var(--accent-strong);
+  --btn-primary-fg: var(--on-accent);
+  /* The only theme with a LIGHT --on-accent, so hover darkens here.
+     Lightening would move the fill toward the white text and drop
+     contrast to ~4.6:1, the wrong direction on a hover state. */
+  --btn-primary-hover: color-mix(in oklab, var(--accent-strong) 86%, black);
   --shadow-glow: 0 0 60px -16px rgba(10, 143, 176, 0.30);
 }
 
-html.dark .theme-nabzgraph {
+html.dark .theme-nabz {
   /* Dark mode: bright ocean cyan on the glassmorphism canvas. */
   --accent: #1cc5e8;
   --accent-soft: rgba(28, 197, 232, 0.15);
@@ -236,6 +259,9 @@ html.dark .theme-nabzgraph {
   --color-iris-500: #38bdf8;
   --color-iris-600: #0ea5e9;
   --on-accent: #04222b;
+  --btn-primary-bg: var(--accent); /* #1cc5e8 on #04222b -> 8.0:1 */
+  --btn-primary-fg: var(--on-accent);
+  --btn-primary-hover: color-mix(in oklab, var(--accent) 88%, white);
   --shadow-glow: 0 0 80px -10px rgba(28, 197, 232, 0.30);
 }
 
@@ -464,20 +490,22 @@ html.dark .glass-strong {
  * One class, one colour. This used to be a `linear-gradient(135deg, accent ->
  * iris)` repeated inline in 22 places across 18 files, which meant every button
  * carried its own copy of the design and any change had to be made 22 times.
- * Flat --accent, defined once. Theme tokens still drive it, so the ShifaMind
- * and Nabz palettes keep their own colour. */
+ * Flat fill, defined once. Three tokens per palette rather than reusing
+ * --accent/--on-accent directly: the label that works for accent-coloured TEXT
+ * is not always the label that works on an accent-coloured BUTTON, and the
+ * right hover direction differs too. Light mode is white-on-teal and darkens
+ * on hover; dark mode is dark-on-mint and lightens. ShifaMind stays teal,
+ * Nabz stays cyan. */
 .btn-primary {
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
   box-shadow: var(--shadow-glow);
 }
 
+/* Direction is per-theme, not global: hover must move AWAY from that theme's
+   text colour so contrast rises on hover rather than falling. */
 .btn-primary:hover {
-  background: color-mix(in oklab, var(--accent) 90%, black);
-}
-
-html.dark .btn-primary:hover {
-  background: color-mix(in oklab, var(--accent) 88%, white);
+  background: var(--btn-primary-hover);
 }
 
 .glass,

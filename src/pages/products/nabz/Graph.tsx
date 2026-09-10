@@ -13,7 +13,7 @@ import { SectionLabel } from '../../../components/SectionLabel';
 
 export default function NabzGraphProduct() {
   return (
-    <div className="theme-nabzgraph">
+    <div className="theme-nabz">
       <Head>
         <title>NabzGraph: interpretable knowledge graphs from ICU signals | Roshan AI</title>
         <meta
