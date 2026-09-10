@@ -10,8 +10,10 @@ const groups: { title: string; cells: Cell[] }[] = [
   {
     title: 'Code systems',
     cells: [
-      { label: 'ICD-10-CM · full code space', status: 'live' },
-      { label: 'ICD-10-PCS', status: 'planned' },
+      // Both counts verified against the deployed label_vocab.json, not
+      // estimated: 5,802 CM + 2,138 PCS = the 7,940 the model actually serves.
+      { label: 'ICD-10-CM · 5,802 codes', status: 'live' },
+      { label: 'ICD-10-PCS · 2,138 codes', status: 'live' },
       { label: 'CPT', status: 'planned' },
       { label: 'SNOMED CT', status: 'planned' },
     ],
