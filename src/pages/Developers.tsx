@@ -82,12 +82,7 @@ function Hero() {
           <div className="mt-6 grid grid-cols-2 gap-2 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
             <a
               href="#request-access"
-              className="group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
-              style={{
-                background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
             >
               Request access
               <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -229,12 +224,7 @@ function Closing() {
             </div>
             <Link
               to="/contact"
-              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 lg:justify-self-end"
-              style={{
-                background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 lg:justify-self-end"
             >
               Talk to us
               <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

@@ -182,13 +182,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={status === 'submitting'}
-                      className="group inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
-                      style={{
-                        background:
-                          'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                        boxShadow: 'var(--shadow-glow)',
-                        color: 'var(--on-accent)',
-                      }}
+                      className="btn-primary group inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {status === 'submitting' ? 'Sending…' : 'Send message'}
                       {status !== 'submitting' && (

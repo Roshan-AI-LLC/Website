@@ -98,12 +98,7 @@ export default function NabzSentryProduct() {
           <div className="enter-fade-up enter-d-3 mt-6 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-3">
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
-              style={{
-                background: 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
             >
               <Stethoscope size={14} />
               Talk to us
@@ -274,12 +269,7 @@ export default function NabzSentryProduct() {
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
-                style={{
-                  background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
               >
                 Start a conversation
                 <ArrowUpRight

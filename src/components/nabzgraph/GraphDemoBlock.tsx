@@ -478,12 +478,7 @@ function GraphCanvas({
               <button
                 type="button"
                 onClick={onBuild}
-                className="group relative inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background: 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group relative inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 <Sparkles size={14} strokeWidth={2.2} />
                 Build graph
@@ -1186,12 +1181,7 @@ function Controls({ state, onReset }: { state: DemoState; onReset: () => void })
       </button>
       <a
         href="/contact"
-        className="group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.86rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-        style={{
-          background: 'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-          boxShadow: 'var(--shadow-glow)',
-          color: 'var(--on-accent)',
-        }}
+        className="btn-primary group inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[0.86rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
       >
         Book a demo
         <ArrowUpRight

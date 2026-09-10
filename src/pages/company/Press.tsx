@@ -138,7 +138,7 @@ function MediaContact() {
               <h2 className="mt-2 font-display text-[1.45rem] font-semibold tracking-[-0.03em] sm:text-[1.85rem]">Need a briefing or fact check?</h2>
               <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">For interviews, product context, or an accurate company source, contact the team directly.</p>
             </div>
-            <a href={`mailto:${CONTACT_EMAIL}?subject=Press%20enquiry`} className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 lg:justify-self-end" style={{ background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))', boxShadow: 'var(--shadow-glow)', color: 'var(--on-accent)' }}>
+            <a href={`mailto:${CONTACT_EMAIL}?subject=Press%20enquiry`} className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 lg:justify-self-end">
               {CONTACT_EMAIL}
               <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>

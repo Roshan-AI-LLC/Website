@@ -258,13 +258,7 @@ function Closing() {
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Talk to us
                 <ArrowUpRight

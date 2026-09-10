@@ -33,12 +33,7 @@ export function ClosingCTA() {
                 href={PLATFORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Try ShifaMind
                 <ArrowUpRight

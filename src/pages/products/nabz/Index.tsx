@@ -214,12 +214,7 @@ export default function NabzFamily() {
             </p>
             <Link
               to="/contact"
-              className="group mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
-              style={{
-                background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary group mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
             >
               Start a conversation
               <ArrowUpRight

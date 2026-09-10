@@ -38,13 +38,7 @@ export function CTA() {
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.84rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[0.84rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Book a demo
                 <ArrowUpRight

@@ -28,13 +28,7 @@ export function ProductHero() {
         <div className="enter-fade-up enter-d-3 mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <a
             href="/contact"
-            className="group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
-            style={{
-              background:
-                'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-              boxShadow: 'var(--shadow-glow)',
-              color: 'var(--on-accent)',
-            }}
+            className="btn-primary group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
           >
             <Stethoscope size={14} />
             Book a demo

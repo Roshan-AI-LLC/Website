@@ -31,7 +31,7 @@ export function Hero() {
         <div
           className={
             withVisual
-              ? 'grid items-center gap-8 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14'
+              ? 'grid items-center gap-7 sm:gap-9 md:grid-cols-[1.05fr_0.95fr] md:gap-8 lg:gap-14'
               : ''
           }
         >
@@ -64,7 +64,7 @@ export function Hero() {
             <h1
               className={`enter-fade-up enter-d-1 mt-2.5 text-balance font-display font-bold leading-[1.03] tracking-[-0.045em] sm:mt-4 ${
                 withVisual
-                  ? 'max-w-2xl text-[2.15rem] sm:text-[3.3rem] lg:text-[4rem]'
+                  ? 'max-w-2xl text-[2.15rem] sm:text-[3.3rem] md:text-[2.6rem] lg:text-[4rem]'
                   : 'max-w-3xl text-[2.4rem] sm:text-[3.8rem] lg:text-[4.75rem]'
               }`}
             >
@@ -80,13 +80,7 @@ export function Hero() {
             <div className="enter-fade-up enter-d-3 mt-6 grid gap-2.5 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-3">
               <Link
                 to="/products/shifamind"
-                className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto"
-                style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 active:scale-[0.98] sm:w-auto"
               >
                 Explore ShifaMind
                 <ArrowUpRight
@@ -130,7 +124,7 @@ export function Hero() {
           </div>
 
           {withVisual && (
-            <div className="enter-fade-up enter-d-3 relative mx-auto w-full max-w-[430px] lg:max-w-none">
+            <div className="enter-fade-up enter-d-3 relative w-full max-w-xl md:max-w-none">
               <NoteTrace />
             </div>
           )}
@@ -149,7 +143,7 @@ function NoteTrace() {
     <div className="relative">
       <div
         aria-hidden
-        className="pointer-events-none absolute -inset-10 rounded-full opacity-50 blur-3xl"
+        className="pointer-events-none absolute -inset-4 rounded-full opacity-40 blur-3xl sm:-inset-10 sm:opacity-50"
         style={{
           background:
             'radial-gradient(circle, color-mix(in oklab, var(--accent) 20%, transparent), transparent 68%)',

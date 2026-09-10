@@ -307,13 +307,7 @@ function ResultsPane({
             <button
               type="button"
               onClick={onPredict}
-              className="group mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-              style={{
-                background:
-                  'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary group mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
             >
               <Sparkles size={14} strokeWidth={2.2} />
               Predict codes
@@ -386,13 +380,7 @@ function ResultsPane({
                 href={PLATFORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background:
-                    'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Try with your note
                 <ArrowUpRight

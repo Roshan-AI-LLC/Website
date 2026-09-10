@@ -48,13 +48,7 @@ export function VideoBlock() {
               with a centred wordmark, which a centred button would sit on top of. */}
           <span className="absolute bottom-5 left-5 inline-flex items-center gap-3 sm:bottom-6 sm:left-6">
             <span
-              className="inline-flex h-12 w-12 items-center justify-center rounded-full transition will-change-transform group-hover:scale-105"
-              style={{
-                background:
-                  'linear-gradient(135deg, var(--accent) 0%, var(--color-iris-500) 100%)',
-                boxShadow: 'var(--shadow-glow)',
-                color: 'var(--on-accent)',
-              }}
+              className="btn-primary inline-flex h-12 w-12 items-center justify-center rounded-full transition will-change-transform group-hover:scale-105"
             >
               <Play
                 size={18}

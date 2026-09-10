@@ -459,6 +459,27 @@ html.dark .glass-strong {
     0 18px 48px -30px rgba(0, 0, 0, 0.78);
 }
 
+/* Primary CTA.
+ *
+ * One class, one colour. This used to be a `linear-gradient(135deg, accent ->
+ * iris)` repeated inline in 22 places across 18 files, which meant every button
+ * carried its own copy of the design and any change had to be made 22 times.
+ * Flat --accent, defined once. Theme tokens still drive it, so the ShifaMind
+ * and Nabz palettes keep their own colour. */
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--accent) 90%, black);
+}
+
+html.dark .btn-primary:hover {
+  background: color-mix(in oklab, var(--accent) 88%, white);
+}
+
 .glass,
 .glass-strong {
   transition:

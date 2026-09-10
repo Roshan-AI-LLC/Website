@@ -225,12 +225,7 @@ function Closing() {
             <div className="flex flex-col gap-2 sm:flex-row lg:justify-end">
               <Link
                 to="/developers"
-                className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
-                style={{
-                  background: 'linear-gradient(135deg, var(--accent), var(--color-iris-500))',
-                  boxShadow: 'var(--shadow-glow)',
-                  color: 'var(--on-accent)',
-                }}
+                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Developer overview
                 <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
