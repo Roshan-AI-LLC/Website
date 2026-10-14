@@ -97,7 +97,8 @@ export function SocialLinks({ className = '' }: { className?: string }) {
           rel="noopener noreferrer"
           aria-label={label}
           title={label}
-          className="group relative inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors duration-200 hover:text-primary"
+          // Phones: 40px tap targets; the 36px desktop size returns at sm.
+          className="group relative inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted transition-colors duration-200 hover:text-primary sm:h-9 sm:w-9"
         >
           <span
             aria-hidden

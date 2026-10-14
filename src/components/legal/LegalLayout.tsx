@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { ReactNode, type MouseEvent } from 'react';
+import { useLocation } from 'react-router-dom';
+import { jumpToSection } from '../../lib/utils';
 import { SectionLabel } from '../SectionLabel';
 
 export type LegalSection = {
@@ -18,6 +21,17 @@ type Props = {
 };
 
 export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: Props) {
+  const { pathname } = useLocation();
+
+  // Phones: fold the Contents list before scrolling, so the jump lands on the
+  // heading rather than where it sat while the open list pushed it down.
+  const jumpFromContents = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    const contents = event.currentTarget.closest('details');
+    jumpToSection(event, id, () => {
+      if (contents) contents.open = false;
+    });
+  };
+
   return (
     <>
       <section className="relative isolate overflow-hidden pt-32 pb-12 sm:pt-40 sm:pb-16">
@@ -33,16 +47,16 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
           >
             <SectionLabel>{eyebrow}</SectionLabel>
 
-            <h1 className="mt-5 font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[2.6rem]">
+            <h1 className="mt-3 font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[2.6rem]">
               {title}
             </h1>
 
-            <p className="mt-3 text-[0.86rem] text-muted">
+            <p className="mt-2 text-[0.8rem] text-muted sm:mt-3 sm:text-[0.86rem]">
               Effective {effectiveDate} · Roshan AI LLC, Arizona, USA
             </p>
 
             <div
-              className="mt-6 rounded-2xl border px-4 py-3 text-[0.82rem]"
+              className="mt-4 rounded-2xl border px-4 py-3 text-[0.8rem] sm:mt-6 sm:text-[0.82rem]"
               style={{
                 borderColor: 'color-mix(in oklab, var(--accent-warm) 35%, transparent)',
                 background: 'color-mix(in oklab, var(--accent-warm) 8%, transparent)',
@@ -61,19 +75,47 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               .
             </div>
 
-            <div className="mt-8 text-[1rem] font-light leading-relaxed text-secondary">
+            <div className="mt-5 text-[0.92rem] font-light leading-relaxed text-secondary sm:mt-8 sm:text-[1rem]">
               {intro}
             </div>
           </motion.div>
         </div>
       </section>
 
-      <section className="relative pb-24">
+      <section className="mobile-native-section relative pb-24">
         <div className="mx-auto max-w-3xl px-5 sm:px-8">
-          {/* Table of contents */}
+          {/* Table of contents. Phones: folded behind its "Contents" label so
+              the document starts on screen one; always open from sm up. */}
           <nav
             aria-label="Table of contents"
-            className="glass mb-10 rounded-2xl p-5"
+            className="glass mb-6 rounded-2xl sm:hidden"
+          >
+            <details className="group">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary [&::-webkit-details-marker]:hidden">
+                Contents
+                <ChevronDown size={16} className="shrink-0 text-accent transition-transform duration-200 group-open:rotate-180" />
+              </summary>
+              <ol className="border-t border-subtle px-2 py-1.5 text-[0.88rem]">
+                {sections.map((s, i) => (
+                  <li key={s.id}>
+                    <a
+                      href={`${pathname}#${s.id}`}
+                      onClick={(event) => jumpFromContents(event, s.id)}
+                      className="flex min-h-10 items-center gap-2.5 rounded-lg px-2 text-secondary transition hover:text-accent"
+                    >
+                      <span className="font-mono text-[0.72rem] text-muted">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span>{s.heading}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </nav>
+          <nav
+            aria-label="Table of contents"
+            className="glass mb-10 hidden rounded-2xl p-5 sm:block"
           >
             <div className="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary">
               Contents
@@ -82,7 +124,8 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               {sections.map((s, i) => (
                 <li key={s.id}>
                   <a
-                    href={`#${s.id}`}
+                    href={`${pathname}#${s.id}`}
+                    onClick={(event) => jumpToSection(event, s.id)}
                     className="flex items-baseline gap-2 text-secondary transition hover:text-accent"
                   >
                     <span className="font-mono text-[0.72rem] text-muted">
@@ -95,12 +138,14 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
             </ol>
           </nav>
 
-          <div className="space-y-12">
+          <div className="space-y-8 sm:space-y-12">
             {sections.map((s, i) => (
+              // Phones already reserve the nav height via html scroll-padding-top,
+              // so the extra anchor offset only applies from sm up.
               <article
                 key={s.id}
                 id={s.id}
-                className="scroll-mt-32"
+                className="scroll-mt-3 sm:scroll-mt-32"
               >
                 <div className="flex items-baseline gap-3">
                   <span className="font-mono text-[0.78rem] text-muted">
@@ -110,7 +155,7 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
                     {s.heading}
                   </h2>
                 </div>
-                <div className="mt-3 space-y-3 text-[0.96rem] font-light leading-relaxed text-secondary">
+                <div className="mt-2 space-y-2.5 text-[0.9rem] font-light leading-[1.6] text-secondary sm:mt-3 sm:space-y-3 sm:text-[0.96rem] sm:leading-relaxed">
                   {s.body}
                 </div>
               </article>

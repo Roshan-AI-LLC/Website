@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Clock, Network, Radio } from 'lucide-react';
+import { Clock, FileSearch, Network } from 'lucide-react';
 import type { ElementType } from 'react';
 import { SectionLabel } from '../SectionLabel';
 
@@ -7,17 +7,17 @@ const features: { icon: ElementType; title: string; desc: string }[] = [
   {
     icon: Network,
     title: 'Graph view',
-    desc: 'Patient-specific concepts, persistence tiers, and measured edge types in one view.',
+    desc: 'Concept, action and beat nodes, joined by typed relations.',
   },
   {
-    icon: Radio,
-    title: 'Signal evidence',
-    desc: 'Open the exact waveform windows that activated any concept node.',
+    icon: FileSearch,
+    title: 'Evidence',
+    desc: 'Open the episodes, actions or beats behind any edge.',
   },
   {
     icon: Clock,
     title: 'Patient timeline',
-    desc: 'Trace concept density across the ICU stay and jump to a moment in time.',
+    desc: 'Concept episodes and clinician actions across the case.',
   },
 ];
 
@@ -33,19 +33,21 @@ export function FeatureColumns() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-3xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
             >
               Three panels, one{' '}
               <span className="gradient-text">reasoning chain.</span>
             </motion.h2>
           </div>
           <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-right sm:text-[0.9rem]">
-            Move from clinical structure to the source signals that substantiate it.
+            From the graph down to the events behind each edge.
           </p>
         </div>
 
-        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
-          <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
+        {/* Phones: one card of divided rows (icon tile, title, line); step
+            numbers hidden. BreadthGrid keeps this page's one swipe rail. */}
+        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          <div className="grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -55,15 +57,15 @@ export function FeatureColumns() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex gap-3 px-4 py-4 sm:px-5 sm:py-5 md:block"
+                  className="flex gap-3 px-4 py-3 sm:px-5 sm:py-5 md:block"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent sm:h-9 sm:w-9">
                     <Icon size={17} strokeWidth={1.8} />
                   </span>
                   <div className="min-w-0 md:mt-4">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[0.62rem] font-semibold tracking-[0.12em] text-muted">0{index + 1}</span>
-                      <h3 className="text-[0.98rem] font-semibold tracking-[-0.01em]">{feature.title}</h3>
+                      <span className="hidden font-mono text-[0.62rem] font-semibold tracking-[0.12em] text-muted sm:inline">0{index + 1}</span>
+                      <h3 className="text-[0.92rem] font-semibold tracking-[-0.01em] sm:text-[0.98rem]">{feature.title}</h3>
                     </div>
                     <p className="mt-1 text-[0.8rem] leading-relaxed text-secondary sm:text-[0.84rem]">{feature.desc}</p>
                   </div>

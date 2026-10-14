@@ -10,36 +10,32 @@ type StageId = 'note' | 'concepts' | 'output';
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
+const STAGE_TITLE_CLASS =
+  'max-w-sm font-display text-[1.15rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2rem]';
+
 const stages: {
   id: StageId;
   label: string;
   kicker: string;
   title: string;
-  description: string;
 }[] = [
   {
     id: 'note',
     label: 'Clinical note',
     kicker: '01 · input',
-    title: 'Start with the note, not a black box.',
-    description:
-      'ShifaMind begins with the language clinicians already use in the workflow.',
+    title: 'Start with the note.',
   },
   {
     id: 'concepts',
     label: 'Concept evidence',
     kicker: '02 · grounding',
-    title: 'Surface the concepts that carry the decision.',
-    description:
-      'The model maps relevant phrases to clinical concepts and preserves the supporting evidence.',
+    title: 'Find the clinical concepts.',
   },
   {
     id: 'output',
     label: 'Ranked output',
     kicker: '03 · prediction',
-    title: 'Return an output with its trail intact.',
-    description:
-      'Each ranked code remains connected to the concepts and source phrases that support it.',
+    title: 'Return the code, with its evidence.',
   },
 ];
 
@@ -56,14 +52,10 @@ export function ShifaMindProof() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <SectionLabel>Evidence field</SectionLabel>
-          <h2 className="mt-3 text-balance font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-[3rem]">
+          <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-[3rem]">
             See the evidence behind{' '}
             <span className="gradient-text">the output.</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-pretty text-[0.92rem] leading-relaxed text-secondary sm:mt-4 sm:text-[1.05rem]">
-            ShifaMind does not just rank a code. It preserves the clinical concepts
-            and note-level evidence that make the prediction defensible.
-          </p>
         </div>
 
         <motion.div
@@ -71,7 +63,7 @@ export function ShifaMindProof() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: reducedMotion ? 0 : 0.6, ease: EASE }}
-          className="glass relative mt-8 overflow-hidden rounded-[1.5rem] sm:mt-12 sm:rounded-[2rem]"
+          className="glass relative mt-6 overflow-hidden rounded-2xl sm:mt-12 sm:rounded-[2rem]"
         >
           <div
             aria-hidden
@@ -82,8 +74,9 @@ export function ShifaMindProof() {
             }}
           />
 
-          <div className="relative border-b border-subtle px-3.5 py-3.5 sm:px-6 sm:py-5">
-            <div className="flex items-center justify-between gap-3 sm:flex-row sm:justify-between">
+          {/* Phones: the trace label row is hidden and the stage tabs lead the card. */}
+          <div className="relative border-b border-subtle px-2.5 py-2.5 sm:px-6 sm:py-5">
+            <div className="hidden items-center justify-between gap-3 sm:flex sm:flex-row sm:justify-between">
               <div className="flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-secondary">
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-soft text-accent">
                   <Network size={14} strokeWidth={2} />
@@ -97,7 +90,7 @@ export function ShifaMindProof() {
             </div>
 
             <div
-              className="mt-3 grid grid-cols-3 gap-1 rounded-xl border border-subtle bg-glass p-1 sm:mt-4 sm:rounded-2xl"
+              className="grid grid-cols-3 gap-1 rounded-xl border border-subtle bg-glass p-1 sm:mt-4 sm:rounded-2xl"
               role="tablist"
               aria-label="ShifaMind proof stages"
             >
@@ -112,7 +105,7 @@ export function ShifaMindProof() {
                     aria-controls="shifamind-proof-panel"
                     id={`shifamind-stage-${item.id}`}
                     onClick={() => setActiveStage(item.id)}
-                    className="relative min-w-0 rounded-lg px-1.5 py-2 text-center transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)] sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-left"
+                    className="relative min-h-10 min-w-0 rounded-lg px-1.5 py-1.5 text-center transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)] sm:min-h-auto sm:rounded-xl sm:px-3 sm:py-2.5 sm:text-left"
                     style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)' }}
                   >
                     {active && (
@@ -122,10 +115,11 @@ export function ShifaMindProof() {
                         transition={{ duration: reducedMotion ? 0 : 0.28, ease: EASE }}
                       />
                     )}
-                    <span className="relative block truncate text-[0.54rem] font-semibold uppercase tracking-[0.08em] text-muted sm:text-[0.64rem]">
+                    {/* Phones: no step number, and the label wraps instead of truncating. */}
+                    <span className="relative hidden truncate text-[0.54rem] font-semibold uppercase tracking-[0.08em] text-muted sm:block sm:text-[0.64rem]">
                       0{index + 1}
                     </span>
-                    <span className="relative mt-0.5 block truncate text-[0.65rem] font-semibold sm:text-[0.82rem]">
+                    <span className="relative block text-[0.72rem] font-semibold leading-tight sm:mt-0.5 sm:truncate sm:text-[0.82rem] sm:leading-[inherit]">
                       {item.label}
                     </span>
                   </button>
@@ -139,8 +133,22 @@ export function ShifaMindProof() {
               id="shifamind-proof-panel"
               role="tabpanel"
               aria-labelledby={`shifamind-stage-${activeStage}`}
-              className="border-b border-subtle p-4 sm:p-7 lg:border-b-0 lg:border-r lg:p-8"
+              className="grid grid-cols-1 border-b border-subtle p-4 sm:block sm:p-7 lg:border-b-0 lg:border-r lg:p-8"
             >
+              {/* Phones: invisible copies of every stage share the panel's one
+                  grid cell, so it holds the tallest stage's height and the
+                  card below stays put on each tab change. Gone from sm up. */}
+              {stages.map((item) => (
+                <div key={item.id} aria-hidden className="invisible col-start-1 row-start-1 sm:hidden">
+                  <div className={STAGE_TITLE_CLASS}>{item.title}</div>
+                  <StageDetail
+                    stage={item.id}
+                    evidence={primaryCode.evidence}
+                    concepts={primaryCode.concepts}
+                    code={primaryCode}
+                  />
+                </div>
+              ))}
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={activeStage}
@@ -148,56 +156,53 @@ export function ShifaMindProof() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={reducedMotion ? undefined : { opacity: 0, y: -8 }}
                   transition={{ duration: reducedMotion ? 0 : 0.28, ease: EASE }}
+                  className="col-start-1 row-start-1"
                 >
-                  <div className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-accent">
+                  <div className="hidden text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-accent sm:block">
                     {stage.kicker}
                   </div>
-                  <h3 className="mt-2.5 max-w-sm font-display text-[1.42rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2rem]">
+                  <h3 className={STAGE_TITLE_CLASS}>
                     {stage.title}
                   </h3>
-                  <p className="mt-2.5 max-w-md text-[0.86rem] leading-relaxed text-secondary sm:mt-3 sm:text-[0.92rem]">
-                    {stage.description}
-                  </p>
 
-                  <div className="hidden sm:block">
-                    <StageDetail
-                      stage={activeStage}
-                      evidence={primaryCode.evidence}
-                      concepts={primaryCode.concepts}
-                      code={primaryCode}
-                    />
-                  </div>
-                  <details className="group mt-4 rounded-xl border border-subtle bg-glass px-3 py-2.5 sm:hidden">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.74rem] font-semibold text-accent [&::-webkit-details-marker]:hidden">
-                      View {stage.label.toLowerCase()} detail
-                      <ChevronDown size={15} className="transition-transform duration-200 group-open:rotate-180" />
-                    </summary>
-                    <div className="pb-0.5">
-                      <StageDetail
-                        stage={activeStage}
-                        evidence={primaryCode.evidence}
-                        concepts={primaryCode.concepts}
-                        code={primaryCode}
-                      />
-                    </div>
-                  </details>
+                  {/* Shown on every screen: on phones the stage detail is the
+                      open view and the console below is the collapsed one. */}
+                  <StageDetail
+                    stage={activeStage}
+                    evidence={primaryCode.evidence}
+                    concepts={primaryCode.concepts}
+                    code={primaryCode}
+                  />
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            <div className="min-w-0 p-3.5 sm:p-7 lg:p-8">
-              <EvidenceField activeIndex={activeIndex} reducedMotion={reducedMotion} />
+            <div className="min-w-0 px-4 py-3 sm:p-7 lg:p-8">
+              <div className="hidden sm:block">
+                <EvidenceField activeIndex={activeIndex} reducedMotion={reducedMotion} />
+              </div>
+              {/* Phones: the console collapses behind its own name; it still
+                  follows the active stage when opened. */}
+              <details className="group sm:hidden">
+                <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-subtle bg-glass px-3 text-[0.74rem] font-semibold text-accent [&::-webkit-details-marker]:hidden">
+                  Clinical reasoning console
+                  <ChevronDown size={15} className="shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                </summary>
+                <div className="pt-2.5">
+                  <EvidenceField activeIndex={activeIndex} reducedMotion={reducedMotion} compact />
+                </div>
+              </details>
             </div>
           </div>
 
-          <div className="relative flex flex-col gap-2 border-t border-subtle px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-5">
-            <p className="max-w-2xl text-[0.68rem] leading-relaxed text-muted sm:text-[0.72rem]">
-              Illustrative, hand-curated scenario only. No patient data or live
-              inference is shown in this proof trace.
+          {/* Phones: just the disclaimer; the hero and benchmark already link to ShifaMind. */}
+          <div className="relative flex flex-col gap-2 border-t border-subtle px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-7 sm:py-5">
+            <p className="max-w-2xl text-[0.72rem] leading-relaxed text-muted sm:text-[0.72rem]">
+              Illustrative example. No patient data.
             </p>
             <Link
               to="/products/shifamind"
-              className="group inline-flex shrink-0 items-center gap-1.5 text-[0.8rem] font-semibold text-accent transition hover:text-primary"
+              className="group hidden shrink-0 items-center gap-1.5 text-[0.8rem] font-semibold text-accent transition hover:text-primary sm:inline-flex"
             >
               Explore ShifaMind
               <ArrowUpRight
@@ -225,7 +230,7 @@ function StageDetail({
 }) {
   if (stage === 'note') {
     return (
-      <div className="mt-5 rounded-2xl border border-subtle bg-elev p-3.5 sm:mt-7 sm:p-5">
+      <div className="mt-3 rounded-xl border border-subtle bg-elev p-3 sm:mt-7 sm:rounded-2xl sm:p-5">
         <div className="flex items-center justify-between gap-3 text-[0.64rem] font-semibold uppercase tracking-[0.14em] text-muted">
           <span className="inline-flex items-center gap-1.5">
             <FileText size={12} />
@@ -233,7 +238,7 @@ function StageDetail({
           </span>
           <span>Example</span>
         </div>
-        <p className="mt-3 text-[0.84rem] leading-relaxed text-secondary sm:mt-4 sm:text-[0.9rem]">
+        <p className="mt-2 text-[0.84rem] leading-relaxed text-secondary sm:mt-4 sm:text-[0.9rem]">
           “{evidence[0]},” with “{evidence[1]}” and “{evidence[2]}” captured
           as clinically relevant signals.
         </p>
@@ -243,17 +248,19 @@ function StageDetail({
 
   if (stage === 'concepts') {
     return (
-      <div className="mt-5 sm:mt-7">
+      <div className="mt-3 sm:mt-7">
         <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
           Activated clinical concepts
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-1.5 sm:gap-2">
+        <div className="mt-2 grid grid-cols-2 gap-1.5 sm:mt-3 sm:gap-2">
           {concepts.slice(0, 4).map((concept) => (
             <div
               key={concept.label}
               className="rounded-xl border border-subtle bg-glass-strong px-2.5 py-2 sm:px-3 sm:py-2.5"
             >
-              <div className="truncate font-mono text-[0.68rem] text-secondary">
+              {/* Phones: long names wrap instead of truncating; truncation
+                  returns at sm. */}
+              <div className="font-mono text-[0.68rem] leading-snug text-secondary sm:truncate sm:leading-[inherit]">
                 {concept.label.replace(/_/g, ' ')}
               </div>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[color:var(--border-subtle)]">
@@ -272,7 +279,7 @@ function StageDetail({
   }
 
   return (
-      <div className="mt-5 rounded-2xl border border-subtle bg-glass-strong p-3.5 sm:mt-7 sm:p-5">
+      <div className="mt-3 rounded-xl border border-subtle bg-glass-strong p-3 sm:mt-7 sm:rounded-2xl sm:p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
@@ -296,45 +303,62 @@ function StageDetail({
       </div>
       <div className="mt-3 flex items-center gap-2 border-t border-subtle pt-3 text-[0.7rem] font-medium text-secondary sm:mt-4 sm:text-[0.76rem]">
         <Check size={14} className="text-accent" strokeWidth={2.5} />
-        Concepts and source evidence remain linked to the result.
+        Evidence stays linked to the code.
       </div>
     </div>
   );
 }
 
+/**
+ * `compact` is the phone copy inside the console <details>: no outer frame,
+ * no title bar (the summary already names it) and no stage strip (the tabs
+ * above already show progress).
+ */
 function EvidenceField({
   activeIndex,
   reducedMotion,
+  compact = false,
 }: {
   activeIndex: number;
   reducedMotion: boolean;
+  compact?: boolean;
 }) {
   const conceptsActive = activeIndex >= 1;
   const outputActive = activeIndex >= 2;
   const duration = reducedMotion ? 0 : 0.35;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-subtle bg-elev p-2.5 sm:rounded-3xl sm:p-4">
-      <div className="flex items-center justify-between gap-2 rounded-xl border border-subtle bg-glass-strong px-2.5 py-2 sm:px-3 sm:py-2.5">
-        <div className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-accent-soft text-accent">
-            <Network size={13} strokeWidth={2} />
-          </span>
-          <div>
-            <div className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-muted">
-              Evidence field
-            </div>
-            <div className="mt-0.5 text-[0.72rem] font-semibold text-secondary">
-              Clinical reasoning console
+    <div
+      className={
+        compact
+          ? 'relative'
+          : 'relative overflow-hidden rounded-2xl border border-subtle bg-elev p-2.5 sm:rounded-3xl sm:p-4'
+      }
+    >
+      {!compact && (
+        <div className="flex items-center justify-between gap-2 rounded-xl border border-subtle bg-glass-strong px-2.5 py-2 sm:px-3 sm:py-2.5">
+          <div className="flex items-center gap-2">
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-accent-soft text-accent">
+              <Network size={13} strokeWidth={2} />
+            </span>
+            <div>
+              <div className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-muted">
+                Evidence field
+              </div>
+              <div className="mt-0.5 text-[0.72rem] font-semibold text-secondary">
+                Clinical reasoning console
+              </div>
             </div>
           </div>
+          <span className="rounded-md border border-subtle px-1.5 py-1 font-mono text-[0.56rem] text-accent sm:px-2 sm:text-[0.6rem]">
+            TRACE 24.08
+          </span>
         </div>
-        <span className="rounded-md border border-subtle px-1.5 py-1 font-mono text-[0.56rem] text-accent sm:px-2 sm:text-[0.6rem]">
-          TRACE 24.08
-        </span>
-      </div>
+      )}
 
-      <div className="mt-2.5 grid gap-2.5 md:grid-cols-[0.86fr_1.14fr] sm:mt-3 sm:gap-3">
+      <div
+        className={`grid gap-2.5 md:grid-cols-[0.86fr_1.14fr] sm:gap-3 ${compact ? '' : 'mt-2.5 sm:mt-3'}`}
+      >
         <motion.div
           initial={false}
           animate={{ opacity: 1, borderColor: activeIndex === 0 ? 'var(--accent)' : 'var(--border-subtle)' }}
@@ -393,16 +417,18 @@ function EvidenceField({
         </div>
       </div>
 
-      <div className="mt-2.5 grid grid-cols-3 gap-1.5 border-t border-subtle pt-2.5 sm:mt-3 sm:gap-2 sm:pt-3">
-        {['Ingest note', 'Ground concepts', 'Return evidence'].map((label, index) => (
-          <div key={label} className="min-w-0 rounded-lg bg-glass px-1.5 py-1.5 text-center sm:px-2 sm:py-2">
-            <div className={`mx-auto h-1 w-8 rounded-full ${activeIndex >= index ? 'bg-accent' : 'bg-[color:var(--border-subtle)]'}`} />
-            <div className="mt-1.5 truncate text-[0.56rem] font-semibold uppercase tracking-[0.08em] text-muted sm:text-[0.6rem]">
-              {label}
+      {!compact && (
+        <div className="mt-2.5 grid grid-cols-3 gap-1.5 border-t border-subtle pt-2.5 sm:mt-3 sm:gap-2 sm:pt-3">
+          {['Ingest note', 'Ground concepts', 'Return evidence'].map((label, index) => (
+            <div key={label} className="min-w-0 rounded-lg bg-glass px-1.5 py-1.5 text-center sm:px-2 sm:py-2">
+              <div className={`mx-auto h-1 w-8 rounded-full ${activeIndex >= index ? 'bg-accent' : 'bg-[color:var(--border-subtle)]'}`} />
+              <div className="mt-1.5 truncate text-[0.56rem] font-semibold uppercase tracking-[0.08em] text-muted sm:text-[0.6rem]">
+                {label}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

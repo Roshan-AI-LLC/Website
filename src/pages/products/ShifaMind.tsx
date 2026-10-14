@@ -10,24 +10,22 @@ import { ComplianceStrip } from '../../components/shifamind/ComplianceStrip';
 import { FAQ } from '../../components/shifamind/FAQ';
 import { ClosingCTA } from '../../components/shifamind/ClosingCTA';
 import { SectionLabel } from '../../components/SectionLabel';
+import { pct, SHIFAMIND, TASK } from '../../data/shifamindPaper';
+
+// Shared by the meta description and og:description. Keep under 160 characters.
+const DESCRIPTION = `Concept-grounded ICD-10 coding with the evidence behind every code. ${pct(SHIFAMIND.aucMicro)} micro-AUROC across all ${TASK.codes.toLocaleString('en-US')} MIMIC-IV codes.`;
 
 export default function ShifaMindProduct() {
   return (
     <>
       <Head>
         <title>ShifaMind: Concept-grounded ICD-10 coding | Roshan AI</title>
-        <meta
-          name="description"
-          content="ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. Built for clinicians and coders."
-        />
+        <meta name="description" content={DESCRIPTION} />
         <meta
           property="og:title"
           content="ShifaMind: concept-grounded ICD-10 coding for clinicians and coders."
         />
-        <meta
-          property="og:description"
-          content="ICD-10 predictions with the clinical concepts and evidence behind every code."
-        />
+        <meta property="og:description" content={DESCRIPTION} />
         <link rel="canonical" href="https://roshan-ai.com/products/shifamind" />
       </Head>
 
@@ -53,7 +51,7 @@ export default function ShifaMindProduct() {
 
 function DemoSection() {
   return (
-    <section className="relative py-10 sm:py-14">
+    <section className="mobile-native-section relative py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -61,17 +59,16 @@ function DemoSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-5 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-4 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <SectionLabel>Try it</SectionLabel>
-              <h2 className="mt-3 text-balance font-display text-[1.55rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
+              <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
                 See ShifaMind code a clinical note.
               </h2>
             </div>
-            <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
-              Pick a scenario, run the coder, and inspect the concepts behind
-              every code. Prerendered for the demo; the platform runs against
-              your own notes.
+            {/* Phones: the scenario tabs and Predict button already say this; the line returns at sm. */}
+            <p className="hidden max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">
+              Pick a scenario and see the concepts behind every code.
             </p>
           </div>
 

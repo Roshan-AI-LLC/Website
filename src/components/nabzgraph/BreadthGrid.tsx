@@ -1,37 +1,39 @@
 import { motion } from 'framer-motion';
 import { SectionLabel } from '../SectionLabel';
 
-type Cell = { label: string; status: 'live' | 'planned' };
+// 'built': in the research model described in the preprint (not a deployed
+// product); 'planned': on the roadmap.
+type Cell = { label: string; status: 'built' | 'planned' };
 
 const groups: { title: string; cells: Cell[] }[] = [
   {
-    title: 'Modalities',
+    title: 'Data',
     cells: [
-      { label: 'ECG', status: 'live' },
-      { label: 'PPG', status: 'live' },
-      { label: 'Arterial BP', status: 'live' },
-      { label: 'Respiration', status: 'live' },
-      { label: 'SpO₂', status: 'planned' },
-    ],
-  },
-  {
-    title: 'SNOMED concepts',
-    cells: [
-      { label: 'Tachycardia · bradycardia (ECG)', status: 'live' },
-      { label: 'Tachycardia (PPG)', status: 'live' },
-      { label: 'Tachypnea · bradypnea (RESP)', status: 'live' },
-      { label: 'Hypotension · hypertension (ABP)', status: 'live' },
-      { label: 'ICD-10 concept extension', status: 'planned' },
-    ],
-  },
-  {
-    title: 'Edge & deployment',
-    cells: [
-      { label: 'Temporal edges', status: 'live' },
-      { label: 'Co-occurrence edges', status: 'live' },
-      { label: 'Granger edges', status: 'live' },
-      { label: 'Retrospective analysis', status: 'live' },
+      { label: 'VitalDB surgical cases', status: 'built' },
+      { label: 'MIMIC-IV ICU records', status: 'built' },
+      { label: 'Drug & ventilator actions', status: 'built' },
+      { label: 'Retrospective analysis', status: 'built' },
       { label: 'Real-time streaming', status: 'planned' },
+    ],
+  },
+  {
+    title: 'Concepts',
+    cells: [
+      { label: 'Tachycardia · bradycardia', status: 'built' },
+      { label: 'Hypotension · hypertension', status: 'built' },
+      { label: 'Tachypnea · bradypnea', status: 'built' },
+      { label: 'Hypercapnia · hypocapnia', status: 'built' },
+      { label: 'Beat-level concepts', status: 'built' },
+    ],
+  },
+  {
+    title: 'Relations',
+    cells: [
+      { label: 'Response', status: 'built' },
+      { label: 'Policy', status: 'built' },
+      { label: 'Association', status: 'built' },
+      { label: 'Mechanistic', status: 'built' },
+      { label: 'Evidence on every edge', status: 'built' },
     ],
   },
 ];
@@ -46,12 +48,13 @@ export function BreadthGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-3xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+          className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
         >
-          Coverage across modalities, concepts, and edge types.
+          Coverage across data, concepts, and relations.
         </motion.h2>
 
-        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        {/* Phones: this page's one swipe rail (three peer lists). */}
+        <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {groups.map((group, index) => (
               <motion.div
@@ -66,16 +69,16 @@ export function BreadthGrid() {
                 <ul className="mt-3 space-y-2">
                   {group.cells.map((cell) => (
                     <li key={cell.label} className="flex items-center justify-between gap-3 text-[0.78rem] sm:text-[0.84rem]">
-                      <span className={cell.status === 'live' ? 'text-primary' : 'text-muted'}>{cell.label}</span>
+                      <span className={cell.status === 'built' ? 'text-primary' : 'text-muted'}>{cell.label}</span>
                       <span
                         className="shrink-0 rounded-full px-2 py-0.5 text-[0.56rem] font-semibold uppercase tracking-[0.08em]"
                         style={
-                          cell.status === 'live'
+                          cell.status === 'built'
                             ? { background: 'var(--accent-soft)', color: 'var(--accent)' }
                             : { background: 'rgba(120, 145, 170, 0.1)', color: 'var(--color-violet-500)' }
                         }
                       >
-                        {cell.status === 'live' ? 'Live' : 'Roadmap'}
+                        {cell.status === 'built' ? 'Built' : 'Roadmap'}
                       </span>
                     </li>
                   ))}

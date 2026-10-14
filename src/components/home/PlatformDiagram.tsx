@@ -23,21 +23,21 @@ const layers: Layer[] = [
   {
     index: '01',
     title: 'Clinical ingestion',
-    description: 'Notes, signals, and workflow context enter a shared clinical data layer.',
+    description: 'Notes and signals in.',
     icon: DatabaseZap,
     signal: 'Input',
   },
   {
     index: '02',
     title: 'Concept grounding',
-    description: 'Clinical encoders map relevant information to interpretable concepts.',
+    description: 'Mapped to named clinical concepts.',
     icon: Network,
     signal: 'Reasoning',
   },
   {
     index: '03',
     title: 'Evidence-backed output',
-    description: 'Products return predictions with the concepts and source evidence intact.',
+    description: 'Predictions out, evidence attached.',
     icon: ShieldCheck,
     signal: 'Delivery',
   },
@@ -58,7 +58,7 @@ const products: Product[] = [
   },
   {
     name: 'Next products',
-    description: 'More clinical reasoning workflows on the same backbone',
+    description: 'More workflows on the same core',
     status: 'future',
   },
 ];
@@ -73,7 +73,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 
 export function PlatformDiagram() {
   return (
-    <section id="platform" className="relative py-14 sm:py-24">
+    <section id="platform" className="mobile-native-section relative py-14 sm:py-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <SectionLabel>Shared clinical infrastructure</SectionLabel>
@@ -82,16 +82,11 @@ export function PlatformDiagram() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="mt-3 text-balance font-display text-[1.85rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-[3rem]"
+            className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-[3rem]"
           >
             The product line compounds on{' '}
             <span className="gradient-text">one clinical core.</span>
           </motion.h2>
-          <p className="mx-auto mt-3 max-w-2xl text-pretty text-[0.92rem] leading-relaxed text-secondary sm:mt-4 sm:text-[1.05rem]">
-            Roshan AI does not build each workflow from scratch. The same
-            concept-grounded architecture turns clinical input into evidence-backed
-            outputs across a growing set of products.
-          </p>
         </div>
 
         <motion.div
@@ -99,7 +94,7 @@ export function PlatformDiagram() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.65, ease: EASE }}
-          className="glass relative mt-8 overflow-hidden rounded-[1.5rem] p-3 sm:mt-12 sm:rounded-[2rem] sm:p-6"
+          className="glass relative mt-6 overflow-hidden rounded-2xl sm:mt-12 sm:rounded-[2rem] sm:p-6"
         >
           <div
             aria-hidden
@@ -110,7 +105,10 @@ export function PlatformDiagram() {
             }}
           />
 
-          <div className="relative flex items-center justify-between gap-3 px-1 py-1.5 sm:px-3 sm:py-2">
+          {/* Phones: one card of divided rows (layers, products, what's next)
+              with no eyebrows, step numbers or arrows. The stacked cards
+              return at sm. */}
+          <div className="relative hidden items-center justify-between gap-3 px-1 py-1.5 sm:flex sm:px-3 sm:py-2">
             <div className="text-[0.66rem] font-semibold uppercase tracking-[0.15em] text-secondary">
               Reusable architecture
             </div>
@@ -120,20 +118,57 @@ export function PlatformDiagram() {
             </div>
           </div>
 
-          <div className="relative mt-2.5 grid gap-2 lg:mt-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-4">
+          <ol className="relative divide-y divide-[color:var(--border-subtle)] sm:hidden">
+            {layers.map((layer) => (
+              <LayerRow key={layer.index} layer={layer} />
+            ))}
+          </ol>
+
+          <div className="relative mt-2.5 hidden gap-2 sm:grid lg:mt-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-4">
             {layers.map((layer, index) => (
               <LayerCard key={layer.index} layer={layer} delay={index * 0.08} />
             ))}
           </div>
 
-          <div className="relative mt-3 rounded-2xl border border-subtle bg-elev p-3 sm:mt-6 sm:p-5">
+          <div className="relative border-t border-subtle sm:hidden">
+            <div className="px-4 pb-1 pt-3 text-[0.66rem] font-semibold uppercase tracking-[0.15em] text-muted">
+              Products powered by the core
+            </div>
+            <ul className="divide-y divide-[color:var(--border-subtle)]">
+              {products.map((product) => (
+                <li key={product.name}>
+                  <ProductRow product={product} />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* "In dev" is shown once beside the label instead of on each chip,
+              so all three chips fit on two lines. */}
+          <div className="relative border-t border-subtle px-4 py-3 sm:hidden">
+            <div className="flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
+              What compounds next
+              <span className="rounded-full border border-subtle px-1.5 py-px text-[0.6rem] tracking-[0.1em] text-[color:var(--color-violet-500)]">
+                In dev
+              </span>
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {nextCapabilities.map((capability) => (
+                <span
+                  key={capability}
+                  className="rounded-full border border-subtle bg-glass-strong px-2.5 py-1 text-[0.74rem] font-semibold text-secondary"
+                >
+                  {capability}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative mt-3 hidden rounded-2xl border border-subtle bg-elev p-3 sm:mt-6 sm:block sm:p-5">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <div>
                 <div className="text-[0.66rem] font-semibold uppercase tracking-[0.15em] text-muted">
                   Products powered by the core
-                </div>
-                <div className="mt-1 text-[0.78rem] text-secondary sm:text-[0.88rem]">
-                  One platform turns shared clinical reasoning into multiple workflows.
                 </div>
               </div>
               <div className="hidden h-px flex-1 bg-[color:var(--border-subtle)] sm:block" />
@@ -147,8 +182,8 @@ export function PlatformDiagram() {
           </div>
         </motion.div>
 
-        <div className="mt-4 grid gap-3 lg:mt-5 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-4">
-          <div className="rounded-2xl border border-subtle bg-glass px-4 py-3.5 sm:px-6 sm:py-4">
+        <div className="mt-3 grid gap-3 sm:mt-4 lg:mt-5 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-4">
+          <div className="hidden rounded-2xl border border-subtle bg-glass px-4 py-3.5 sm:block sm:px-6 sm:py-4">
             <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">
               What compounds next
             </div>
@@ -179,6 +214,51 @@ export function PlatformDiagram() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Phone layer row: icon, title and one line. */
+function LayerRow({ layer }: { layer: Layer }) {
+  const Icon = layer.icon;
+
+  return (
+    <li className="flex items-start gap-3 px-4 py-2.5">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+        <Icon size={16} strokeWidth={1.9} />
+      </span>
+      <div className="min-w-0">
+        <h3 className="font-display text-[0.92rem] font-semibold leading-snug tracking-[-0.01em]">
+          {layer.title}
+        </h3>
+        <p className="mt-0.5 text-[0.8rem] leading-snug text-secondary">{layer.description}</p>
+      </div>
+    </li>
+  );
+}
+
+/** Phone product row: name and status on one line, the description under it. */
+function ProductRow({ product }: { product: Product }) {
+  const body = (
+    <>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="text-[0.86rem] font-semibold text-primary">{product.name}</span>
+          <Status status={product.status} />
+        </div>
+        <p className="mt-0.5 text-[0.78rem] leading-snug text-secondary">{product.description}</p>
+      </div>
+      {product.href && <ArrowUpRight size={15} className="mt-0.5 shrink-0 text-accent" />}
+    </>
+  );
+
+  const className = 'flex items-start justify-between gap-3 px-4 py-2.5';
+
+  return product.href ? (
+    <Link to={product.href} className={className}>
+      {body}
+    </Link>
+  ) : (
+    <div className={className}>{body}</div>
   );
 }
 

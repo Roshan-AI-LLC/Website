@@ -25,23 +25,23 @@ export function PagePlaceholder({
         <div className="enter-fade-up">
           <SectionLabel>{status}</SectionLabel>
 
-          <p className="mt-6 text-[0.78rem] font-medium uppercase tracking-[0.16em] text-secondary">
+          <p className="mt-4 text-[0.78rem] font-medium uppercase tracking-[0.16em] text-secondary sm:mt-6">
             {eyebrow}
           </p>
 
-          <h1 className="mt-3 text-balance font-display text-[2.2rem] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-[3rem]">
+          <h1 className="mt-3 text-balance font-display text-[2rem] font-semibold leading-[1.05] tracking-[-0.025em] sm:text-[3rem]">
             {title}
           </h1>
 
           {description && (
-            <p className="mx-auto mt-5 max-w-xl text-[1rem] font-light leading-relaxed text-secondary">
+            <p className="mx-auto mt-3 max-w-xl text-[0.94rem] font-light leading-relaxed text-secondary sm:mt-5 sm:text-[1rem]">
               {description}
             </p>
           )}
 
           <Link
             to="/"
-            className="mt-10 inline-flex items-center gap-1.5 rounded-full border border-subtle bg-glass px-5 py-2.5 text-[0.88rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+            className="mt-7 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-subtle bg-glass px-5 py-2.5 text-[0.88rem] font-medium sm:mt-10 sm:min-h-0 text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
           >
             <ArrowLeft size={14} />
             Back to home

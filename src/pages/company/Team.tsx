@@ -57,11 +57,11 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>Team</SectionLabel>
-          <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The people building{' '}
             <span className="gradient-text">Roshan AI.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+          <p className="mt-3 max-w-2xl text-pretty text-[0.9rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
             We are early by design. The team works directly on the model, platform, and customer problems—without buffer layers.
           </p>
         </div>
@@ -72,23 +72,24 @@ function Hero() {
 
 function FounderBlock() {
   return (
-    <section className="relative py-10 sm:py-14">
+    <section className="mobile-native-section relative py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-2xl px-5 py-5 sm:rounded-3xl sm:px-7 sm:py-6"
+          className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">{founder.role}</div>
               <h2 className="mt-2 font-display text-[1.45rem] font-semibold tracking-[-0.03em] sm:text-[1.85rem]">{founder.name}</h2>
               <div className="mt-1 text-[0.8rem] text-secondary sm:text-[0.9rem]">{founder.oneLiner}</div>
               <p className="mt-3 max-w-2xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">{founder.bio}</p>
             </div>
-            <div className="flex flex-wrap gap-2 lg:w-40 lg:flex-col">
+            {/* Phones: the three links share one row; the wrapping pills return at sm. */}
+            <div className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:gap-2 lg:w-40 lg:flex-col">
               {founder.links.map((link) => {
                 const Icon = link.icon;
                 return (
@@ -97,11 +98,11 @@ function FounderBlock() {
                     href={link.href}
                     target={link.href.startsWith('http') ? '_blank' : undefined}
                     rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="group inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-subtle bg-glass px-4 text-[0.8rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
+                    className="group inline-flex min-h-10 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-2 text-[0.8rem] font-medium text-secondary transition hover:border-strong hover:text-primary sm:gap-2 sm:px-4"
                   >
                     <Icon size={14} strokeWidth={1.7} />
                     {link.label}
-                    <ArrowUpRight size={12} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    <ArrowUpRight size={12} className="hidden transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 sm:block" />
                   </a>
                 );
               })}
@@ -121,12 +122,13 @@ function BuildingTeam() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
             <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Building the team</div>
-            <h2 className="mt-2 max-w-2xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">We hire when the role is the bottleneck.</h2>
+            <h2 className="mt-2 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">We hire when the role is the bottleneck.</h2>
           </div>
-          <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-right sm:text-[0.9rem]">No filler hires. Bring a clear point of view on what you would ship and where you would take the platform.</p>
+          {/* Phones: eyebrow + heading only; the side line returns at sm. */}
+          <p className="hidden max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-right sm:text-[0.9rem]">No filler hires. Bring a clear point of view on what you would ship and where you would take the platform.</p>
         </div>
 
-        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {opportunities.map((opportunity, index) => (
               <motion.div
@@ -150,7 +152,7 @@ function BuildingTeam() {
 
         <a
           href={`mailto:${CONTACT_EMAIL}?subject=Joining%20Roshan%20AI`}
-          className="group mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-subtle bg-glass px-5 text-[0.84rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
+          className="group mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-subtle bg-glass px-5 text-[0.84rem] sm:mt-5 font-medium text-secondary transition hover:border-strong hover:text-primary"
         >
           Reach out: {CONTACT_EMAIL}
           <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

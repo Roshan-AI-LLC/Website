@@ -5,16 +5,18 @@ import { PLATFORM_URL } from '../../lib/config';
 
 export function ClosingCTA() {
   return (
-    <section className="relative py-12 sm:py-16">
+    <section className="mobile-native-section relative py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-2xl px-5 py-5 sm:rounded-3xl sm:px-7 sm:py-6"
+          className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          {/* Phones: one compact card; the buttons say what the side line
+              says, so it returns at sm and the buttons sit side by side. */}
+          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">
                 ShifaMind · ready to evaluate
@@ -23,17 +25,17 @@ export function ClosingCTA() {
                 Bring your notes.{' '}
                 <span className="gradient-text">See the concepts behind every code.</span>
               </h2>
-              <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
+              <p className="mt-2 hidden max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">
                 Try pasted notes today, or talk to us about an evaluation path for your workflow.
               </p>
             </div>
 
-            <div className="flex flex-col gap-2 sm:flex-row lg:justify-end">
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row lg:justify-end">
               <a
                 href={PLATFORM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
+                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-3 py-3 text-[0.84rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:gap-2 sm:px-5 sm:text-[0.88rem]"
               >
                 Try ShifaMind
                 <ArrowUpRight
@@ -43,7 +45,7 @@ export function ClosingCTA() {
               </a>
               <Link
                 to="/contact"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.88rem] font-medium text-secondary transition hover:border-strong hover:text-primary"
+                className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-3 py-3 text-[0.84rem] font-medium text-secondary transition hover:border-strong hover:text-primary sm:gap-2 sm:px-5 sm:text-[0.88rem]"
               >
                 Book a demo
                 <ArrowUpRight size={15} />

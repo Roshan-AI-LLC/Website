@@ -51,13 +51,15 @@ export function Nav() {
     >
       <div
         className={cn(
-          'nav-rail mx-auto flex max-w-6xl items-center justify-between rounded-2xl border px-4 py-2.5 backdrop-blur-xl sm:px-5',
+          // Phones: py-2 offsets the 40px menu button so the rail keeps its
+          // height; py-2.5 and the 36px button return at sm.
+          'nav-rail mx-auto flex max-w-6xl items-center justify-between rounded-2xl border px-4 py-2 backdrop-blur-xl sm:px-5 sm:py-2.5',
           scrolled ? 'nav-rail-scrolled' : 'border-transparent bg-transparent',
         )}
       >
         <Link
           to="/"
-          className="group inline-flex items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em]"
+          className="group inline-flex min-h-10 items-center gap-2.5 font-display text-[1rem] font-semibold tracking-[-0.015em] sm:min-h-0"
         >
           <CompanyMark size={30} />
           <span>
@@ -92,7 +94,7 @@ export function Nav() {
             href={PLATFORM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group hidden items-center gap-1.5 rounded-full border border-subtle bg-accent-soft px-4 py-1.5 text-[0.82rem] font-medium text-accent transition hover:border-strong sm:inline-flex"
+            className="group hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-subtle bg-accent-soft px-4 py-1.5 text-[0.82rem] font-medium text-accent transition hover:border-strong sm:inline-flex"
           >
             Sign in
             <ArrowUpRight
@@ -103,7 +105,7 @@ export function Nav() {
           </a>
 
           <button
-            className="inline-flex h-9 items-center gap-2 rounded-full border border-subtle bg-glass px-3 text-secondary transition hover:border-strong hover:text-primary md:hidden"
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-subtle bg-glass px-3 text-secondary transition hover:border-strong hover:text-primary sm:h-9 md:hidden"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
@@ -141,7 +143,9 @@ export function Nav() {
               <MobileGroup label="Company" items={companyItems} onClose={() => setOpen(false)} />
               <div className="mt-3 flex items-center justify-between border-t border-subtle pt-3">
                 <div className="flex items-center gap-2">
-                  <ThemeToggle />
+                  {/* Phones: 40px tap targets. max-sm overrides the toggle's own
+                      36px size without competing with it at 640-767px. */}
+                  <ThemeToggle className="max-sm:h-10 max-sm:w-10" />
                   <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-muted">
                     Appearance
                   </span>
@@ -150,7 +154,7 @@ export function Nav() {
                   href={PLATFORM_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-4 py-1.5 text-[0.82rem] font-medium text-accent"
+                  className="inline-flex min-h-10 items-center gap-1.5 rounded-full bg-accent-soft px-4 py-1.5 text-[0.82rem] font-medium text-accent sm:min-h-0"
                 >
                   Sign in
                   <ArrowUpRight size={14} strokeWidth={2} />

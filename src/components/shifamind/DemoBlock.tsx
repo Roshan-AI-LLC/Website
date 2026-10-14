@@ -49,7 +49,7 @@ export function DemoBlock() {
   };
 
   return (
-    <div className="glass relative overflow-hidden rounded-3xl">
+    <div className="glass relative overflow-hidden rounded-2xl sm:rounded-3xl">
       <TabBar
         scenarios={SCENARIOS}
         activeId={scenarioId}
@@ -58,13 +58,13 @@ export function DemoBlock() {
       />
 
       <div className="grid gap-0 lg:grid-cols-[1.05fr_1fr]">
-        <div className="border-b border-subtle p-4 sm:p-8 lg:border-b-0 lg:border-r">
+        <div className="border-b border-subtle px-4 py-3 sm:p-8 lg:border-b-0 lg:border-r">
           <details className="group lg:hidden">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-subtle bg-glass px-3 py-2.5 text-[0.78rem] font-semibold text-accent [&::-webkit-details-marker]:hidden">
+            <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-subtle bg-glass px-3 py-2.5 text-[0.78rem] font-semibold text-accent sm:min-h-0 [&::-webkit-details-marker]:hidden">
               Review clinical note · {scenario.note.length} sections
               <ChevronDown size={16} className="transition-transform duration-200 group-open:rotate-180" />
             </summary>
-            <div className="pt-4"><NoteView scenario={scenario} state={state} activeCode={activeCode} /></div>
+            <div className="pt-3 sm:pt-4"><NoteView scenario={scenario} state={state} activeCode={activeCode} /></div>
           </details>
           <div className="hidden lg:block"><NoteView scenario={scenario} state={state} activeCode={activeCode} /></div>
         </div>
@@ -98,15 +98,16 @@ function TabBar({
 }) {
   return (
     <div className="border-b border-subtle">
-      <div className="flex flex-nowrap items-center gap-1 overflow-x-auto px-3 pt-3 no-scrollbar sm:flex-wrap sm:px-6 sm:pt-4">
+      <div className="flex flex-nowrap items-center gap-1 overflow-x-auto px-3 pt-2 no-scrollbar sm:flex-wrap sm:px-6 sm:pt-4">
         {scenarios.map((s) => {
           const active = s.id === activeId;
           return (
+            // Phones: 40px-tall tabs for the thumb; sm restores the slim pills.
             <button
               key={s.id}
               type="button"
               onClick={() => onSelect(s.id)}
-              className="relative shrink-0 rounded-full px-3 py-1.5 text-[0.78rem] font-medium transition-colors sm:px-4 sm:text-[0.84rem]"
+              className="relative min-h-10 shrink-0 rounded-full px-3 py-2.5 text-[0.78rem] font-medium transition-colors sm:min-h-0 sm:px-4 sm:py-1.5 sm:text-[0.84rem]"
               style={{
                 color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
               }}
@@ -124,9 +125,11 @@ function TabBar({
           );
         })}
       </div>
-      <div className="flex items-center gap-2 px-6 pb-3 pt-2 text-[0.76rem] text-muted sm:px-8">
-        <span className="font-mono uppercase tracking-[0.14em]">scenario</span>
-        <span aria-hidden>·</span>
+      {/* Phones: the sub-label aligns with the tabs and drops its "scenario"
+          eyebrow so it stays on one line. */}
+      <div className="flex items-center gap-2 px-4 pb-2.5 pt-1 text-[0.76rem] text-muted sm:px-8 sm:pb-3 sm:pt-2">
+        <span className="hidden font-mono uppercase tracking-[0.14em] sm:inline">scenario</span>
+        <span aria-hidden className="hidden sm:inline">·</span>
         <span>{subLabel}</span>
       </div>
     </div>
@@ -159,25 +162,27 @@ function NoteView({
 
   return (
     <div>
-      <div className="flex items-center justify-between text-[0.72rem] uppercase tracking-[0.14em] text-muted">
+      {/* Phones only ever see the note inside the details, whose summary
+          already names it and counts its sections. */}
+      <div className="hidden items-center justify-between text-[0.72rem] uppercase tracking-[0.14em] text-muted sm:flex">
         <span className="inline-flex items-center gap-2 font-mono">
           <span>clinical note</span>
         </span>
         <span>{scenario.note.length} sections</span>
       </div>
 
-      <div className="mt-5 space-y-5">
+      <div className="space-y-4 sm:mt-5 sm:space-y-5">
         {scenario.note.map((section) => (
           <div key={section.heading}>
             <h4
-              className={`text-[0.94rem] font-semibold tracking-[-0.01em] transition-colors duration-300 ${
+              className={`text-[0.9rem] font-semibold tracking-[-0.01em] transition-colors duration-300 sm:text-[0.94rem] ${
                 state === 'predicting' ? 'text-muted' : 'text-primary'
               }`}
             >
               {section.heading}
             </h4>
             <p
-              className={`mt-1.5 text-[0.92rem] leading-relaxed transition-colors duration-300 ${
+              className={`mt-1 text-[0.86rem] leading-relaxed transition-colors duration-300 sm:mt-1.5 sm:text-[0.92rem] ${
                 state === 'predicting' ? 'text-muted' : 'text-secondary'
               }`}
             >
@@ -296,18 +301,19 @@ function ResultsPane({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="flex flex-1 flex-col items-center justify-center py-10 text-center"
+            className="flex flex-1 flex-col items-center justify-center py-4 text-center sm:py-10"
           >
+            {/* Phones: heading and button carry the idle state; the tagline returns at sm. */}
             <h3 className="font-display text-[1.4rem] font-semibold tracking-[-0.015em] sm:text-[1.6rem]">
               Let's code this note
             </h3>
-            <p className="mt-2 max-w-xs text-[0.88rem] text-secondary">
+            <p className="mt-2 hidden max-w-xs text-[0.88rem] text-secondary sm:block">
               with ShifaMind, concept-grounded ICD-10 coding.
             </p>
             <button
               type="button"
               onClick={onPredict}
-              className="btn-primary group mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
+              className="btn-primary group mt-4 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:mt-6"
             >
               <Sparkles size={14} strokeWidth={2.2} />
               Predict codes
@@ -355,7 +361,7 @@ function ResultsPane({
               </span>
             </div>
 
-            <div className="mt-4 space-y-2.5">
+            <div className="mt-3 space-y-2 sm:mt-4 sm:space-y-2.5">
               {scenario.codes.map((code, i) => (
                 <CodeCard
                   key={code.code}
@@ -367,12 +373,12 @@ function ResultsPane({
               ))}
             </div>
 
-            <div className="mt-5 flex items-center justify-between gap-3 border-t border-subtle pt-4">
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-subtle pt-3 sm:mt-5 sm:pt-4">
               <button
                 type="button"
                 onClick={onReset}
                 aria-label="Reset demo"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-subtle bg-glass text-secondary transition hover:border-strong hover:text-primary"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-subtle bg-glass text-secondary transition hover:border-strong hover:text-primary sm:h-9 sm:w-9"
               >
                 <RotateCcw size={14} />
               </button>
@@ -451,7 +457,7 @@ function CodeCard({
           : undefined
       }
     >
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         <div className="flex items-center gap-2">
           <span
             className="inline-flex items-center rounded-md px-2 py-0.5 font-mono text-[0.78rem] font-semibold"
@@ -479,7 +485,9 @@ function CodeCard({
                 e.stopPropagation();
                 setShowAlts((v) => !v);
               }}
-              className="inline-flex items-center gap-1 text-[0.78rem] text-secondary transition hover:text-primary"
+              // Phones: padding cancelled by negative margin gives a 40px+
+              // tap area without moving anything.
+              className="-my-3 inline-flex items-center gap-1 py-3 text-[0.78rem] text-secondary transition hover:text-primary sm:my-0 sm:py-0"
             >
               <ChevronDown
                 size={12}
@@ -522,7 +530,7 @@ function CodeCard({
             transition={{ duration: 0.3, ease: EASE }}
             className="overflow-hidden border-t border-subtle"
           >
-            <div className="p-4">
+            <div className="p-3 sm:p-4">
               <div className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-secondary">
                 Activated concepts
               </div>

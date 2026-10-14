@@ -11,6 +11,7 @@
   <url><loc>https://roshan-ai.com/company/about</loc><priority>0.6</priority></url>
   <url><loc>https://roshan-ai.com/company/team</loc><priority>0.5</priority></url>
   <url><loc>https://roshan-ai.com/company/press</loc><priority>0.6</priority></url>
+  <url><loc>https://roshan-ai.com/company/press/claude-startups</loc><priority>0.6</priority></url>
   <url><loc>https://roshan-ai.com/company/press/lambda-gpu-credits</loc><priority>0.6</priority></url>
   <url><loc>https://roshan-ai.com/company/press/nvidia-inception</loc><priority>0.6</priority></url>
   <url><loc>https://roshan-ai.com/contact</loc><priority>0.7</priority></url>

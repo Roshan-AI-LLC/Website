@@ -15,17 +15,44 @@ export type PressRelease = {
   /** Optional pull-quote. */
   quote?: { text: string; attribution: string };
   /**
-   * Lead visual on the detail page. Only partner badges we are licensed to
-   * display, rendered by their own compliant component.
+   * Lead visual on the detail page. Only program marks we are permitted to
+   * display, each rendered by its own compliant component: NVIDIA's licensed
+   * badge artwork, or the text-only Claude Startups mark (Anthropic ships no
+   * member logo).
    */
-  badge?: 'nvidia-inception';
-  /** Renders the NVIDIA legal attribution on the detail page. */
-  requiresNvidiaLegalLine?: boolean;
+  badge?: 'nvidia-inception' | 'claude-startups';
   /** Optional outbound links shown at the foot of the release. */
   links?: { label: string; href: string }[];
 };
 
 export const PRESS_RELEASES: PressRelease[] = [
+  {
+    slug: 'claude-startups',
+    date: '2026-10-13',
+    kind: 'Announcement',
+    title: 'Roshan AI joins Claude Startups',
+    summary:
+      'Roshan AI is now a member of Claude Startups, Anthropic’s program for early-stage founders. Membership supports the grounded discussion layer and the engineering workflow around ShifaMind’s trained clinical coder.',
+    dek: 'Membership supports the product built around ShifaMind’s coder: the grounded discussion layer where a coder can question a prediction with the evidence in view, and the engineering workflow behind the platform.',
+    body: [
+      'Roshan AI LLC today announced that it has joined Claude Startups, Anthropic’s program for early-stage founders. Members receive Anthropic API credits, priority rate limits and access to resources, offers and credits from companies building with Claude through the Claude Startup Stack, live group sessions with Anthropic’s Applied AI team, and the program’s events, hackathons and community meetups.',
+      'Roshan AI does not wrap a general-purpose language model in longer prompts. The coder at the core of ShifaMind is a clinical model the company trains itself, a BioClinical ModernBERT encoder with a concept bottleneck, so every ICD-10 code it predicts passes through an explicit layer of clinical concepts and arrives with the evidence behind it. Roshan AI publishes comparisons of that coder against general-purpose models, Claude among them, rather than building it on one. A frontier model belongs around that coder, not inside it.',
+      'Where Claude fits is in the layer around the coder. ShifaMind’s grounded discussion primitive lets a coder ask follow-up questions about a prediction inside the note, with the concepts and quoted spans that produced it in view, so a question is answered against evidence the model has already committed to. Claude supports that layer, and it supports the engineering workflow behind the platform as Roshan AI builds it. The prediction itself still comes from the trained coder.',
+      'Claude Startups sits alongside the NVIDIA Inception program, which Roshan AI joined in July 2026 and which supports the compute side: the training runs, sweeps and evaluation passes a concept-bottlenecked model demands. Between them the two programs support the two halves of the work, training the clinical models and building the product around them.',
+      'Roshan AI LLC is based in Arizona, USA.',
+    ],
+    quote: {
+      text: 'Clinical AI fails when nobody can check the work, and a conversation about a prediction is only worth having if it is held to the same evidence as the prediction itself. Claude Startups helps us build that part of ShifaMind while the coder underneath stays a model we trained and can audit.',
+      attribution: 'Mohammed Sameer Syed, Founder, Roshan AI',
+    },
+    badge: 'claude-startups',
+    links: [
+      {
+        label: 'About Claude Startups',
+        href: 'https://claude.com/programs/startups',
+      },
+    ],
+  },
   {
     slug: 'lambda-gpu-credits',
     date: '2026-09-09',
@@ -45,7 +72,6 @@ export const PRESS_RELEASES: PressRelease[] = [
       text: 'ShifaMind will cover more of the ICD-10 code space, with the same evidence attached to every prediction, and it will be ready for deployment in a real coding workflow soon.',
       attribution: 'Mohammed Sameer Syed, Founder, Roshan AI',
     },
-    requiresNvidiaLegalLine: true,
     links: [
       {
         label: 'Lambda',
@@ -77,7 +103,6 @@ export const PRESS_RELEASES: PressRelease[] = [
       attribution: 'Mohammed Sameer Syed, Founder, Roshan AI',
     },
     badge: 'nvidia-inception',
-    requiresNvidiaLegalLine: true,
     links: [
       {
         label: 'About the NVIDIA Inception program',
@@ -107,7 +132,8 @@ export function formatPressDate(iso: string): string {
 
 /**
  * Standard company boilerplate. Journalists lift this verbatim, so keep it to
- * one paragraph and keep it current.
+ * one paragraph and keep it current. The trademark lines for both programs it
+ * names live in the site footer.
  */
 export const COMPANY_BOILERPLATE =
-  'Roshan AI LLC builds clinical-grade AI infrastructure. The company trains clinical models structured around an explicit concept layer, so every prediction arrives with the evidence behind it rather than an unverifiable explanation after the fact. ShifaMind, its first product, delivers concept-grounded ICD-10 coding for clinicians and coders. NabzGraph builds interpretable knowledge graphs from ICU signals. Roshan AI is based in Arizona, USA.';
+  'Roshan AI LLC builds clinical-grade AI infrastructure. The company trains clinical models structured around an explicit concept layer, so every prediction arrives with the evidence behind it rather than an unverifiable explanation after the fact. ShifaMind, its first product, delivers concept-grounded ICD-10 coding for clinicians and coders. NabzGraph builds interpretable knowledge graphs from ICU signals. Roshan AI is a member of the NVIDIA Inception program and of Claude Startups. Roshan AI is based in Arizona, USA.';

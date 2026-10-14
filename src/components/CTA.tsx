@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 
 export function CTA() {
   return (
-    <section className="relative py-12 sm:py-16">
+    <section className="mobile-native-section relative py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        {/* Phones: one compact card (tighter padding and type); sizes return at sm. */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-3xl px-5 py-6 sm:px-7 sm:py-7"
+          className="glass relative overflow-hidden rounded-2xl px-4 py-5 sm:rounded-3xl sm:px-7 sm:py-7"
         >
           <div
             aria-hidden
@@ -22,15 +23,15 @@ export function CTA() {
             }}
           />
 
-          <div className="relative grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-8">
+          <div className="relative grid gap-4 sm:gap-5 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.64rem] font-semibold uppercase tracking-[0.15em] text-accent">
                 Clinicians · developers · partners
               </div>
-              <h2 className="mt-2 text-balance font-display text-[1.55rem] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-[1.9rem]">
+              <h2 className="mt-2 text-balance font-display text-[1.4rem] font-semibold leading-[1.08] tracking-[-0.03em] sm:text-[1.9rem]">
                 Build with <span className="gradient-text">Roshan AI.</span>
               </h2>
-              <p className="mt-2 max-w-xl text-[0.86rem] leading-relaxed text-secondary sm:text-[0.92rem]">
+              <p className="mt-1.5 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:mt-2 sm:text-[0.92rem]">
                 Pilot ShifaMind, integrate the API, or talk to us about your clinical workflow.
               </p>
             </div>

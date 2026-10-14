@@ -1,8 +1,10 @@
 import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
 import { PLATFORM_URL } from '../../lib/config';
+import { pct, SHIFAMIND, TASK } from '../../data/shifamindPaper';
 import { VideoBlock } from './VideoBlock';
 import { SectionLabel } from '../SectionLabel';
 
+// The published preprint. Update when the full-code paper is public.
 const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
 
 export function ProductHero() {
@@ -13,26 +15,25 @@ export function ProductHero() {
       </div>
 
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid items-center gap-7 sm:gap-10 lg:grid-cols-[1fr_0.92fr] lg:gap-12">
+        {/* Phones: a smaller H1 and tighter rhythm put the CTAs, video and stats
+            in fewer screens; every sm: value is the desktop original. */}
+        <div className="grid items-center gap-5 sm:gap-10 lg:grid-cols-[1fr_0.92fr] lg:gap-12">
           <div>
             <SectionLabel tone="muted" className="enter-fade-up">
               ShifaMind · A Roshan AI product
             </SectionLabel>
 
-            <h1 className="enter-fade-up enter-d-1 mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.2rem]">
+            <h1 className="enter-fade-up enter-d-1 mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.2rem]">
               Concept-grounded ICD-10 coding{' '}
               <span className="gradient-text">for clinicians and coders.</span>
             </h1>
 
-            <p className="enter-fade-up enter-d-2 mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-6 sm:text-[1.1rem]">
-              ShifaMind reads a clinical note and returns ranked ICD-10 codes
-              across the full code space, each one carrying the clinical
-              concepts and quoted spans that produced it. Interpretability is
-              enforced architecturally, and every displayed number is a
-              quantity the model actually computed.
+            <p className="enter-fade-up enter-d-2 mt-3 max-w-2xl text-pretty text-[0.9rem] leading-relaxed text-secondary sm:mt-6 sm:text-[1.1rem]">
+              Ranked ICD-10 codes from any clinical note, each with the
+              concepts and quoted text behind it.
             </p>
 
-            <div className="enter-fade-up enter-d-3 mt-6 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            <div className="enter-fade-up enter-d-3 mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <a
                 href={PLATFORM_URL}
                 target="_blank"
@@ -59,7 +60,7 @@ export function ProductHero() {
                 className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-3 py-3 text-[0.78rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary sm:gap-2 sm:px-5 sm:text-[0.92rem]"
               >
                 <FileText size={14} />
-                Read the paper
+                Research
               </a>
             </div>
           </div>
@@ -69,42 +70,29 @@ export function ProductHero() {
           </div>
         </div>
 
-        <div className="enter-fade-up enter-d-4 mt-8 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
-          <Stat value="7,940" label="ICD-10 codes" sub="Full code space" />
-          <Stat
-            value="98.5"
-            label="Micro-AUC"
-            sub="Held-out test"
-          />
-          <Stat
-            value="100%"
-            label="Logit attributable"
-            sub="By construction"
-          />
+        <div className="enter-fade-up enter-d-4 mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
+          <Stat value={pct(SHIFAMIND.aucMicro)} label="Micro-AUROC" />
+          <Stat value={pct(SHIFAMIND.aucMacro)} label="Macro-AUROC" />
+          <Stat value={TASK.codes.toLocaleString('en-US')} label="ICD-10 codes" />
         </div>
       </div>
     </section>
   );
 }
 
-function Stat({
-  value,
-  label,
-  sub,
-}: {
-  value: string;
-  label: string;
-  sub: string;
-}) {
+function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="min-w-0 px-2.5 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-subtle">
+    // Divider colour: `.border-subtle` is a plain class Tailwind cannot put
+    // under a variant, so `[&:not(:first-child)]:border-subtle` never applied
+    // and the line fell back to currentColor. Phones get the hairline here;
+    // the desktop divider is left as it renders today.
+    <div className="min-w-0 px-2.5 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
       <div className="font-mono text-[1.05rem] font-semibold tracking-tight text-accent sm:text-[1.55rem]">
         {value}
       </div>
       <div className="mt-1 truncate text-[0.58rem] font-medium uppercase tracking-[0.07em] text-secondary sm:text-[0.74rem]">
         {label}
       </div>
-      <div className="mt-0.5 truncate text-[0.58rem] text-muted sm:text-[0.7rem]">{sub}</div>
     </div>
   );
 }

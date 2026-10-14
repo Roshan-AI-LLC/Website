@@ -51,12 +51,14 @@ export function BreadthGrid() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 max-w-3xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+          className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
         >
           Coverage across code systems, note types, and specialties.
         </motion.h2>
 
-        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        {/* Phones: this is the page's one swipe rail (three tall, peer lists);
+            cards are tightened so the rail stays short. */}
+        <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {groups.map((group, index) => (
               <motion.div
@@ -65,12 +67,12 @@ export function BreadthGrid() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="px-4 py-4 sm:px-5 sm:py-5"
+                className="px-4 py-3 sm:px-5 sm:py-5"
               >
                 <div className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-secondary">
                   {group.title}
                 </div>
-                <ul className="mt-3 space-y-2">
+                <ul className="mt-2 space-y-1.5 sm:mt-3 sm:space-y-2">
                   {group.cells.map((cell) => (
                     <li key={cell.label} className="flex items-center justify-between gap-3 text-[0.8rem] sm:text-[0.84rem]">
                       <span className={cell.status === 'live' ? 'text-primary' : 'text-muted'}>{cell.label}</span>

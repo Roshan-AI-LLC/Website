@@ -1,11 +1,10 @@
 import { Head } from 'vite-react-ssg';
 import { CTA } from '../components/CTA';
 import { Hero } from '../components/Hero';
-import { InceptionStrip } from '../components/home/InceptionStrip';
 import { PlatformDiagram } from '../components/home/PlatformDiagram';
+import { ProgramsStrip } from '../components/home/ProgramsStrip';
 import { Proof } from '../components/home/Proof';
 import { ShifaMindProof } from '../components/home/ShifaMindProof';
-import { WhyRoshanAI } from '../components/home/WhyRoshanAI';
 
 export default function Home() {
   return (
@@ -27,13 +26,12 @@ export default function Home() {
         <link rel="canonical" href="https://roshan-ai.com/" />
       </Head>
 
-      <Hero />
-      <InceptionStrip />
+      <Hero>
+        <ProgramsStrip />
+      </Hero>
       <ShifaMindProof />
       <Divider />
       <Proof />
-      <Divider />
-      <WhyRoshanAI />
       <Divider />
       <PlatformDiagram />
       <CTA />

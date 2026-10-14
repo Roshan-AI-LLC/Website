@@ -1,6 +1,6 @@
 import { Head } from 'vite-react-ssg';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Brain, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, Brain, ChevronDown, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SectionLabel } from '../../components/SectionLabel';
 
@@ -47,11 +47,11 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>About Roshan AI</SectionLabel>
-          <h1 className="mt-4 text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             Building clinical AI{' '}
             <span className="gradient-text">doctors can defend.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-pretty text-[0.94rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+          <p className="mt-3 max-w-2xl text-pretty text-[0.9rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
             Roshan AI builds clinical intelligence around the concepts practitioners use, so every output remains auditable, explainable, and deployable in the workflows that matter.
           </p>
         </div>
@@ -67,18 +67,38 @@ function CompanyThesis() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
             <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Company thesis</div>
-            <h2 className="mt-2 max-w-2xl text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
+            <h2 className="mt-2 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
               Clinical AI has to be{' '}
               <span className="gradient-text">accountable by design.</span>
             </h2>
           </div>
-          <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-right sm:text-[0.9rem]">
+          {/* Phones: the heading already says it; the side line returns at sm. */}
+          <p className="hidden max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-right sm:text-[0.9rem]">
             We replace opaque prediction paths with a clinical evidence contract.
           </p>
         </div>
 
-        <div className="glass mt-7 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
-          <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-2 md:divide-x md:divide-y-0">
+        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          {/* Phones: the two cards collapse into tappable rows, title visible and
+              body on tap. The side-by-side cards return at sm. */}
+          <div className="divide-y divide-[color:var(--border-subtle)] sm:hidden">
+            {thesis.map((item) => {
+              const Icon = item.icon;
+              return (
+                <details key={item.label} className="group">
+                  <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+                      <Icon size={15} strokeWidth={1.8} />
+                    </span>
+                    <span className="min-w-0 flex-1 pt-1 text-[0.92rem] font-semibold leading-snug tracking-[-0.01em] text-primary">{item.title}</span>
+                    <ChevronDown size={16} className="mt-1.5 shrink-0 text-accent transition-transform duration-200 group-open:rotate-180" />
+                  </summary>
+                  <p className="pb-3.5 pl-[3.75rem] pr-4 text-[0.8rem] leading-relaxed text-secondary">{item.body}</p>
+                </details>
+              );
+            })}
+          </div>
+          <div className="hidden divide-y divide-[color:var(--border-subtle)] sm:grid md:grid-cols-2 md:divide-x md:divide-y-0">
             {thesis.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -108,21 +128,21 @@ function CompanyThesis() {
 
 function PlatformAmbition() {
   return (
-    <section className="relative py-14 sm:py-20">
+    <section className="mobile-native-section relative py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <div>
             <SectionLabel>What we are building toward</SectionLabel>
-            <h2 className="mt-3 text-balance font-display text-[1.65rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
+            <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
               One platform.{' '}
               <span className="gradient-text">A family of clinical products.</span>
             </h2>
           </div>
           <div>
-            <p className="text-[0.88rem] leading-relaxed text-secondary sm:text-[0.96rem]">
+            <p className="text-[0.86rem] leading-relaxed text-secondary sm:text-[0.96rem]">
               Coding is the first application. The same evidence-first architecture can support risk stratification, decision support, longitudinal summaries, and documentation—with a common reasoning fabric and audit trail.
             </p>
-            <div className="glass mt-5 flex flex-col gap-3 rounded-2xl px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div className="glass mt-4 flex flex-col gap-3 rounded-2xl px-4 py-4 sm:mt-5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
               <div>
                 <div className="text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">Live today</div>
                 <div className="mt-1 text-[0.92rem] font-semibold text-primary">ShifaMind</div>
@@ -145,30 +165,32 @@ function PlatformAmbition() {
 
 function Closing() {
   return (
-    <section className="relative py-12 sm:py-16">
+    <section className="mobile-native-section relative py-12 sm:py-16">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-2xl px-5 py-5 sm:rounded-3xl sm:px-7 sm:py-6"
+          className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Work with Roshan AI</div>
               <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">Bring a clinical workflow worth defending.</h2>
-              <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">Pilots, integrations, partnerships, and thoughtful hiring conversations all start with a real problem to solve.</p>
+              {/* Phones: heading and buttons carry the CTA; the supporting line returns at sm. */}
+              <p className="mt-2 hidden max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">Pilots, integrations, partnerships, and thoughtful hiring conversations all start with a real problem to solve.</p>
             </div>
-            <div className="flex flex-col gap-2 sm:flex-row lg:justify-end">
+            {/* Phones: the two buttons sit side by side; the row layout returns at sm. */}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row lg:justify-end">
               <Link
                 to="/contact"
-                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
+                className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-3 py-3 text-[0.88rem] sm:px-5 font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
                 Talk to us
                 <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
-              <Link to="/company/team" className="inline-flex min-h-11 items-center justify-center rounded-full border border-subtle bg-glass px-5 py-3 text-[0.88rem] font-medium text-secondary transition hover:border-strong hover:text-primary">Meet the team</Link>
+              <Link to="/company/team" className="inline-flex min-h-11 items-center justify-center rounded-full border border-subtle bg-glass px-3 py-3 text-[0.88rem] font-medium sm:px-5 text-secondary transition hover:border-strong hover:text-primary">Meet the team</Link>
             </div>
           </div>
           <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-70" style={{ background: 'radial-gradient(ellipse at 80% 50%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 66%)' }} />

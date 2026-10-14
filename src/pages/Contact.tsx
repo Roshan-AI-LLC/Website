@@ -64,22 +64,22 @@ export default function Contact() {
         </div>
 
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+          <div className="grid gap-7 sm:gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
             <div className="enter-fade-up">
               <SectionLabel>Contact</SectionLabel>
 
-              <h1 className="mt-5 text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[2.8rem]">
+              <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[2.8rem]">
                 Talk to{' '}
                 <span className="gradient-text">Roshan AI.</span>
               </h1>
 
-              <p className="mt-5 max-w-md text-[1rem] font-light leading-relaxed text-secondary">
+              <p className="mt-3 max-w-md text-[0.92rem] font-light leading-relaxed text-secondary sm:mt-5 sm:text-[1rem]">
                 Pilots, integrations, partnerships, demos. Tell us where you sit
                 and what you're trying to do. We'll route it to the right
                 person.
               </p>
 
-              <div className="mt-10 space-y-4">
+              <div className="mt-5 space-y-4 sm:mt-10">
                 <ContactLink
                   icon={Mail}
                   label="Direct email"
@@ -88,14 +88,14 @@ export default function Contact() {
                 />
               </div>
 
-              <p className="mt-10 text-[0.78rem] text-muted">
+              <p className="mt-4 text-[0.78rem] text-muted sm:mt-10">
                 We respond to legitimate inquiries within 2 business days.
                 Recruiters and unsolicited vendor pitches will not get a reply.
               </p>
             </div>
 
             <div className="enter-fade-up enter-d-2">
-              <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-8">
+              <div className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:p-8">
                 {status === 'success' ? (
                   <SuccessState onReset={() => setStatus('idle')} />
                 ) : (
@@ -105,7 +105,7 @@ export default function Contact() {
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
-                    className="space-y-5"
+                    className="space-y-4 sm:space-y-5"
                   >
                     {/* Netlify required hidden inputs */}
                     <input type="hidden" name="form-name" value="contact" />
@@ -161,7 +161,7 @@ export default function Contact() {
                         name="message"
                         required
                         rows={5}
-                        className="form-input resize-y"
+                        className="form-input h-[7.5rem] resize-y sm:h-auto"
                         placeholder="What are you trying to do? What stage are you at?"
                       />
                     </Field>
@@ -218,6 +218,10 @@ export default function Contact() {
               background 180ms var(--ease-spring);
           }
           .form-input::placeholder { color: var(--text-muted); }
+          /* Phones: 16px stops iOS Safari zooming the page on focus. */
+          @media (max-width: 639px) {
+            .form-input { font-size: 16px; padding: 0.6rem 0.85rem; }
+          }
           .form-input:focus {
             outline: none;
             border-color: var(--accent);
@@ -252,7 +256,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block pb-1.5 text-[0.78rem] font-medium text-secondary">
+      <span className="block pb-1 text-[0.78rem] font-medium text-secondary sm:pb-1.5">
         {label}
         {required && (
           <span className="ml-1 text-accent" aria-hidden>

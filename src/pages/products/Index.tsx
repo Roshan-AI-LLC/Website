@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SectionLabel } from '../../components/SectionLabel';
+import { TASK } from '../../data/shifamindPaper';
+import { NABZGRAPH, NABZSENTRY } from '../../data/nabzPapers';
 
 type Product = {
-  status: 'live' | 'next';
+  status: 'live' | 'preprint' | 'next';
   name: string;
   descriptor: string;
   body: string;
@@ -21,8 +23,9 @@ const products: Product[] = [
     descriptor: 'Concept-grounded ICD-10 coding for clinicians and coders',
     body: 'ShifaMind reads a clinical note and returns ranked ICD-10 codes with the concept evidence behind each one. The interpretability is enforced architecturally: each prediction must flow through an explicit clinical-concept layer before a code can be assigned.',
     highlights: [
-      'Full ICD-10-CM code space, 7,940 codes',
-      '16,227 grounded clinical concepts',
+      // 7,940 is CM + PCS (5,802 + 2,138; see BreadthGrid), not CM alone.
+      `Full ICD-10 code space (CM + PCS), ${TASK.codes.toLocaleString('en-US')} codes`,
+      `${TASK.concepts.toLocaleString('en-US')} grounded clinical concepts`,
       'Evidence phrases from the source note',
       'Ranked alternatives with confidences',
     ],
@@ -30,15 +33,16 @@ const products: Product[] = [
     visual: 'shifamind',
   },
   {
-    status: 'live',
+    // Both Nabz models are research preprints, not deployed products.
+    status: 'preprint',
     name: 'Nabz',
-    descriptor: 'A model family for continuous physiological signals',
-    body: 'Nabz is our family of models for the ICU signal stream. NabzGraph turns continuous multi-modal waveforms (ECG, PPG, arterial pressure, respiration) into a patient-specific knowledge graph of SNOMED concepts and their measured relationships. NabzSentry decides which arrhythmia alarms reach a clinician and which stay quiet. Every claim traces back to the exact signal windows behind it.',
+    descriptor: 'A model family for bedside monitoring',
+    body: 'NabzGraph builds patient graphs whose typed relations hold up when clinicians act on the vitals. NabzSentry sorts ICU VT alarms into keep, suppress or defer, within a certified error budget.',
     highlights: [
-      'NabzGraph: patient-specific knowledge graphs',
-      'NabzSentry: three-way alarm triage',
-      'ECG, PPG, arterial pressure, respiration',
-      'Every node traceable to the signal window',
+      'NabzGraph: feedback-robust patient graphs',
+      'NabzSentry: certified three-way alarm triage',
+      `${NABZGRAPH.data.surgicalCases.toLocaleString('en-US')} surgical cases · ${NABZSENTRY.data.alarms.toLocaleString('en-US')} VT alarms`,
+      'Every graph edge linked to its evidence',
     ],
     href: '/products/nabz',
     visual: 'nabzgraph',
@@ -87,16 +91,21 @@ function Hero() {
         <div className="enter-fade-up">
           <SectionLabel>Products</SectionLabel>
 
-          <h1 className="mt-5 max-w-3xl text-balance font-display text-[2.2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:text-[3rem]">
+          <h1 className="mt-3 max-w-3xl text-balance font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[3rem]">
             One platform.{' '}
             <span className="gradient-text">A growing family of clinical products.</span>
           </h1>
 
-          <p className="mt-6 max-w-2xl text-[1.05rem] font-light leading-relaxed text-secondary">
+          {/* Phones: the first two sentences carry the point; the third
+              returns at sm. */}
+          <p className="mt-3 max-w-2xl text-[0.94rem] font-light leading-relaxed text-secondary sm:mt-6 sm:text-[1.05rem]">
             ShifaMind is the first product Roshan AI ships. The infrastructure
-            underneath is shared with every product that follows. Each one
-            reads from the same ingestion layer and explains itself through
-            the same concept reasoning layer: same contract, same audit trail.
+            underneath is shared with every product that follows.
+            <span className="hidden sm:inline">
+              {' '}Each one reads from the same ingestion layer and explains
+              itself through the same concept reasoning layer: same contract,
+              same audit trail.
+            </span>
           </p>
         </div>
       </div>
@@ -108,7 +117,7 @@ function ProductList() {
   return (
     <section className="relative py-12 sm:py-16">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-6">
           {products.map((p, i) => (
             <ProductRow key={p.name} product={p} delay={i * 0.08} />
           ))}
@@ -118,8 +127,16 @@ function ProductList() {
   );
 }
 
+const STATUS_LABEL: Record<Product['status'], string> = {
+  live: 'Live',
+  preprint: 'Preprint',
+  next: 'In development',
+};
+
 function ProductRow({ product, delay }: { product: Product; delay: number }) {
   const isLive = product.status === 'live';
+  // Live and preprint share the accent pill; only live gets the pulse.
+  const isAccent = product.status !== 'next';
   const Wrap: React.ElementType = product.href ? Link : 'div';
   const wrapProps = product.href ? { to: product.href } : {};
 
@@ -133,16 +150,17 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
       <Wrap
         {...wrapProps}
         data-cursor={product.href ? 'hover' : undefined}
-        className={`glass group relative block overflow-hidden rounded-3xl p-7 transition will-change-transform sm:p-9 ${
+        className={`glass group relative block overflow-hidden rounded-2xl p-4 transition will-change-transform sm:rounded-3xl sm:p-9 ${
           product.href ? 'hover:-translate-y-0.5 hover:border-strong' : ''
         }`}
       >
-        <div className="grid gap-7 lg:grid-cols-[1fr_1.4fr] lg:items-start lg:gap-10">
+        <div className="grid gap-3 sm:gap-7 lg:grid-cols-[1fr_1.4fr] lg:items-start lg:gap-10">
           <div>
             <div className="flex items-center justify-between gap-4 lg:justify-start lg:gap-5">
+              {/* Phones: the "soon" tile repeats the status chip beside it. */}
               {product.visual === 'placeholder' && (
                 <div
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-2xl font-mono text-[0.72rem] font-semibold uppercase tracking-[0.14em]"
+                  className="hidden h-12 w-12 items-center justify-center rounded-2xl font-mono text-[0.72rem] font-semibold uppercase tracking-[0.14em] sm:inline-flex"
                   style={{
                     background: 'rgba(120, 145, 170, 0.1)',
                     color: 'var(--color-violet-500)',
@@ -153,10 +171,10 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
               )}
               <span
                 className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.12em] ${
-                  isLive ? 'bg-accent-soft text-accent' : ''
+                  isAccent ? 'bg-accent-soft text-accent' : ''
                 }`}
                 style={
-                  !isLive
+                  !isAccent
                     ? {
                         background: 'rgba(120, 145, 170, 0.12)',
                         color: 'var(--color-violet-500)',
@@ -169,26 +187,28 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
                     isLive ? 'pulse-dot' : ''
                   }`}
                 />
-                {isLive ? 'Live' : 'In development'}
+                {STATUS_LABEL[product.status]}
               </span>
             </div>
 
-            <h2 className="mt-6 font-display text-[1.9rem] font-semibold tracking-[-0.02em] sm:text-[2.2rem]">
+            <h2 className="mt-3 font-display text-[1.5rem] font-semibold tracking-[-0.02em] sm:mt-6 sm:text-[2.2rem]">
               {product.name}
             </h2>
-            <div className="mt-1 text-[0.92rem] font-medium text-accent">
+            <div className="mt-1 text-[0.86rem] font-medium text-accent sm:text-[0.92rem]">
               {product.descriptor}
             </div>
           </div>
 
           <div>
-            <p className="text-[0.98rem] font-light leading-relaxed text-secondary">
+            {/* Phones: the body clamps to three lines (the card links to the
+                full product page); the highlights below stay in full. */}
+            <p className="mobile-compact-copy text-[0.88rem] font-light leading-relaxed text-secondary sm:text-[0.98rem]">
               {product.body}
             </p>
 
-            <ul className="mt-5 grid gap-1.5 sm:grid-cols-2">
+            <ul className="mt-3 grid gap-1 sm:mt-5 sm:grid-cols-2 sm:gap-1.5">
               {product.highlights.map((h) => (
-                <li key={h} className="flex items-start gap-2 text-[0.88rem] text-secondary">
+                <li key={h} className="flex items-start gap-2 text-[0.82rem] text-secondary sm:text-[0.88rem]">
                   <span
                     className="mt-1 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
                     style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
@@ -201,7 +221,7 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
             </ul>
 
             {product.href ? (
-              <div className="mt-6 inline-flex items-center gap-1.5 text-[0.9rem] font-medium text-accent">
+              <div className="mt-3 inline-flex items-center gap-1.5 text-[0.9rem] font-medium text-accent sm:mt-6">
                 Open the product page
                 <ArrowUpRight
                   size={14}
@@ -209,7 +229,7 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
                 />
               </div>
             ) : (
-              <div className="mt-6 inline-flex items-center gap-1.5 text-[0.86rem] text-muted">
+              <div className="mt-3 inline-flex items-center gap-1.5 text-[0.86rem] text-muted sm:mt-6">
                 More info as it ships.
               </div>
             )}
@@ -237,17 +257,17 @@ function Closing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-3xl p-10 sm:p-14"
+          className="glass relative overflow-hidden rounded-2xl p-5 sm:rounded-3xl sm:p-14"
         >
-          <div className="relative z-10 grid gap-8 lg:grid-cols-[1.3fr_auto] lg:items-center">
+          <div className="relative z-10 grid gap-4 sm:gap-8 lg:grid-cols-[1.3fr_auto] lg:items-center">
             <div>
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
                 Pilots · partnerships · integrations
               </div>
-              <h2 className="mt-3 text-balance font-display text-[1.8rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.2rem]">
+              <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:mt-3 sm:text-[2.2rem]">
                 Don't see your workflow on the list?
               </h2>
-              <p className="mt-3 max-w-xl text-[0.96rem] font-light leading-relaxed text-secondary">
+              <p className="mt-2 max-w-xl text-[0.86rem] font-light leading-relaxed text-secondary sm:mt-3 sm:text-[0.96rem]">
                 Roshan AI's product roadmap is shaped by partner workflows.
                 Tell us where evidence-grounded reasoning would change your
                 clinical or operational outcome. We'll tell you what's
@@ -255,10 +275,11 @@ function Closing() {
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-2 lg:justify-end">
+            {/* Phones: the two buttons sit side by side in a 2-col grid. */}
+            <div className="grid grid-cols-2 flex-wrap gap-2 sm:flex lg:justify-end">
               <Link
                 to="/contact"
-                className="btn-primary group inline-flex items-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
+                className="btn-primary group inline-flex items-center justify-center gap-2 rounded-full px-3 py-3 text-[0.84rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:px-5 sm:text-[0.92rem]"
               >
                 Talk to us
                 <ArrowUpRight
@@ -268,7 +289,7 @@ function Closing() {
               </Link>
               <Link
                 to="/platform"
-                className="inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-5 py-3 text-[0.92rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-subtle bg-glass px-3 py-3 text-[0.84rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary sm:px-5 sm:text-[0.92rem]"
               >
                 See the platform
               </Link>

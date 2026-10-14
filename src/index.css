@@ -410,6 +410,15 @@ html.dark .theme-nabz {
   }
   .pulse-dot { animation: pulse-dot 2s var(--ease-spring) infinite; }
 
+  /* Signal flowing along the keyword-to-code edges of the hero network. */
+  @keyframes nn-flow {
+    to { stroke-dashoffset: -16; }
+  }
+  .nn-flow {
+    stroke-dasharray: 3 5;
+    animation: nn-flow 1.4s linear infinite;
+  }
+
   /* CSS-driven entry animations for above-the-fold content. Independent of
      JS hydration so content is visible even if the JS bundle is delayed or
      blocked. Default state (post-animation) is the element's natural state,
@@ -615,6 +624,11 @@ html.dark .glass-strong {
     scrollbar-width: none;
     margin-inline: -1.25rem;
     padding: 0 1.25rem 0.5rem;
+    /* The rail bleeds into the 1.25rem page gutter; snapping to the padded
+       edge keeps card one aligned with the gutter instead of the screen edge. */
+    scroll-padding-inline: 1.25rem;
+    /* Cards keep their own height rather than stretching to the tallest. */
+    align-items: flex-start;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -629,11 +643,34 @@ html.dark .glass-strong {
     scroll-snap-stop: always;
     border: 1px solid var(--border-subtle) !important;
     border-radius: 1rem;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    /* Skip the scroll reveal: a card still off to the side never counts as
+       in view, so it would stay transparent and hide the peek that shows the
+       rail scrolls. */
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* The glass card a rail sits in on desktop. On phones it drops its chrome
+     (each rail card carries its own) and stops clipping, so the rail can
+     bleed to the page gutter without cutting off card one. */
+  .mobile-rail-shell {
+    overflow: visible;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .mobile-snap-rail > * + * {
     border-top-width: 1px !important;
   }
+
+  /* NabzGraph demo labels: phones get a portrait canvas with its own text
+     sizes (GraphDemoBlock.tsx, TYPE), so no CSS override here. */
 
   .mobile-snap-rail > *:first-child {
     border-left-width: 1px !important;
@@ -647,8 +684,8 @@ html.dark .glass-strong {
   }
 
   .mobile-native-section {
-    padding-top: 2.75rem !important;
-    padding-bottom: 2.75rem !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
   }
 
   .mobile-native-hero {
@@ -671,6 +708,20 @@ html.dark .glass-strong {
   }
 }
 
+/* Home hero on short screens (a 1366x768 laptop leaves ~657px of viewport).
+   The hero fills the first screen with the programs row at its bottom; these
+   tighten its spacing so the row still lands above the fold. Unlayered, so
+   they beat the Tailwind padding utilities; min-width keeps phones on the
+   mobile rules above. */
+@media (min-width: 640px) and (max-height: 720px) {
+  #top { padding-top: 5.5rem; padding-bottom: 1.5rem; }
+  #programs { margin-top: 1.5rem; }
+}
+@media (min-width: 640px) and (max-height: 660px) {
+  #top { padding-top: 5rem; padding-bottom: 0.75rem; }
+  #programs { margin-top: 0.75rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mobile-snap-rail {
     scroll-behavior: auto;
@@ -679,19 +730,22 @@ html.dark .glass-strong {
 
 @media (max-width: 639px) {
   /* Every route composes its content as direct main sections. This establishes a
-     phone-specific cadence instead of inheriting the desktop landing-page gaps. */
+     phone-specific cadence instead of inheriting the desktop landing-page gaps.
+     Tight on purpose: ~72px between sections reads as a pause on a phone, and
+     the old 96px gaps added a screen of empty scroll to every page. The first
+     section clears the fixed nav (~70px tall) with a small margin. */
   main > section {
-    padding-top: 3rem !important;
-    padding-bottom: 3rem !important;
+    padding-top: 2.25rem !important;
+    padding-bottom: 2.25rem !important;
   }
 
   main > section:first-child {
-    padding-top: 5.5rem !important;
-    padding-bottom: 2.5rem !important;
+    padding-top: 5.25rem !important;
+    padding-bottom: 2rem !important;
   }
 
   main > section.mobile-native-section {
-    padding-top: 2.75rem !important;
-    padding-bottom: 2.75rem !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
   }
 }

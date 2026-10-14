@@ -1,428 +1,767 @@
 /**
- * Demo scenarios for the /products/nabz/graph interactive knowledge graph.
+ * Demo scenarios for the /products/nabz/graph interactive patient graph.
  *
- * All data is hand-curated for the demo. No live inference. The concept nodes,
- * persistence tiers, edge types, and statistics are clinically reasonable but
- * the "graphs" are prerendered, not produced by NabzGraph from real signals.
- * Node and edge counts mirror what the real pipeline produces on a
- * MIMIC-IV-WDB stay: around a dozen nodes and a dense, Granger-dominant web.
+ * ILLUSTRATIVE DATA. Every scenario is hand-curated for the demo: no live
+ * inference, and no number below (episode counts, readings, doses, signs,
+ * lags, pointer counts) is a result from the paper. Paper figures live in
+ * nabzPapers.ts. The structure, though, follows the NabzGraph model:
  *
- * Concepts stay within NabzGraph's 7-concept bottleneck vocabulary
- * (tachycardia/bradycardia on ECG, tachycardia on PPG, tachypnea/bradypnea on
- * RESP, hypotension/hypertension on ABP). Node identity is a (concept, tier)
- * pair, so one concept can appear as several nodes across persistence tiers,
- * which is what fills out the graph. Each scenario uses at most five distinct
- * concepts so the grid stays readable in the demo card.
+ *   Nodes
+ *     concept:  a finding x persistence tier (transient / episodic /
+ *               persistent), with the episodes that activated it. Vital
+ *               concepts are thresholds on a monitor numeric (e.g.
+ *               hypotension: MAP < 65 mmHg); beat concepts (prolonged PAT,
+ *               high PPV) are computed from the beat series.
+ *     action:   a drug target or rate, or a ventilator setting, with its
+ *               time-stamped changes.
+ *     variable: a vital (MAP, HR, EtCO2) or a beat-level series (SBP, PAT,
+ *               R-R interval, respiration).
  *
- * Node positions are NOT authored here. GraphDemoBlock lays nodes out on a
- * deterministic grid: a column per concept (grouped by modality) and a row per
- * persistence tier, matching the real dashboard's layout. The CANVAS box below
- * is only the SVG viewBox the edge layer is drawn against.
+ *   Edges (typed relations, each pointing to the events behind it)
+ *     RESPONSE:    action -> vital. What a change does. (The paper's
+ *                  concept-level responses fail their pre-specified sign
+ *                  checks, so the demo shows no action -> concept response.)
+ *     POLICY:      vital or concept -> action. What the clinician does.
+ *     ASSOCIATION: concept <-> concept on different vitals, no causal claim.
+ *     MECHANISTIC: beat-level couplings, tested per patient. Respiration ->
+ *                  SBP and respiration -> R-R are directed; PAT <-> SBP is not.
+ *
+ *   Every concept-level relation shown, and its sign, is one the paper
+ *   reports as sign-stable (e.g. hypotension -> phenylephrine up; tachycardia
+ *   <-> hypotension is negative on the ICU records).
+ *
+ * Surgical scenarios mirror the VitalDB graphs (actions, vitals, beat level);
+ * the ICU scenario mirrors the MIMIC-IV-WDB graphs, which have no action
+ * records and no beat layer, so it carries association relations only.
+ *
+ * Layout is deterministic (see layoutScenario): column groups left to right,
+ * [Concepts] [Actions] [Variables | Beat level]. One column per concept, in
+ * the order the concept first appears in `nodes`, with one row per tier.
+ * Action and variable nodes sit at their authored `row` (0 = top tier row,
+ * 2 = bottom). Beat-level nodes sit in one of two lanes inside a shaded band.
+ * Phones use the portrait canvas: the same layout turned a quarter, so the
+ * groups run top to bottom and the tiers left to right.
  */
 
-/** Sensor modality a concept is derived from. */
-export type Modality = 'ECG' | 'PPG' | 'ABP' | 'RESP';
+import { NABZGRAPH_CONCEPTS, RELATION_TYPES } from './nabzPapers';
+
+type ConceptDef = keyof typeof NABZGRAPH_CONCEPTS;
+
+/** Source signal, drives the synthesized waveform in the evidence panel. */
+export type Modality = 'ECG' | 'PPG' | 'ABP' | 'RESP' | 'CO2';
 
 /**
- * Persistence tier, classified per concept from how long it stays active.
- *   TRANSIENT:  isolated, short-lived activations
- *   EPISODIC:   recurring bouts across the stay
- *   PERSISTENT: active across most of the stay
+ * Persistence tier of a concept's episodes.
+ *   TRANSIENT:  short episodes
+ *   EPISODIC:   mid-length bouts
+ *   PERSISTENT: long episodes
  */
 export type Tier = 'TRANSIENT' | 'EPISODIC' | 'PERSISTENT';
 
-/** A single 30s signal window that activated a concept node. */
-export type SignalWindow = {
-  /** Clock label for the window, e.g. "04:12". */
+/** One episode a concept node points to: its start time and a reading. */
+export type Episode = {
+  /** Clock label, e.g. "08:42". */
   t: string;
-  /** Concept activation probability for this window, 0 to 1. */
-  prob: number;
+  /** Short reading from the episode, e.g. "MAP 58". */
+  v: string;
 };
 
-export type ConceptNode = {
+/** One recorded change of an action. */
+export type ActionChange = {
+  /** Clock label of the change. */
+  t: string;
+  /** New value, in the action's unit. */
+  to: number;
+};
+
+type NodeBase = {
   id: string;
-  /** SNOMED-grounded concept name. */
+  /** Display name, kept short for the canvas. */
   label: string;
-  /** SNOMED CT concept id (illustrative). */
-  snomed: string;
-  modality: Modality;
-  tier: Tier;
-  /** Mean concept activation probability across activating windows, 0 to 1. */
-  activation: number;
-  /** Number of 30s windows that activated this concept. */
-  windowCount: number;
-  /** Position in the canvas, assigned at render time by the grid layout. */
+  /** Small tag drawn above the node (source vital, DRUG / VENT, or unit). */
+  tag: string;
+  /** One short line for the evidence panel. */
+  note: string;
+  /** Position in the canvas, assigned by layoutScenario. */
   x?: number;
   y?: number;
-  /** Representative activating windows shown in the evidence panel. */
-  windows: SignalWindow[];
-  /** Plain-language note on what the signal evidence shows. */
-  evidence: string;
-  /** Hourly activation density across the stay (0 to 1), drives the timeline. */
-  density: number[];
 };
 
-/**
- * Edge type, each derived from a measurable property of the signal evidence
- * rather than imposed by an ontology:
- *   TEMPORAL:  lagged cross-correlation of concept activation series
- *   CO_OCCURS: Jaccard overlap of the two concepts' source-window sets
- *   GRANGER:   Granger causality on the underlying signal features
- */
-export type EdgeType = 'TEMPORAL' | 'CO_OCCURS' | 'GRANGER';
+export type ConceptNode = NodeBase & {
+  kind: 'concept';
+  level: 'vital' | 'beat';
+  /** The rule the concept applies to a window, e.g. "MAP < 65 mmHg". */
+  rule: string;
+  /** SNOMED CT id where the concept has one. */
+  snomed?: string;
+  modality: Modality;
+  tier: Tier;
+  /** Episodes in this tier, and the 30-s windows they span. */
+  episodes: number;
+  windows: number;
+  /** Representative episodes shown as evidence. */
+  spans: Episode[];
+  /** Activity across the record (0 to 1 per bucket), drives the timeline. */
+  density: number[];
+  /** Beat-level lane (beat concepts only). */
+  lane?: 0 | 1;
+};
+
+export type ActionNode = NodeBase & {
+  kind: 'action';
+  family: 'drug' | 'ventilator';
+  /** What is set, e.g. "Target" or "Set rate". */
+  setting: string;
+  unit: string;
+  /** Value in force at the start of the record. */
+  start: number;
+  changes: ActionChange[];
+  row: number;
+};
+
+export type VariableNode = NodeBase & {
+  kind: 'variable';
+  level: 'vital' | 'beat';
+  /** Full name, e.g. "Mean arterial pressure". */
+  name: string;
+  modality: Modality;
+  row: number;
+  /** Beat-level lane (beat variables only). */
+  lane?: 0 | 1;
+};
+
+export type GraphNode = ConceptNode | ActionNode | VariableNode;
+
+export type EdgeType = 'RESPONSE' | 'POLICY' | 'ASSOCIATION' | 'MECHANISTIC';
 
 export type GraphEdge = {
   id: string;
   type: EdgeType;
   source: string;
   target: string;
-  /** Directed for TEMPORAL/GRANGER; undirected for CO_OCCURS. */
   directed: boolean;
-  /** Short relation verb shown on hover, e.g. "precedes". */
-  relation: string;
-  /** Statistical evidence behind the edge, shown in the tooltip. */
+  /** Readable relation, e.g. "Propofol ↑ → MAP ↓". */
+  phrase: string;
+  /** Short stats for the tooltip, e.g. sign and lag. */
   stat: { label: string; value: string }[];
+  /** Events (episode pairs, action events or beat epochs) the edge points to. */
+  pointers: number;
 };
 
 export type Scenario = {
-  id: 'sepsis' | 'respiratory' | 'haemodynamic' | 'drug';
+  id: 'anesthesia' | 'ventilation' | 'vasopressor' | 'icu';
   /** Short tab label. */
   label: string;
   /** Sub-label shown under the tabs when active. */
   subLabel: string;
-  /** One-line clinical framing for the graph. */
-  summary: string;
-  nodes: ConceptNode[];
+  /** Record clock: first label and length, for the timeline and dose tracks. */
+  clock: { start: string; hours: number; unit: 'case' | 'stay' };
+  /** Node selected once the graph is built. */
+  focus: string;
+  nodes: GraphNode[];
   edges: GraphEdge[];
 };
 
-// Compact factories so the dense literals below stay readable.
-const d = (...v: number[]) => v;
-const w = (t: string, prob: number): SignalWindow => ({ t, prob });
+// ───────────────────────────────────────────── Compact factories
 
-const n = (
+const ep = (t: string, v: string): Episode => ({ t, v });
+const ch = (t: string, to: number): ActionChange => ({ t, to });
+
+const concept = (
   id: string,
   label: string,
-  snomed: string,
+  def: ConceptDef,
+  tag: string,
   modality: Modality,
   tier: Tier,
-  activation: number,
-  windowCount: number,
-  windows: SignalWindow[],
-  evidence: string,
+  episodes: number,
+  windows: number,
+  spans: Episode[],
+  note: string,
   density: number[],
-): ConceptNode => ({ id, label, snomed, modality, tier, activation, windowCount, windows, evidence, density });
-
-const gr = (id: string, s: string, t: string, p: string, dir: string): GraphEdge => ({
-  id, type: 'GRANGER', source: s, target: t, directed: true, relation: 'Granger-causes',
-  stat: [{ label: 'p', value: p }, { label: 'dir', value: dir }],
-});
-const co = (id: string, s: string, t: string, j: string): GraphEdge => ({
-  id, type: 'CO_OCCURS', source: s, target: t, directed: false, relation: 'co-occurs with',
-  stat: [{ label: 'Jaccard', value: j }],
-});
-const te = (id: string, s: string, t: string, lag: string, cc: string, rel = 'precedes'): GraphEdge => ({
-  id, type: 'TEMPORAL', source: s, target: t, directed: true, relation: rel,
-  stat: [{ label: 'lag', value: lag }, { label: 'cross-corr', value: cc }],
-});
-
-// SNOMED shorthands
-const SN = {
-  tachy: '3424008',
-  brady: '48867003',
-  tachypnea: '271823003',
-  bradypnea: '426813001',
-  hypo: '45007003',
-  hyper: '38341003',
+  extra: { level?: 'vital' | 'beat'; lane?: 0 | 1 } = {},
+): ConceptNode => {
+  const definition: { rule: string; snomed?: string } = NABZGRAPH_CONCEPTS[def];
+  return {
+    kind: 'concept',
+    id,
+    label,
+    rule: definition.rule,
+    snomed: definition.snomed,
+    tag,
+    modality,
+    tier,
+    episodes,
+    windows,
+    spans,
+    note,
+    density,
+    level: extra.level ?? 'vital',
+    lane: extra.lane,
+  };
 };
+
+const action = (
+  id: string,
+  label: string,
+  family: 'drug' | 'ventilator',
+  setting: string,
+  unit: string,
+  start: number,
+  changes: ActionChange[],
+  row: number,
+  note: string,
+): ActionNode => ({
+  kind: 'action',
+  id,
+  label,
+  tag: family === 'drug' ? 'DRUG' : 'VENT',
+  family,
+  setting,
+  unit,
+  start,
+  changes,
+  row,
+  note,
+});
+
+const variable = (
+  id: string,
+  label: string,
+  name: string,
+  unit: string,
+  modality: Modality,
+  row: number,
+  note: string,
+  extra: { level?: 'vital' | 'beat'; lane?: 0 | 1 } = {},
+): VariableNode => ({
+  kind: 'variable',
+  id,
+  label,
+  tag: unit,
+  name,
+  modality,
+  row,
+  note,
+  level: extra.level ?? 'vital',
+  lane: extra.lane,
+});
+
+const response = (id: string, s: string, t: string, phrase: string, sign: string, lag: string, pointers: number): GraphEdge => ({
+  id, type: 'RESPONSE', source: s, target: t, directed: true, phrase,
+  stat: [{ label: 'sign', value: sign }, { label: 'lag', value: lag }], pointers,
+});
+const policy = (id: string, s: string, t: string, phrase: string, sign: string, lag: string, pointers: number): GraphEdge => ({
+  id, type: 'POLICY', source: s, target: t, directed: true, phrase,
+  stat: [{ label: 'sign', value: sign }, { label: 'lag', value: lag }], pointers,
+});
+const association = (
+  id: string, s: string, t: string, phrase: string, sign: string, lag: string, pointers: number,
+): GraphEdge => ({
+  id, type: 'ASSOCIATION', source: s, target: t, directed: false, phrase,
+  stat: [{ label: 'sign', value: sign }, { label: 'lag', value: lag }], pointers,
+});
+const mechanistic = (
+  id: string, s: string, t: string, phrase: string, directed: boolean, sign: string | null, pointers: number,
+): GraphEdge => ({
+  id, type: 'MECHANISTIC', source: s, target: t, directed, phrase,
+  stat: [
+    ...(sign ? [{ label: 'sign', value: sign }] : []),
+    { label: 'tested', value: 'per patient' },
+  ],
+  pointers,
+});
+
+const d = (...v: number[]) => v;
+
+// ───────────────────────────────────────────────────── Scenarios
 
 export const SCENARIOS: Scenario[] = [
-  // ───────────────────────────────────────────────── Sepsis progression
+  // ─────────────────────────────── Anesthesia: drugs titrated to MAP and HR
   {
-    id: 'sepsis',
-    label: 'Sepsis',
-    subLabel: 'Early-warning trajectory, pneumonia admission',
-    summary:
-      'Tachycardia and tachypnea escalate across tiers and both precede a persistent hypotension that decays into a peri-arrest bradycardia. The Granger web exposes the respiratory driver hours before the MAP alarm fires.',
+    id: 'anesthesia',
+    label: 'Anesthesia',
+    subLabel: 'Surgical case · propofol and remifentanil titrated to MAP and HR',
+    clock: { start: '08:00', hours: 3, unit: 'case' },
+    focus: 'a_remi',
     nodes: [
-      n('s_tac_t', 'tachycardia', SN.tachy, 'ECG', 'TRANSIENT', 0.71, 8,
-        [w('02:40', 0.68), w('03:05', 0.74)], 'Early isolated HR spikes above 100 bpm.',
-        d(0.3, 0.5, 0.4, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
-      n('s_tac_e', 'tachycardia', SN.tachy, 'ECG', 'EPISODIC', 0.82, 64,
-        [w('03:30', 0.74), w('04:30', 0.86)], 'Recurring tachycardia bouts from hour 3 onward.',
-        d(0, 0.2, 0.5, 0.7, 0.8, 0.7, 0.65, 0.6, 0.5, 0.4, 0.35, 0.3)),
-      n('s_tac_p', 'tachycardia', SN.tachy, 'ECG', 'PERSISTENT', 0.86, 121,
-        [w('05:00', 0.85), w('07:00', 0.88)], 'HR sustained above 100 bpm across most of the deterioration.',
-        d(0, 0, 0.3, 0.6, 0.85, 0.86, 0.85, 0.8, 0.78, 0.72, 0.6, 0.5)),
-      n('s_bra_t', 'bradycardia', SN.brady, 'ECG', 'TRANSIENT', 0.64, 9,
-        [w('09:50', 0.61), w('10:20', 0.67)], 'Late peri-arrest bradycardia once hypotension is sustained.',
-        d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.55, 0.5)),
-      n('s_tpp_e', 'tachycardia_ppg', SN.tachy, 'PPG', 'EPISODIC', 0.76, 47,
-        [w('04:05', 0.69), w('06:15', 0.78)], 'PPG pulse rate corroborates the ECG tachycardia.',
-        d(0, 0.15, 0.45, 0.6, 0.62, 0.58, 0.55, 0.5, 0.45, 0.4, 0.3, 0.25)),
-      n('s_tpp_p', 'tachycardia_ppg', SN.tachy, 'PPG', 'PERSISTENT', 0.8, 104,
-        [w('05:10', 0.79), w('07:20', 0.82)], 'Sustained PPG tachycardia tracks the ECG persistently.',
-        d(0, 0, 0.25, 0.55, 0.78, 0.8, 0.78, 0.74, 0.7, 0.64, 0.55, 0.45)),
-      n('s_hyp_e', 'hypotension', SN.hypo, 'ABP', 'EPISODIC', 0.74, 41,
-        [w('05:40', 0.66), w('06:40', 0.78)], 'MAP dipping below 65 mmHg in lengthening bouts.',
-        d(0, 0, 0, 0.2, 0.45, 0.6, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2)),
-      n('s_hyp_p', 'hypotension', SN.hypo, 'ABP', 'PERSISTENT', 0.88, 96,
-        [w('08:00', 0.9), w('09:30', 0.92)], 'MAP persistently below 65 mmHg from hour 8.',
-        d(0, 0, 0, 0.1, 0.3, 0.5, 0.7, 0.85, 0.9, 0.92, 0.9, 0.88)),
-      n('s_tpn_t', 'tachypnea', SN.tachypnea, 'RESP', 'TRANSIENT', 0.66, 7,
-        [w('02:55', 0.63), w('03:20', 0.7)], 'First respiratory bouts above 22 per minute.',
-        d(0.2, 0.4, 0.45, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
-      n('s_tpn_e', 'tachypnea', SN.tachypnea, 'RESP', 'EPISODIC', 0.78, 55,
-        [w('03:50', 0.72), w('05:30', 0.79)], 'Respiration rate climbing in step with heart rate.',
-        d(0, 0.25, 0.55, 0.7, 0.78, 0.72, 0.68, 0.6, 0.5, 0.42, 0.32, 0.25)),
-      n('s_tpn_p', 'tachypnea', SN.tachypnea, 'RESP', 'PERSISTENT', 0.83, 112,
-        [w('04:40', 0.81), w('06:50', 0.84)], 'Sustained tachypnea, the earliest persistent driver.',
-        d(0, 0.1, 0.5, 0.78, 0.83, 0.82, 0.8, 0.75, 0.68, 0.6, 0.5, 0.4)),
+      concept('a_bra_t', 'Bradycardia', 'bradycardia', 'HR', 'ECG', 'TRANSIENT', 3, 4,
+        [ep('08:16', 'HR 52'), ep('10:02', 'HR 56')], 'Brief slowing after induction.',
+        d(0.5, 0, 0, 0, 0, 0, 0, 0, 0.35, 0, 0, 0)),
+      concept('a_hyp_t', 'Hypotension', 'hypotension', 'MAP', 'ABP', 'TRANSIENT', 5, 6,
+        [ep('08:14', 'MAP 61'), ep('08:33', 'MAP 59'), ep('10:05', 'MAP 62')], 'Short dips after induction.',
+        d(0.55, 0.4, 0, 0, 0, 0, 0, 0, 0.3, 0, 0, 0)),
+      concept('a_hyp_e', 'Hypotension', 'hypotension', 'MAP', 'ABP', 'EPISODIC', 4, 14,
+        [ep('08:52', 'MAP 57'), ep('09:21', 'MAP 60'), ep('10:40', 'MAP 62')], 'Longer bouts; both drugs come down.',
+        d(0, 0, 0.3, 0.65, 0.5, 0.2, 0, 0, 0, 0, 0.4, 0.3)),
+      concept('a_tac_t', 'Tachycardia', 'tachycardia', 'HR', 'ECG', 'TRANSIENT', 4, 6,
+        [ep('08:21', 'HR 112'), ep('08:47', 'HR 106')], 'Surges at laryngoscopy and incision.',
+        d(0.3, 0.6, 0.45, 0.3, 0, 0, 0, 0, 0, 0, 0, 0)),
+      concept('a_tac_p', 'Tachycardia', 'tachycardia', 'HR', 'ECG', 'PERSISTENT', 1, 38,
+        [ep('09:05', 'HR 109'), ep('09:24', 'HR 104')], 'Sustained during the stimulating phase.',
+        d(0, 0, 0, 0, 0.55, 0.8, 0.7, 0.4, 0, 0, 0, 0)),
+      action('a_prop', 'Propofol', 'drug', 'Target', 'µg/mL', 4.0,
+        [ch('08:30', 3.5), ch('08:55', 3.0), ch('09:40', 3.5), ch('10:35', 3.0)], 0.5,
+        'Lowered as MAP falls.'),
+      action('a_remi', 'Remifentanil', 'drug', 'Target', 'ng/mL', 2.0,
+        [ch('08:24', 3.0), ch('08:50', 2.5), ch('09:08', 3.5), ch('09:42', 3.0), ch('10:15', 2.5)], 1.5,
+        'Raised as HR or MAP climbs.'),
+      variable('a_map', 'MAP', 'Mean arterial pressure', 'mmHg', 'ABP', 0.5,
+        'Moves both ways: cause and trigger.'),
+      variable('a_hr', 'HR', 'Heart rate', 'bpm', 'ECG', 1.5,
+        'Drives remifentanil and responds to it.'),
     ],
     edges: [
-      co('s_co1', 's_tac_e', 's_tpp_e', '0.82'),
-      co('s_co2', 's_tac_p', 's_tpp_p', '0.86'),
-      co('s_co3', 's_tac_e', 's_tpn_e', '0.61'),
-      co('s_co4', 's_tpp_e', 's_tpn_e', '0.58'),
-      co('s_co5', 's_tac_p', 's_tpn_p', '0.64'),
-      co('s_co6', 's_tpn_p', 's_hyp_p', '0.49'),
-      gr('s_gr1', 's_tpn_e', 's_tac_e', '0.004', 'RESP→ECG'),
-      gr('s_gr2', 's_tpn_p', 's_tac_p', '0.002', 'RESP→ECG'),
-      gr('s_gr3', 's_tpn_e', 's_tpp_e', '0.006', 'RESP→PPG'),
-      gr('s_gr4', 's_tpn_p', 's_hyp_p', '0.003', 'RESP→ABP'),
-      gr('s_gr5', 's_tac_p', 's_hyp_p', '0.005', 'ECG→ABP'),
-      gr('s_gr6', 's_tac_e', 's_hyp_e', '0.009', 'ECG→ABP'),
-      gr('s_gr7', 's_tpp_p', 's_hyp_p', '0.011', 'PPG→ABP'),
-      gr('s_gr8', 's_hyp_p', 's_bra_t', '0.007', 'ABP→ECG'),
-      gr('s_gr9', 's_tpn_p', 's_hyp_e', '0.008', 'RESP→ABP'),
-      te('s_te1', 's_tac_t', 's_tac_e', '~20 min', '0.7', 'escalates to'),
-      te('s_te2', 's_tac_e', 's_tac_p', '~35 min', '0.66', 'escalates to'),
-      te('s_te3', 's_tpn_t', 's_tpn_e', '~18 min', '0.68', 'escalates to'),
-      te('s_te4', 's_tpn_e', 's_tpn_p', '~30 min', '0.71', 'escalates to'),
-      te('s_te5', 's_tac_e', 's_hyp_p', '~18 min', '0.71'),
-      te('s_te6', 's_tpn_e', 's_hyp_p', '~25 min', '0.58'),
-      te('s_te7', 's_hyp_e', 's_hyp_p', '~50 min', '0.62', 'deepens to'),
-      te('s_te8', 's_hyp_p', 's_bra_t', '~30 min', '0.49'),
+      response('a_r1', 'a_remi', 'a_hr', 'Remifentanil ↑ → HR ↓', '−', '~2 min', 14),
+      response('a_r2', 'a_remi', 'a_map', 'Remifentanil ↑ → MAP ↓', '−', '~2 min', 12),
+      response('a_r3', 'a_prop', 'a_map', 'Propofol ↑ → MAP ↓', '−', '~2 min', 9),
+      policy('a_p1', 'a_map', 'a_remi', 'Rising MAP → remifentanil ↑', '+', '~1 min', 11),
+      policy('a_p2', 'a_hr', 'a_remi', 'Rising HR → remifentanil ↑', '+', '~1 min', 8),
+      policy('a_p3', 'a_map', 'a_prop', 'Falling MAP → propofol ↓', '+', '~1 min', 6),
+      policy('a_p4', 'a_tac_t', 'a_remi', 'Tachycardia → remifentanil ↑', '+', '~5 min', 7),
+      policy('a_p5', 'a_tac_p', 'a_remi', 'Tachycardia → remifentanil ↑', '+', '~5 min', 6),
+      policy('a_p6', 'a_hyp_e', 'a_prop', 'Hypotension → propofol ↓', '+', '~4 min', 4),
+      policy('a_p7', 'a_hyp_e', 'a_remi', 'Hypotension → remifentanil ↓', '+', '~4 min', 5),
+      association('a_a1', 'a_hyp_t', 'a_bra_t', 'Hypotension ↔ bradycardia', '+', '~3 min', 4),
+      association('a_a2', 'a_hyp_e', 'a_bra_t', 'Hypotension ↔ bradycardia', '+', '~3 min', 3),
     ],
   },
 
-  // ───────────────────────────────────────────── Respiratory decompensation
+  // ─────────────────────── Ventilation: settings, EtCO2 and the beat level
   {
-    id: 'respiratory',
-    label: 'Respiratory',
-    subLabel: 'Post-surgical decompensation, driver identification',
-    summary:
-      'A fan of Granger edges runs RESP to ECG and RESP to PPG: the respiratory pattern is driving the heart-rate elevation across every tier. The causal direction a threshold alarm cannot give.',
+    id: 'ventilation',
+    label: 'Ventilation',
+    subLabel: 'Surgical case · ventilator set to EtCO2, with beat-level couplings',
+    clock: { start: '13:00', hours: 4, unit: 'case' },
+    focus: 'v_rate',
     nodes: [
-      n('r_tac_t', 'tachycardia', SN.tachy, 'ECG', 'TRANSIENT', 0.69, 9,
-        [w('11:50', 0.66), w('12:05', 0.71)], 'First HR spikes as the respiratory effort begins.',
-        d(0.3, 0.5, 0.4, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
-      n('r_tac_e', 'tachycardia', SN.tachy, 'ECG', 'EPISODIC', 0.73, 49,
-        [w('12:25', 0.68), w('13:35', 0.77)], 'ECG heart rate elevation follows respiration with a short lag.',
-        d(0, 0.15, 0.5, 0.68, 0.7, 0.66, 0.58, 0.48, 0.38, 0.28, 0.2, 0.14)),
-      n('r_tac_p', 'tachycardia', SN.tachy, 'ECG', 'PERSISTENT', 0.77, 96,
-        [w('13:00', 0.76), w('14:20', 0.79)], 'Sustained sinus tachycardia, secondary to the respiratory load.',
-        d(0, 0.2, 0.6, 0.77, 0.76, 0.7, 0.6, 0.5, 0.4, 0.32, 0.24, 0.18)),
-      n('r_tpp_e', 'tachycardia_ppg', SN.tachy, 'PPG', 'EPISODIC', 0.76, 52,
-        [w('12:15', 0.72), w('13:25', 0.8)], 'PPG pulse rate elevated, tracking the respiratory bouts.',
-        d(0, 0.25, 0.65, 0.75, 0.72, 0.65, 0.55, 0.45, 0.35, 0.25, 0.18, 0.12)),
-      n('r_tpp_p', 'tachycardia_ppg', SN.tachy, 'PPG', 'PERSISTENT', 0.79, 101,
-        [w('12:50', 0.78), w('14:10', 0.81)], 'Sustained PPG tachycardia follows the respiratory pattern.',
-        d(0, 0.3, 0.7, 0.79, 0.78, 0.72, 0.62, 0.52, 0.42, 0.34, 0.26, 0.2)),
-      n('r_hyp_t', 'hypotension', SN.hypo, 'ABP', 'TRANSIENT', 0.56, 6,
-        [w('14:30', 0.54), w('15:00', 0.59)], 'Short late pressure dip as the work of breathing exhausts the patient.',
-        d(0, 0, 0, 0, 0, 0, 0, 0, 0.3, 0.45, 0.2, 0)),
-      n('r_htn_e', 'hypertension', SN.hyper, 'ABP', 'EPISODIC', 0.67, 33,
-        [w('12:50', 0.63), w('14:10', 0.7)], 'Sympathetic pressor response to the respiratory distress.',
-        d(0, 0.1, 0.4, 0.6, 0.62, 0.55, 0.45, 0.38, 0.3, 0.22, 0.15, 0.1)),
-      n('r_htn_p', 'hypertension', SN.hyper, 'ABP', 'PERSISTENT', 0.72, 88,
-        [w('13:10', 0.71), w('14:30', 0.74)], 'Sustained pressure elevation through the distress window.',
-        d(0, 0.2, 0.55, 0.7, 0.72, 0.66, 0.56, 0.46, 0.36, 0.28, 0.2, 0.14)),
-      n('r_tpn_t', 'tachypnea', SN.tachypnea, 'RESP', 'TRANSIENT', 0.65, 8,
-        [w('11:40', 0.62), w('12:00', 0.69)], 'Opening respiratory bouts before the pattern sets in.',
-        d(0.35, 0.5, 0.4, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
-      n('r_tpn_e', 'tachypnea', SN.tachypnea, 'RESP', 'EPISODIC', 0.8, 58,
-        [w('12:10', 0.77), w('13:20', 0.84)], 'Respiration above 22 per minute in recurring bouts.',
-        d(0, 0.3, 0.7, 0.8, 0.78, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.15)),
-      n('r_tpn_p', 'tachypnea', SN.tachypnea, 'RESP', 'PERSISTENT', 0.85, 119,
-        [w('12:40', 0.82), w('14:05', 0.86)], 'Sustained high respiratory rate, the primary driver.',
-        d(0, 0.4, 0.78, 0.85, 0.84, 0.78, 0.7, 0.6, 0.5, 0.4, 0.32, 0.25)),
+      concept('v_hcp_e', 'Hypercapnia', 'hypercapnia', 'EtCO2', 'CO2', 'EPISODIC', 3, 16,
+        [ep('13:42', 'EtCO2 49'), ep('15:10', 'EtCO2 47')], 'High EtCO2 in bouts.',
+        d(0, 0, 0.5, 0.6, 0.2, 0, 0.45, 0.3, 0, 0, 0, 0)),
+      concept('v_hpc_t', 'Hypocapnia', 'hypocapnia', 'EtCO2', 'CO2', 'TRANSIENT', 4, 7,
+        [ep('13:18', 'EtCO2 28'), ep('14:25', 'EtCO2 29')], 'Short dips that bring the rate down.',
+        d(0.4, 0.3, 0, 0, 0.35, 0.2, 0, 0, 0, 0, 0, 0)),
+      concept('v_hpc_p', 'Hypocapnia', 'hypocapnia', 'EtCO2', 'CO2', 'PERSISTENT', 1, 52,
+        [ep('15:48', 'EtCO2 27'), ep('16:20', 'EtCO2 28')], 'Low EtCO2 through the last hour.',
+        d(0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.8, 0.85, 0.7)),
+      action('v_rate', 'Vent rate', 'ventilator', 'Set rate', '/min', 12,
+        [ch('13:22', 11), ch('13:46', 13), ch('14:28', 12), ch('15:14', 14), ch('16:05', 12)], 0.5,
+        'Stepped up as EtCO2 climbs.'),
+      action('v_vt', 'Tidal volume', 'ventilator', 'Set volume', 'mL', 450,
+        [ch('13:50', 500), ch('15:30', 450)], 1.5,
+        'Raised once, then brought back.'),
+      variable('v_etco2', 'EtCO2', 'End-tidal CO2', 'mmHg', 'CO2', 1,
+        'Set by the ventilator, and setting it.'),
+      concept('v_pat_t', 'Prolonged PAT', 'prolongedPat', 'BEAT', 'PPG', 'TRANSIENT', 2, 5,
+        [ep('14:52', 'PAT +26 ms'), ep('16:12', 'PAT +23 ms')], 'Slower pulse arrival than usual.',
+        d(0, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0.3, 0), { level: 'beat', lane: 0 }),
+      variable('v_resp', 'Respiration', 'Respiratory phase', 'phase', 'CO2', 1,
+        'Each breath, from the capnogram.', { level: 'beat', lane: 0 }),
+      concept('v_ppv_p', 'High PPV', 'highPpv', 'BEAT', 'ABP', 'PERSISTENT', 1, 41,
+        [ep('15:36', 'PPV 15%'), ep('16:02', 'PPV 14%')], 'Pulse pressure swings with each breath.',
+        d(0, 0, 0, 0, 0, 0, 0, 0.45, 0.75, 0.8, 0.6, 0.3), { level: 'beat', lane: 0 }),
+      variable('v_rri', 'R-R', 'R-R interval', 'ms', 'ECG', 0.25,
+        'Beat-to-beat heart period.', { level: 'beat', lane: 1 }),
+      variable('v_sbp', 'SBP', 'Systolic pressure, per beat', 'mmHg', 'ABP', 1,
+        'Rises and falls with each breath.', { level: 'beat', lane: 1 }),
+      variable('v_pat', 'PAT', 'Pulse arrival time', 'ms', 'PPG', 1.75,
+        'Shortens as systolic pressure rises.', { level: 'beat', lane: 1 }),
     ],
     edges: [
-      gr('r_gr1', 'r_tpn_e', 'r_tac_e', '0.003', 'RESP→ECG'),
-      gr('r_gr2', 'r_tpn_p', 'r_tac_p', '0.002', 'RESP→ECG'),
-      gr('r_gr3', 'r_tpn_e', 'r_tpp_e', '0.004', 'RESP→PPG'),
-      gr('r_gr4', 'r_tpn_p', 'r_tpp_p', '0.003', 'RESP→PPG'),
-      gr('r_gr5', 'r_tpn_p', 'r_htn_p', '0.01', 'RESP→ABP'),
-      gr('r_gr6', 'r_tpn_e', 'r_htn_e', '0.014', 'RESP→ABP'),
-      gr('r_gr7', 'r_tac_p', 'r_htn_p', '0.02', 'ECG→ABP'),
-      gr('r_gr8', 'r_tpn_p', 'r_hyp_t', '0.03', 'RESP→ABP'),
-      co('r_co1', 'r_tpn_e', 'r_tpp_e', '0.78'),
-      co('r_co2', 'r_tpn_p', 'r_tpp_p', '0.81'),
-      co('r_co3', 'r_tpp_e', 'r_tac_e', '0.86'),
-      co('r_co4', 'r_tpp_p', 'r_tac_p', '0.84'),
-      co('r_co5', 'r_htn_e', 'r_tac_e', '0.44'),
-      co('r_co6', 'r_htn_p', 'r_tac_p', '0.47'),
-      te('r_te1', 'r_tac_t', 'r_tac_e', '~16 min', '0.66', 'escalates to'),
-      te('r_te2', 'r_tpn_t', 'r_tpn_e', '~14 min', '0.67', 'escalates to'),
-      te('r_te3', 'r_tpn_e', 'r_tpn_p', '~24 min', '0.72', 'escalates to'),
-      te('r_te4', 'r_tac_e', 'r_tac_p', '~28 min', '0.69', 'escalates to'),
-      te('r_te5', 'r_tpn_e', 'r_htn_e', '~6 min', '0.52'),
-      te('r_te6', 'r_htn_p', 'r_hyp_t', '~3.2 h', '0.4', 'gives way to'),
-      te('r_te7', 'r_tac_e', 'r_hyp_t', '~22 min', '0.41'),
+      response('v_r1', 'v_rate', 'v_etco2', 'Ventilator rate ↑ → EtCO2 ↓', '−', '~1 min', 15),
+      response('v_r2', 'v_vt', 'v_etco2', 'Tidal volume ↑ → EtCO2 ↓', '−', '~1 min', 6),
+      policy('v_p1', 'v_etco2', 'v_rate', 'Rising EtCO2 → rate ↑', '+', '~1 min', 12),
+      policy('v_p2', 'v_etco2', 'v_vt', 'Rising EtCO2 → tidal volume ↑', '+', '~1 min', 5),
+      policy('v_p3', 'v_hcp_e', 'v_rate', 'Hypercapnia → rate ↑', '+', '~4 min', 5),
+      policy('v_p4', 'v_hpc_p', 'v_rate', 'Hypocapnia → rate ↓', '+', '~5 min', 3),
+      policy('v_p5', 'v_hpc_t', 'v_rate', 'Hypocapnia → rate ↓', '+', '~3 min', 4),
+      mechanistic('v_m1', 'v_resp', 'v_sbp', 'Respiration → SBP', true, null, 38),
+      mechanistic('v_m2', 'v_resp', 'v_rri', 'Respiration → R-R interval', true, null, 36),
+      mechanistic('v_m3', 'v_pat', 'v_sbp', 'PAT ↔ SBP', false, '−', 29),
     ],
   },
 
-  // ──────────────────────────────────── Haemodynamic: chronic vs acute
+  // ──────────────────────────── Vasopressor: phenylephrine for low MAP
   {
-    id: 'haemodynamic',
-    label: 'Haemodynamic',
-    subLabel: 'Baseline hypertension vs anaesthesia washout',
-    summary:
-      'Hypertension is PERSISTENT across the whole stay; hypotension and bradycardia appear only as TRANSIENT washout episodes. The tier structure rules out new instability without a chart review.',
+    id: 'vasopressor',
+    label: 'Vasopressor',
+    subLabel: 'Surgical case · phenylephrine started for low MAP',
+    clock: { start: '10:00', hours: 3, unit: 'case' },
+    focus: 'p_phe',
     nodes: [
-      n('h_tac_e', 'tachycardia', SN.tachy, 'ECG', 'EPISODIC', 0.69, 44,
-        [w('02:10', 0.66), w('14:40', 0.7)], 'Heart-rate bouts loosely tracking the pressure peaks.',
-        d(0.2, 0.4, 0.5, 0.3, 0.25, 0.45, 0.5, 0.35, 0.3, 0.5, 0.45, 0.3)),
-      n('h_tac_p', 'tachycardia', SN.tachy, 'ECG', 'PERSISTENT', 0.72, 96,
-        [w('03:00', 0.71), w('15:00', 0.73)], 'A persistent mild tachycardia accompanying the hypertension.',
-        d(0.5, 0.55, 0.6, 0.5, 0.48, 0.58, 0.6, 0.52, 0.5, 0.6, 0.55, 0.5)),
-      n('h_bra_t', 'bradycardia', SN.brady, 'ECG', 'TRANSIENT', 0.55, 5,
-        [w('01:10', 0.53), w('07:35', 0.58)], 'A vagal bradycardia coinciding with each washout dip.',
-        d(0.28, 0, 0, 0, 0, 0, 0.26, 0, 0, 0, 0, 0)),
-      n('h_tpp_e', 'tachycardia_ppg', SN.tachy, 'PPG', 'EPISODIC', 0.64, 38,
-        [w('02:15', 0.62), w('14:45', 0.65)], 'PPG pulse rate mirrors the ECG bouts, confirming true tachycardia.',
-        d(0.18, 0.36, 0.45, 0.28, 0.22, 0.42, 0.46, 0.32, 0.27, 0.46, 0.42, 0.28)),
-      n('h_tpp_p', 'tachycardia_ppg', SN.tachy, 'PPG', 'PERSISTENT', 0.68, 90,
-        [w('03:05', 0.67), w('15:05', 0.69)], 'Sustained PPG tachycardia confirms the ECG persistence.',
-        d(0.46, 0.5, 0.56, 0.46, 0.44, 0.54, 0.56, 0.48, 0.46, 0.56, 0.52, 0.46)),
-      n('h_hyp_t', 'hypotension', SN.hypo, 'ABP', 'TRANSIENT', 0.58, 6,
-        [w('01:05', 0.55), w('12:50', 0.59)], 'Three short isolated dips, each under two windows, anaesthesia washout.',
-        d(0.3, 0, 0, 0, 0, 0, 0.3, 0, 0, 0, 0.25, 0)),
-      n('h_hyp_e', 'hypotension', SN.hypo, 'ABP', 'EPISODIC', 0.6, 14,
-        [w('07:25', 0.58), w('07:55', 0.62)], 'One slightly longer dip mid-stay, still self-limiting.',
-        d(0, 0, 0, 0, 0, 0, 0.4, 0.45, 0.2, 0, 0, 0)),
-      n('h_htn_e', 'hypertension', SN.hyper, 'ABP', 'EPISODIC', 0.78, 52,
-        [w('04:00', 0.8), w('14:40', 0.79)], 'Pressure surges layered on the chronic baseline.',
-        d(0.4, 0.6, 0.5, 0.45, 0.5, 0.62, 0.58, 0.5, 0.45, 0.6, 0.55, 0.48)),
-      n('h_htn_p', 'hypertension', SN.hyper, 'ABP', 'PERSISTENT', 0.85, 188,
-        [w('00:30', 0.83), w('16:00', 0.87)], 'Arterial pressure above baseline over 70% of the stay, chronic hypertension.',
-        d(0.8, 0.82, 0.85, 0.83, 0.8, 0.84, 0.86, 0.82, 0.8, 0.85, 0.83, 0.81)),
+      concept('p_hyp_t', 'Hypotension', 'hypotension', 'MAP', 'ABP', 'TRANSIENT', 3, 4,
+        [ep('10:12', 'MAP 63'), ep('12:20', 'MAP 62')], 'Brief dips before the infusion.',
+        d(0.4, 0, 0, 0, 0, 0, 0, 0, 0, 0.3, 0, 0)),
+      concept('p_hyp_e', 'Hypotension', 'hypotension', 'MAP', 'ABP', 'EPISODIC', 3, 12,
+        [ep('10:31', 'MAP 58'), ep('11:44', 'MAP 60')], 'Bouts that bring phenylephrine on.',
+        d(0, 0.5, 0.6, 0, 0, 0, 0.45, 0.3, 0, 0, 0, 0)),
+      concept('p_hyp_p', 'Hypotension', 'hypotension', 'MAP', 'ABP', 'PERSISTENT', 1, 31,
+        [ep('10:52', 'MAP 55'), ep('11:06', 'MAP 57')], 'Sustained low MAP before the infusion.',
+        d(0, 0, 0.4, 0.85, 0.7, 0.2, 0, 0, 0, 0, 0, 0)),
+      concept('p_bra_t', 'Bradycardia', 'bradycardia', 'HR', 'ECG', 'TRANSIENT', 3, 5,
+        [ep('11:22', 'HR 54'), ep('12:05', 'HR 57')], 'Brief slowing alongside low MAP.',
+        d(0, 0, 0, 0, 0, 0.45, 0, 0, 0.3, 0, 0, 0)),
+      concept('p_htn_t', 'Hypertension', 'hypertension', 'MAP', 'ABP', 'TRANSIENT', 2, 3,
+        [ep('11:20', 'MAP 108'), ep('12:03', 'MAP 106')], 'Brief overshoots; the dose comes down.',
+        d(0, 0, 0, 0, 0, 0.5, 0, 0, 0.35, 0, 0, 0)),
+      action('p_phe', 'Phenylephrine', 'drug', 'Infusion', 'µg/min', 0,
+        [ch('10:36', 25), ch('10:58', 50), ch('11:24', 30), ch('11:48', 40), ch('12:08', 20)], 0.5,
+        'Started and stepped with MAP.'),
+      action('p_prop', 'Propofol', 'drug', 'Target', 'µg/mL', 3.5,
+        [ch('10:40', 3.0), ch('12:15', 3.5)], 1.5,
+        'Eased while MAP is low.'),
+      variable('p_map', 'MAP', 'Mean arterial pressure', 'mmHg', 'ABP', 0.5,
+        'Raised by phenylephrine, and its trigger.'),
+      variable('p_hr', 'HR', 'Heart rate', 'bpm', 'ECG', 1.5,
+        'Falls as pressure rises.'),
     ],
     edges: [
-      co('h_co1', 'h_htn_p', 'h_tac_p', '0.4'),
-      co('h_co2', 'h_htn_e', 'h_tac_e', '0.36'),
-      co('h_co3', 'h_tac_e', 'h_tpp_e', '0.8'),
-      co('h_co4', 'h_tac_p', 'h_tpp_p', '0.83'),
-      co('h_co5', 'h_hyp_t', 'h_bra_t', '0.66'),
-      gr('h_gr1', 'h_htn_p', 'h_tac_p', '0.03', 'ABP→ECG'),
-      gr('h_gr2', 'h_htn_e', 'h_tac_e', '0.04', 'ABP→ECG'),
-      gr('h_gr3', 'h_tac_p', 'h_tpp_p', '0.006', 'ECG→PPG'),
-      gr('h_gr4', 'h_tac_e', 'h_tpp_e', '0.009', 'ECG→PPG'),
-      gr('h_gr5', 'h_hyp_t', 'h_bra_t', '0.02', 'ABP→ECG'),
-      te('h_te1', 'h_htn_e', 'h_htn_p', '~1.5 h', '0.5', 'sustains as'),
-      te('h_te2', 'h_hyp_t', 'h_tac_e', '~4 min', '0.29'),
-      te('h_te3', 'h_hyp_t', 'h_bra_t', '~3 min', '0.31'),
-      te('h_te4', 'h_hyp_e', 'h_tac_e', '~5 min', '0.33'),
-      te('h_te5', 'h_tac_e', 'h_tac_p', '~2 h', '0.55', 'sustains as'),
-      te('h_te6', 'h_hyp_t', 'h_hyp_e', '~6 h', '0.3', 'recurs as'),
+      response('p_r1', 'p_phe', 'p_map', 'Phenylephrine ↑ → MAP ↑', '+', '~2 min', 10),
+      response('p_r2', 'p_phe', 'p_hr', 'Phenylephrine ↑ → HR ↓', '−', '~2 min', 7),
+      response('p_r3', 'p_prop', 'p_map', 'Propofol ↑ → MAP ↓', '−', '~2 min', 4),
+      policy('p_p1', 'p_map', 'p_phe', 'Falling MAP → phenylephrine ↑', '−', '~1 min', 9),
+      policy('p_p2', 'p_map', 'p_prop', 'Falling MAP → propofol ↓', '+', '~1 min', 5),
+      policy('p_p3', 'p_hyp_e', 'p_phe', 'Hypotension → phenylephrine ↑', '+', '~3 min', 6),
+      policy('p_p4', 'p_hyp_p', 'p_phe', 'Hypotension → phenylephrine ↑', '+', '~3 min', 4),
+      policy('p_p5', 'p_htn_t', 'p_phe', 'Hypertension → phenylephrine ↓', '+', '~3 min', 3),
+      association('p_a1', 'p_hyp_t', 'p_bra_t', 'Hypotension ↔ bradycardia', '+', '~3 min', 3),
+      association('p_a2', 'p_hyp_e', 'p_bra_t', 'Hypotension ↔ bradycardia', '+', '~3 min', 3),
     ],
   },
 
-  // ──────────────────────────────────────────── Drug response monitoring
+  // ───────────────────────────── ICU stay: waveforms only, associations
   {
-    id: 'drug',
-    label: 'Drug response',
-    subLabel: 'Metoprolol for tachycardia, 6h post-dose',
-    summary:
-      'Six hours post-dose the persistent tachycardia has downgraded to episodic, hypertension is softening, and a transient bradycardia plus pressure dip mark the pharmacologic nadir, quantified without manual trend review.',
+    id: 'icu',
+    label: 'ICU stay',
+    subLabel: 'ICU record · waveforms only, no action records',
+    clock: { start: '20:00', hours: 12, unit: 'stay' },
+    focus: 'i_tac_p',
     nodes: [
-      n('d_tac_t', 'tachycardia', SN.tachy, 'ECG', 'TRANSIENT', 0.66, 7,
-        [w('05:40', 0.64), w('05:55', 0.69)], 'Pre-dose HR spikes at admission.',
-        d(0.7, 0.6, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
-      n('d_tac_e', 'tachycardia', SN.tachy, 'ECG', 'EPISODIC', 0.7, 51,
-        [w('08:00', 0.74), w('11:00', 0.62)], 'Downgraded to episodic bouts after the dose takes effect.',
-        d(0.2, 0.3, 0.45, 0.6, 0.55, 0.45, 0.4, 0.35, 0.3, 0.28, 0.25, 0.22)),
-      n('d_tac_p', 'tachycardia', SN.tachy, 'ECG', 'PERSISTENT', 0.84, 118,
-        [w('06:00', 0.88), w('07:00', 0.83)], 'Persistent tachycardia at admission, pre-treatment.',
-        d(0.9, 0.88, 0.8, 0.6, 0.4, 0.3, 0.25, 0.2, 0.18, 0.16, 0.14, 0.12)),
-      n('d_brady_t', 'bradycardia', SN.brady, 'ECG', 'TRANSIENT', 0.6, 8,
-        [w('10:40', 0.58), w('11:20', 0.63)], 'Short over-suppression below 60 bpm at peak drug level.',
-        d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.55, 0.35)),
-      n('d_brady_e', 'bradycardia', SN.brady, 'ECG', 'EPISODIC', 0.62, 18,
-        [w('10:30', 0.6), w('12:00', 0.64)], 'Recurring relative bradycardia as the heart rate settles low.',
-        d(0, 0, 0, 0, 0, 0, 0.2, 0.3, 0.4, 0.5, 0.55, 0.45)),
-      n('d_tpp_e', 'tachycardia_ppg', SN.tachy, 'PPG', 'EPISODIC', 0.66, 43,
-        [w('08:05', 0.7), w('11:05', 0.58)], 'PPG pulse rate tracks the same downtrend, confirming the fall is real.',
-        d(0.2, 0.28, 0.42, 0.55, 0.5, 0.42, 0.38, 0.32, 0.28, 0.26, 0.23, 0.2)),
-      n('d_tpp_p', 'tachycardia_ppg', SN.tachy, 'PPG', 'PERSISTENT', 0.8, 102,
-        [w('06:05', 0.85), w('07:05', 0.79)], 'PPG confirms the pre-dose persistent tachycardia.',
-        d(0.86, 0.84, 0.76, 0.58, 0.4, 0.3, 0.26, 0.22, 0.2, 0.18, 0.16, 0.14)),
-      n('d_hyp_t', 'hypotension', SN.hypo, 'ABP', 'TRANSIENT', 0.57, 7,
-        [w('10:50', 0.55), w('11:30', 0.6)], 'Transient pressure dip alongside the bradycardia, the expected nadir.',
-        d(0, 0, 0, 0, 0, 0, 0, 0, 0.2, 0.45, 0.5, 0.3)),
-      n('d_htn_e', 'hypertension', SN.hyper, 'ABP', 'EPISODIC', 0.68, 39,
-        [w('06:10', 0.72), w('09:30', 0.6)], 'Pre-treatment pressor state that softens as beta-blockade takes hold.',
-        d(0.7, 0.68, 0.62, 0.5, 0.42, 0.36, 0.3, 0.26, 0.22, 0.2, 0.18, 0.15)),
-      n('d_htn_p', 'hypertension', SN.hyper, 'ABP', 'PERSISTENT', 0.74, 90,
-        [w('06:15', 0.76), w('07:30', 0.72)], 'Sustained early hypertension before the drug effect.',
-        d(0.76, 0.74, 0.66, 0.52, 0.42, 0.34, 0.28, 0.24, 0.2, 0.18, 0.16, 0.14)),
+      concept('i_tpg_e', 'Tachycardia', 'tachycardiaPpg', 'PPG', 'PPG', 'EPISODIC', 6, 44,
+        [ep('22:15', 'PR 116'), ep('01:40', 'PR 112')], 'Pulse rate from the pleth.',
+        d(0, 0.2, 0.5, 0.6, 0.4, 0.3, 0.5, 0.45, 0.3, 0.2, 0.1, 0)),
+      concept('i_tpn_t', 'Tachypnea', 'tachypnea', 'RESP', 'RESP', 'TRANSIENT', 9, 12,
+        [ep('20:40', 'RR 26'), ep('21:05', 'RR 24')], 'First short bouts of fast breathing.',
+        d(0.4, 0.5, 0.2, 0, 0, 0, 0, 0, 0, 0, 0, 0)),
+      concept('i_tpn_e', 'Tachypnea', 'tachypnea', 'RESP', 'RESP', 'EPISODIC', 7, 58,
+        [ep('22:10', 'RR 27'), ep('00:30', 'RR 25')], 'Recurring bouts through the night.',
+        d(0, 0.3, 0.55, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0, 0)),
+      concept('i_tpn_p', 'Tachypnea', 'tachypnea', 'RESP', 'RESP', 'PERSISTENT', 2, 160,
+        [ep('23:20', 'RR 28'), ep('02:50', 'RR 26')], 'Fast breathing for hours at a time.',
+        d(0, 0, 0.3, 0.75, 0.85, 0.8, 0.75, 0.6, 0.4, 0.2, 0.1, 0)),
+      concept('i_tac_e', 'Tachycardia', 'tachycardia', 'ECG', 'ECG', 'EPISODIC', 8, 63,
+        [ep('22:20', 'HR 118'), ep('01:45', 'HR 113')], 'Bouts that travel with fast breathing.',
+        d(0, 0.25, 0.5, 0.65, 0.5, 0.4, 0.5, 0.4, 0.3, 0.2, 0.1, 0)),
+      concept('i_tac_p', 'Tachycardia', 'tachycardia', 'ECG', 'ECG', 'PERSISTENT', 2, 142,
+        [ep('23:30', 'HR 121'), ep('03:10', 'HR 117')], 'Fast heart rate for hours.',
+        d(0, 0, 0.2, 0.7, 0.85, 0.85, 0.8, 0.7, 0.5, 0.3, 0.15, 0)),
+      concept('i_hyp_e', 'Hypotension', 'hypotension', 'ABP', 'ABP', 'EPISODIC', 5, 37,
+        [ep('00:50', 'MAP 61'), ep('03:40', 'MAP 59')], 'Low MAP in bouts.',
+        d(0, 0, 0, 0, 0.3, 0.5, 0.45, 0.6, 0.5, 0.3, 0.2, 0.1)),
+      concept('i_hyp_p', 'Hypotension', 'hypotension', 'ABP', 'ABP', 'PERSISTENT', 1, 96,
+        [ep('04:30', 'MAP 58'), ep('06:10', 'MAP 57')], 'Low MAP through the early morning.',
+        d(0, 0, 0, 0, 0, 0, 0.2, 0.5, 0.8, 0.9, 0.85, 0.7)),
+      concept('i_bra_t', 'Bradycardia', 'bradycardia', 'ECG', 'ECG', 'TRANSIENT', 4, 5,
+        [ep('05:15', 'HR 54'), ep('06:40', 'HR 52')], 'Late, brief slowing.',
+        d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0.35, 0.4, 0.3)),
     ],
     edges: [
-      co('d_co1', 'd_tac_p', 'd_tpp_p', '0.85'),
-      co('d_co2', 'd_tac_e', 'd_tpp_e', '0.79'),
-      co('d_co3', 'd_tac_p', 'd_htn_p', '0.42'),
-      co('d_co4', 'd_tac_e', 'd_htn_e', '0.38'),
-      co('d_co5', 'd_brady_t', 'd_hyp_t', '0.5'),
-      co('d_co6', 'd_brady_e', 'd_brady_t', '0.6'),
-      gr('d_gr1', 'd_tac_p', 'd_tpp_p', '0.005', 'ECG→PPG'),
-      gr('d_gr2', 'd_tac_e', 'd_tpp_e', '0.008', 'ECG→PPG'),
-      gr('d_gr3', 'd_htn_p', 'd_tac_p', '0.02', 'ABP→ECG'),
-      gr('d_gr4', 'd_brady_e', 'd_hyp_t', '0.03', 'ECG→ABP'),
-      te('d_te1', 'd_tac_t', 'd_tac_p', '~25 min', '0.5', 'sustains as'),
-      te('d_te2', 'd_tac_p', 'd_tac_e', '~4.5 h', '0.47', 'downtrends to'),
-      te('d_te3', 'd_tpp_p', 'd_tpp_e', '~4.5 h', '0.45', 'downtrends to'),
-      te('d_te4', 'd_htn_p', 'd_htn_e', '~3 h', '0.5', 'softens to'),
-      te('d_te5', 'd_tac_e', 'd_brady_t', '~5 h', '0.43', 'overshoots to'),
-      te('d_te6', 'd_htn_e', 'd_hyp_t', '~40 min', '0.45'),
-      te('d_te7', 'd_brady_e', 'd_brady_t', '~1 h', '0.52', 'deepens to'),
+      association('i_a1', 'i_tpg_e', 'i_tpn_e', 'Tachycardia ↔ tachypnea', '+', '~4 min', 9),
+      association('i_a2', 'i_tpn_t', 'i_tac_e', 'Tachypnea ↔ tachycardia', '+', '~5 min', 5),
+      association('i_a3', 'i_tpn_e', 'i_tac_e', 'Tachypnea ↔ tachycardia', '+', '~4 min', 14),
+      association('i_a4', 'i_tpn_p', 'i_tac_p', 'Tachypnea ↔ tachycardia', '+', '~6 min', 11),
+      association('i_a5', 'i_tac_e', 'i_hyp_e', 'Tachycardia ↔ hypotension', '−', '~8 min', 7),
+      association('i_a6', 'i_tac_p', 'i_hyp_p', 'Tachycardia ↔ hypotension', '−', '~9 min', 6),
+      association('i_a7', 'i_hyp_e', 'i_bra_t', 'Hypotension ↔ bradycardia', '+', '~5 min', 4),
+      association('i_a8', 'i_hyp_p', 'i_bra_t', 'Hypotension ↔ bradycardia', '+', '~6 min', 3),
     ],
   },
 ];
 
-/** Canvas dimensions the edge-layer viewBox is drawn against. */
-export const CANVAS = { w: 760, h: 470 } as const;
+// ───────────────────────────────────────────────────── Visual meta
+
+/**
+ * Canvas orientation. Landscape from sm up; portrait on phones, where the
+ * landscape canvas renders ~320px wide and its labels shrink to ~6px.
+ */
+export type Orientation = 'landscape' | 'portrait';
+
+/**
+ * Canvas dimensions the SVG viewBox is drawn against, per orientation. The
+ * demo container's Tailwind aspect classes (aspect-[760/470],
+ * max-sm:aspect-[410/680]) mirror these numbers; change both together.
+ */
+export const CANVAS: Record<Orientation, { w: number; h: number }> = {
+  landscape: { w: 760, h: 470 },
+  portrait: { w: 410, h: 680 },
+};
 
 /** Visual treatment per persistence tier. */
-export const TIER_META: Record<
-  Tier,
-  { label: string; /** accent mix %, drives node brightness */ mix: number }
-> = {
-  PERSISTENT: { label: 'Persistent', mix: 100 },
-  EPISODIC: { label: 'Episodic', mix: 62 },
-  TRANSIENT: { label: 'Transient', mix: 34 },
+export const TIER_META: Record<Tier, { label: string; short: string }> = {
+  PERSISTENT: { label: 'Persistent', short: 'P' },
+  EPISODIC: { label: 'Episodic', short: 'E' },
+  TRANSIENT: { label: 'Transient', short: 'T' },
 };
 
-/** Visual treatment per edge type. */
+const relationType = (key: (typeof RELATION_TYPES)[number]['key']) =>
+  RELATION_TYPES.find((r) => r.key === key)!;
+
+/**
+ * Visual treatment per relation type: solid, dashed, dotted, thick. All in
+ * the .theme-nabz cyan family. Labels and one-liners come from nabzPapers.
+ */
 export const EDGE_META: Record<
   EdgeType,
-  { label: string; dashed: boolean; width: number }
+  {
+    label: string;
+    line: string;
+    stroke: string;
+    width: number;
+    dash?: string;
+    opacity: number;
+    glow: boolean;
+  }
 > = {
-  TEMPORAL: { label: 'Temporal', dashed: true, width: 1.3 },
-  CO_OCCURS: { label: 'Co-occurs', dashed: false, width: 1.3 },
-  GRANGER: { label: 'Granger', dashed: false, width: 1.8 },
+  RESPONSE: {
+    label: relationType('response').name,
+    line: relationType('response').line,
+    stroke: 'var(--accent-strong)',
+    width: 1.8,
+    opacity: 0.85,
+    glow: false,
+  },
+  POLICY: {
+    label: relationType('policy').name,
+    line: relationType('policy').line,
+    stroke: 'var(--accent)',
+    width: 1.6,
+    dash: '6 4',
+    opacity: 0.8,
+    glow: false,
+  },
+  ASSOCIATION: {
+    label: relationType('association').name,
+    line: relationType('association').line,
+    stroke: 'var(--accent)',
+    width: 2.2,
+    dash: '0.1 5',
+    opacity: 0.7,
+    glow: false,
+  },
+  MECHANISTIC: {
+    label: relationType('mechanistic').name,
+    line: relationType('mechanistic').line,
+    stroke: 'var(--color-iris-500)',
+    width: 3,
+    opacity: 0.75,
+    glow: true,
+  },
 };
 
-/** Canonical column order (concept grouped by modality) for the grid layout. */
-export const CONCEPT_COLUMN_ORDER: string[] = [
-  'tachycardia',
-  'bradycardia',
-  'tachycardia_ppg',
-  'hypotension',
-  'hypertension',
-  'tachypnea',
-  'bradypnea',
-];
+/** Legend and filter order. */
+export const EDGE_ORDER: EdgeType[] = ['RESPONSE', 'POLICY', 'ASSOCIATION', 'MECHANISTIC'];
 
-/** Row order for the grid layout (top to bottom). */
+// ───────────────────────────────────────────────────── Layout
+
+/** Row order for concept tiers (top to bottom). */
 export const TIER_ROW_ORDER: Tier[] = ['TRANSIENT', 'EPISODIC', 'PERSISTENT'];
+
+/**
+ * Spacing per orientation. The column axis runs along x in landscape and
+ * along y in portrait; the row (tier) axis is the other one.
+ *   margin / groupGap: column-axis inset at each end, and the extra gap
+ *                      between column groups.
+ *   rowStart / rowStep: row-axis position of row 0, and the step per row.
+ *   bandPad:           how far the beat-level band reaches past its lanes.
+ */
+const AXES: Record<
+  Orientation,
+  { margin: number; groupGap: number; rowStart: number; rowStep: number; bandPad: number }
+> = {
+  landscape: { margin: 72, groupGap: 28, rowStart: 120, rowStep: 120, bandPad: 56 },
+  portrait: { margin: 60, groupGap: 20, rowStart: 84, rowStep: 115, bandPad: 48 },
+};
+
+export type ScenarioLayout = {
+  nodes: GraphNode[];
+  /** Group headers; portrait headers run vertically down the left edge. */
+  headers: { label: string; x: number; y: number; vertical: boolean }[];
+  /** Shaded beat-level band, when the scenario has beat-level nodes. */
+  band: { x: number; y: number; width: number; height: number } | null;
+};
+
+/**
+ * Deterministic column layout: [Concepts] [Actions] [Variables | Beat level].
+ * Returns positioned copies of the nodes plus the group headers.
+ */
+export function layoutScenario(scenario: Scenario, orientation: Orientation = 'landscape'): ScenarioLayout {
+  const canvas = CANVAS[orientation];
+  const axes = AXES[orientation];
+  const portrait = orientation === 'portrait';
+  /** Length of the column axis. */
+  const length = portrait ? canvas.h : canvas.w;
+  /** Row-axis position of a row index (0 = transient row, 2 = persistent; fractions allowed). */
+  const rowPos = (row: number) => axes.rowStart + row * axes.rowStep;
+  /** Canvas point for a column-axis and a row-axis position. */
+  const place = (col: number, row: number) => (portrait ? { x: row, y: col } : { x: col, y: row });
+
+  type Column = { key: string; group: 'concepts' | 'actions' | 'variables'; beat: boolean };
+  const columns: Column[] = [];
+  const addColumn = (col: Column) => {
+    if (!columns.some((c) => c.key === col.key)) columns.push(col);
+  };
+
+  const columnKey = (n: GraphNode): string => {
+    if (n.kind === 'action') return 'action';
+    if (n.level === 'beat') return `beat-${n.lane ?? 0}`;
+    if (n.kind === 'variable') return 'variable';
+    return `concept-${n.label}-${n.tag}`;
+  };
+
+  // Concepts first, in order of appearance; then actions, vitals, beat lanes.
+  scenario.nodes.forEach((n) => {
+    if (n.kind === 'concept' && n.level === 'vital') {
+      addColumn({ key: columnKey(n), group: 'concepts', beat: false });
+    }
+  });
+  if (scenario.nodes.some((n) => n.kind === 'action')) {
+    addColumn({ key: 'action', group: 'actions', beat: false });
+  }
+  if (scenario.nodes.some((n) => n.kind === 'variable' && n.level === 'vital')) {
+    addColumn({ key: 'variable', group: 'variables', beat: false });
+  }
+  ([0, 1] as const).forEach((lane) => {
+    if (scenario.nodes.some((n) => n.kind !== 'action' && n.level === 'beat' && (n.lane ?? 0) === lane)) {
+      addColumn({ key: `beat-${lane}`, group: 'variables', beat: true });
+    }
+  });
+
+  const groupBreaks = columns.reduce(
+    (count, c, i) => (i > 0 && c.group !== columns[i - 1].group ? count + 1 : count),
+    0,
+  );
+  const span = length - 2 * axes.margin - groupBreaks * axes.groupGap;
+  const step = columns.length > 1 ? span / (columns.length - 1) : 0;
+
+  /** Column-axis position of each column. */
+  const colPos = new Map<string, number>();
+  let p = columns.length > 1 ? axes.margin : length / 2;
+  columns.forEach((c, i) => {
+    if (i > 0) p += step + (c.group !== columns[i - 1].group ? axes.groupGap : 0);
+    colPos.set(c.key, p);
+  });
+
+  const nodes = scenario.nodes.map((n) => {
+    const col = colPos.get(columnKey(n)) ?? length / 2;
+    const row = rowPos(n.kind === 'concept' ? TIER_ROW_ORDER.indexOf(n.tier) : n.row);
+    return { ...n, ...place(col, row) };
+  });
+
+  const mean = (ps: number[]) => ps.reduce((a, b) => a + b, 0) / ps.length;
+  const posOf = (pred: (c: Column) => boolean) =>
+    columns.filter(pred).map((c) => colPos.get(c.key)!);
+
+  // Landscape: headers centred over their group, near the top edge.
+  // Portrait: turned to run down the left edge, beside their group.
+  const headers: ScenarioLayout['headers'] = [];
+  const addHeader = (label: string, ps: number[]) => {
+    if (!ps.length) return;
+    const at = mean(ps);
+    headers.push(portrait ? { label, x: 18, y: at, vertical: true } : { label, x: at, y: 38, vertical: false });
+  };
+  addHeader('Concepts', posOf((c) => c.group === 'concepts'));
+  addHeader('Actions', posOf((c) => c.group === 'actions'));
+  addHeader('Variables', posOf((c) => c.group === 'variables' && !c.beat));
+  const beatPs = posOf((c) => c.beat);
+  addHeader('Beat level', beatPs);
+
+  let band: ScenarioLayout['band'] = null;
+  if (beatPs.length) {
+    const p0 = Math.min(...beatPs) - axes.bandPad;
+    const p1 = Math.max(...beatPs) + axes.bandPad;
+    band = portrait
+      ? { x: 6, y: p0, width: canvas.w - 12, height: Math.min(p1, canvas.h - 6) - p0 }
+      : { x: p0, y: 14, width: p1 - p0, height: canvas.h - 28 };
+  }
+
+  return { nodes, headers, band };
+}
+
+// ───────────────────────────────────────────────────── Shapes and edge routing
+
+/** Concept circle radius per tier. */
+export const CONCEPT_R: Record<Tier, number> = { PERSISTENT: 24, EPISODIC: 18, TRANSIENT: 13 };
+/** Action rounded square: half side. */
+export const ACTION_HALF = 16;
+/** Variable ellipse radii. */
+export const VARIABLE_R = { rx: 23, ry: 13 } as const;
+
+/** Half height of a node's shape (for labels above and below it). */
+export function nodeHalfHeight(n: GraphNode): number {
+  if (n.kind === 'concept') return CONCEPT_R[n.tier];
+  if (n.kind === 'action') return ACTION_HALF;
+  return VARIABLE_R.ry;
+}
+
+/** Distance from a node's centre to its outline along unit vector (ux, uy). */
+export function nodeBoundary(n: GraphNode, ux: number, uy: number): number {
+  if (n.kind === 'concept') return CONCEPT_R[n.tier];
+  if (n.kind === 'action') {
+    const ax = Math.abs(ux);
+    const ay = Math.abs(uy);
+    return Math.min(ax > 1e-6 ? ACTION_HALF / ax : Infinity, ay > 1e-6 ? ACTION_HALF / ay : Infinity);
+  }
+  const { rx, ry } = VARIABLE_R;
+  return (rx * ry) / Math.sqrt((ry * ux) ** 2 + (rx * uy) ** 2);
+}
+
+/**
+ * Quadratic edge from outline to outline. The bend grows with length so long
+ * edges arc clear of the nodes between their ends; opposite edges between the
+ * same two nodes (a response and a policy) bend apart into a lens.
+ */
+export function edgeGeometry(
+  source: GraphNode,
+  target: GraphNode,
+): { d: string; mid: { x: number; y: number }; p0: { x: number; y: number }; c: { x: number; y: number }; p2: { x: number; y: number } } {
+  const sx = source.x ?? 0;
+  const sy = source.y ?? 0;
+  const tx = target.x ?? 0;
+  const ty = target.y ?? 0;
+  const len = Math.hypot(tx - sx, ty - sy) || 1;
+  const ux = (tx - sx) / len;
+  const uy = (ty - sy) / len;
+  const bend = Math.max(18, Math.min(64, len * 0.14));
+  const c = { x: (sx + tx) / 2 - uy * bend, y: (sy + ty) / 2 + ux * bend };
+
+  const unit = (dx: number, dy: number) => {
+    const l = Math.hypot(dx, dy) || 1;
+    return { x: dx / l, y: dy / l };
+  };
+  const a = unit(c.x - sx, c.y - sy);
+  const b = unit(tx - c.x, ty - c.y);
+  const gap = 3;
+  const rs = nodeBoundary(source, a.x, a.y) + gap;
+  const rt = nodeBoundary(target, b.x, b.y) + gap;
+  const p0 = { x: sx + a.x * rs, y: sy + a.y * rs };
+  const p2 = { x: tx - b.x * rt, y: ty - b.y * rt };
+  const mid = { x: 0.25 * p0.x + 0.5 * c.x + 0.25 * p2.x, y: 0.25 * p0.y + 0.5 * c.y + 0.25 * p2.y };
+  const f = (v: number) => v.toFixed(1);
+  return {
+    d: `M ${f(p0.x)},${f(p0.y)} Q ${f(c.x)},${f(c.y)} ${f(p2.x)},${f(p2.y)}`,
+    mid,
+    p0,
+    c,
+    p2,
+  };
+}
+
+/** Minutes since the record's first clock label, for a "hh:mm" label. */
+export function minutesFrom(start: string, t: string): number {
+  const toMin = (s: string) => {
+    const [h, m] = s.split(':').map(Number);
+    return h * 60 + m;
+  };
+  const diff = toMin(t) - toMin(start);
+  return diff < 0 ? diff + 24 * 60 : diff;
+}
