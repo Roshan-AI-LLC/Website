@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PLATFORM_URL } from '../../lib/config';
+import { REQUEST_ACCESS_URL } from '../../lib/config';
 
 export function ClosingCTA() {
   return (
@@ -26,22 +26,17 @@ export function ClosingCTA() {
                 <span className="gradient-text">See the concepts behind every code.</span>
               </h2>
               <p className="mt-2 hidden max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">
-                Try pasted notes today, or talk to us about an evaluation path for your workflow.
+                Access is by request. Or talk to us about an evaluation path for your workflow.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row lg:justify-end">
               <a
-                href={PLATFORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={REQUEST_ACCESS_URL}
                 className="btn-primary group inline-flex min-h-11 items-center justify-center gap-1.5 rounded-full px-3 py-3 text-[0.84rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:gap-2 sm:px-5 sm:text-[0.88rem]"
               >
-                Try ShifaMind
-                <ArrowUpRight
-                  size={15}
-                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
+                Request access
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </a>
               <Link
                 to="/contact"

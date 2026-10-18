@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ElementType, KeyboardEvent, MutableRefObject } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BellOff, BellRing, HelpCircle, Play, RotateCcw, SignalHigh, TriangleAlert, Waves } from 'lucide-react';
+import { BellOff, BellRing, HelpCircle, Play, RotateCcw, SignalHigh, Waves } from 'lucide-react';
 import {
   BUDGETS,
   CHANNELS,
@@ -577,8 +577,6 @@ function Results({
 }) {
   const decision = decide(scenario.p, budget);
   const { icon: Icon, name } = DECISIONS[decision];
-  // A genuine alarm the looser budget silences.
-  const missed = decision === 'suppress' && scenario.truth.genuine;
 
   return (
     <>
@@ -629,15 +627,7 @@ function Results({
 
       <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-subtle bg-glass px-3 py-2">
         <span className="text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted">Ground truth</span>
-        <span className="inline-flex items-center gap-2">
-          {missed && (
-            <span className="inline-flex items-center gap-1 rounded-full border border-subtle px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.1em] text-secondary">
-              <TriangleAlert size={11} className="text-accent" />
-              Missed
-            </span>
-          )}
-          <span className="text-[0.86rem] font-semibold text-primary">{scenario.truth.label}</span>
-        </span>
+        <span className="text-[0.86rem] font-semibold text-primary">{scenario.truth.label}</span>
       </div>
 
       <div className="mt-auto pt-4">

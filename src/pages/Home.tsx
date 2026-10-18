@@ -1,53 +1,39 @@
 import { Head } from 'vite-react-ssg';
 import { CTA } from '../components/CTA';
 import { Hero } from '../components/Hero';
-import { PlatformDiagram } from '../components/home/PlatformDiagram';
-import { ProgramsStrip } from '../components/home/ProgramsStrip';
+import { EvidenceDemo } from '../components/home/EvidenceDemo';
+import { HeroBand } from '../components/home/HeroBand';
+import { HomeFAQ } from '../components/home/HomeFAQ';
+import { HowItWorks } from '../components/home/HowItWorks';
+import { Problem } from '../components/home/Problem';
 import { Proof } from '../components/home/Proof';
-import { ShifaMindProof } from '../components/home/ShifaMindProof';
+import { META } from '../data/homeCopy';
 
+/**
+ * Home: hero (announcements, network, programs band), problem, the fix
+ * (scroll-driven steps), demo, benchmark, FAQ, closing call to action.
+ * All copy lives in src/data/homeCopy.ts.
+ */
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Roshan AI: AI infrastructure for clinical reasoning</title>
-        <meta
-          name="description"
-          content="Roshan AI builds clinical-grade AI infrastructure. ShifaMind, our flagship product, delivers concept-grounded ICD-10 coding for clinicians and coders."
-        />
-        <meta
-          property="og:title"
-          content="Roshan AI: AI infrastructure for clinical reasoning"
-        />
-        <meta
-          property="og:description"
-          content="Clinical-grade AI infrastructure. Featuring ShifaMind, concept-grounded ICD-10 coding for clinicians and coders."
-        />
+        <title>{META.title}</title>
+        <meta name="description" content={META.description} />
+        <meta property="og:title" content={META.title} />
+        <meta property="og:description" content={META.description} />
         <link rel="canonical" href="https://roshan-ai.com/" />
       </Head>
 
       <Hero>
-        <ProgramsStrip />
+        <HeroBand />
       </Hero>
-      <ShifaMindProof />
-      <Divider />
+      <Problem />
+      <HowItWorks />
+      <EvidenceDemo />
       <Proof />
-      <Divider />
-      <PlatformDiagram />
+      <HomeFAQ />
       <CTA />
     </>
-  );
-}
-
-function Divider() {
-  return (
-    <div
-      aria-hidden
-      className="mx-auto h-px max-w-6xl"
-      style={{
-        background:
-          'linear-gradient(90deg, transparent, var(--border-subtle) 20%, var(--border-strong) 50%, var(--border-subtle) 80%, transparent)',
-      }}
-    />
   );
 }

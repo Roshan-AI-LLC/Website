@@ -76,7 +76,7 @@ export default function NabzFamily() {
         <meta property="og:title" content="Nabz: a model family for physiological signals." />
         <meta
           property="og:description"
-          content="Patient graphs that hold up under clinical feedback, and ICU alarm triage with a certified error budget."
+          content="Patient graphs that hold up under clinical feedback, and VT-alarm triage with a certified error budget."
         />
         <link rel="canonical" href="https://roshan-ai.com/products/nabz" />
       </Head>

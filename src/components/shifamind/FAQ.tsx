@@ -19,11 +19,11 @@ const items: { q: string; a: string }[] = [
   },
   {
     q: 'How do you handle PHI?',
-    a: 'BAA-eligible deployments keep PHI inside your perimeter, with encryption, audit logs and no training on your data.',
+    a: 'BAA-eligible deployments keep PHI inside your perimeter, with encryption, audit logs, and no training on your data without your opt-in.',
   },
   {
     q: 'Can I try it on my own notes?',
-    a: 'Yes. Paste notes into the ShifaMind platform today. API access is by request.',
+    a: 'Access is by request. Email us and we will set you up. API access is by request too.',
   },
   {
     q: 'How accurate is it?',

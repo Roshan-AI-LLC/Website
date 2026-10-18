@@ -44,7 +44,7 @@ export default function NabzSentryProduct() {
   return (
     <div className="theme-nabz">
       <Head>
-        <title>NabzSentry: alarm triage for intensive care | Roshan AI</title>
+        <title>NabzSentry: VT alarm triage for intensive care | Roshan AI</title>
         <meta
           name="description"
           content={`NabzSentry triages ICU VT alarms into keep, suppress or defer. At a certified ${budget} error budget it suppresses ${fmt(NABZSENTRY.falseAlarmsSuppressedPct)}% of false alarms. Part of the Nabz model family from Roshan AI.`}
@@ -52,7 +52,7 @@ export default function NabzSentryProduct() {
         <meta property="og:title" content="NabzSentry: fewer false alarms, with a limit you set on the real ones." />
         <meta
           property="og:description"
-          content="Three-way alarm triage for the ICU: keep, suppress, or defer to a clinician, with a certified limit on how many suppressed alarms are genuine."
+          content="Three-way triage of ICU VT alarms: keep, suppress, or defer to a clinician, with a certified limit on how many suppressed alarms are genuine."
         />
         <link rel="canonical" href="https://roshan-ai.com/products/nabz/sentry" />
       </Head>

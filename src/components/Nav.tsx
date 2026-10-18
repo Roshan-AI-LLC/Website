@@ -75,7 +75,7 @@ export function Nav() {
               to={l.href}
               className={({ isActive }) =>
                 cn(
-                  'nav-link rounded-md px-3 py-1.5 text-[0.86rem] font-medium transition-colors hover:text-primary',
+                  'nav-link rounded-md px-2 py-1.5 text-[0.86rem] font-medium lg:px-3 transition-colors hover:text-primary',
                   isActive ? 'is-active text-primary' : 'text-secondary',
                 )
               }
@@ -210,7 +210,7 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          'nav-link inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[0.86rem] font-medium transition-colors hover:text-primary',
+          'nav-link inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-[0.86rem] font-medium lg:px-3 transition-colors hover:text-primary',
           open || isActive ? 'is-active text-primary' : 'text-secondary',
         )}
         aria-expanded={open}

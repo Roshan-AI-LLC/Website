@@ -114,19 +114,6 @@ export const SCENARIOS: Scenario[] = [
           { code: 'J90', description: 'Pleural effusion, not elsewhere classified' },
         ],
       },
-      {
-        code: 'I10',
-        description: 'Essential (primary) hypertension',
-        confidence: 0.72,
-        concepts: [
-          { label: 'elevated_blood_pressure', activation: 0.81 },
-          { label: 'antihypertensive_use', activation: 0.69 },
-        ],
-        evidence: ['BP 152/88', 'on lisinopril, carvedilol, and spironolactone'],
-        alternatives: [
-          { code: 'I11.0', description: 'Hypertensive heart disease with heart failure' },
-        ],
-      },
     ],
   },
 
@@ -188,20 +175,6 @@ export const SCENARIOS: Scenario[] = [
         evidence: ['40-pack-year smoking history'],
         alternatives: [
           { code: 'Z87.891', description: 'Personal history of nicotine dependence' },
-        ],
-      },
-      {
-        code: 'J96.91',
-        description: 'Respiratory failure, unspecified, with hypoxia',
-        confidence: 0.68,
-        concepts: [
-          { label: 'hypoxia', activation: 0.86 },
-          { label: 'accessory_muscle_use', activation: 0.74 },
-          { label: 'tachypnea', activation: 0.71 },
-        ],
-        evidence: ['SpO2 88% on room air', 'Accessory muscle use at rest', 'RR 26'],
-        alternatives: [
-          { code: 'R09.02', description: 'Hypoxemia' },
         ],
       },
     ],

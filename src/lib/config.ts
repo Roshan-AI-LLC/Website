@@ -6,6 +6,9 @@ export const PLATFORM_URL = 'https://platform.roshan-ai.com/shifamind';
 export const PRODUCT_URL = 'https://shifamind.me';
 export const CONTACT_EMAIL = 'mohammed@roshan-ai.com';
 
+/** ShifaMind access is by request only: every "Request access" button opens this. */
+export const REQUEST_ACCESS_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('ShifaMind access request')}`;
+
 /** ShifaMind product walkthrough on YouTube. */
 export const SHIFAMIND_DEMO_VIDEO_ID = 'CeP1bjZg0Rs';
 

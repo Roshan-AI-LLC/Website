@@ -18,7 +18,8 @@
  *   Budget   the certified limit on the share of suppressed alarms that are
  *            genuine, across all alarms, not per alarm. A looser budget admits
  *            a higher suppress threshold, so the same alarm can move from
- *            defer to suppress, and a genuine one can be silenced.
+ *            defer to suppress. The demo shows that move on a false alarm
+ *            only: no genuine alarm here is ever suppressed.
  *
  * Waveforms come from a deterministic generator below (pure functions, a
  * seeded PRNG, no Math.random), so the prerendered HTML and the client render
@@ -118,7 +119,7 @@ export type WaveSpec =
 export type ChannelSpec = { available: true; wave: WaveSpec } | { available: false };
 
 export type Scenario = {
-  id: 'fast' | 'noisy' | 'short-run' | 'degraded' | 'no-pleth';
+  id: 'fast' | 'noisy' | 'wander' | 'degraded' | 'no-pleth';
   /** Tab label: what the monitor shows, not the verdict. */
   label: string;
   /** One line describing the synthetic signals. */
@@ -170,17 +171,21 @@ export const SCENARIOS: Scenario[] = [
     p: 0.02,
   },
   {
-    // Short genuine run on all four channels: a few wide beats, the pulses
-    // dip, then sinus returns. Deferred at 5%; the looser 10% budget
-    // suppresses it, so loosening the budget silences a real alarm.
-    id: 'short-run',
-    label: 'Short run',
-    subLabel: 'A brief run of wide beats, then sinus.',
-    truth: { genuine: true, label: 'True VT' },
-    rhythm: { hr: 88, vt: { onset: 4.4, hr: 158, end: 7.1 } },
+    // False alarm on all four channels: both leads drift and blur enough to
+    // trip the VT detector, while both pulses stay steady. Uncertain enough
+    // to defer at 5%; the looser 10% budget suppresses it. This is the
+    // demo's budget flip, kept on a false alarm on purpose.
+    id: 'wander',
+    label: 'Wandering baseline',
+    subLabel: 'Both leads drift and blur; pulses steady.',
+    truth: { genuine: false, label: 'False alarm' },
+    rhythm: { hr: 92 },
     channels: {
-      ECG1: { available: true, wave: { kind: 'ecg', gain: 0.8, vtPolarity: 1, noise: 0.025, wander: 0.08 } },
-      ECG2: { available: true, wave: { kind: 'ecg', gain: 0.62, vtPolarity: -1, noise: 0.03, wander: 0.07 } },
+      ECG1: {
+        available: true,
+        wave: { kind: 'ecg', gain: 0.78, noise: 0.03, wander: 0.34, burst: { from: 3.6, to: 6.4, amp: 0.32 } },
+      },
+      ECG2: { available: true, wave: { kind: 'ecg', gain: 0.62, noise: 0.03, wander: 0.3 } },
       ABP: pulse('abp'),
       PPG: pulse('ppg'),
     },
@@ -218,11 +223,18 @@ export const SCENARIOS: Scenario[] = [
   },
 ];
 
-// The paper reports that alarms with no usable pulse channel are where the
-// budget is exceeded, so the demo must never show one being suppressed.
+// Two rules the demo must never break, checked at load so a later edit to a
+// probability fails the build instead of shipping:
+//   - a genuine alarm is never suppressed, at any budget;
+//   - an alarm with no usable pulse channel is never suppressed: the paper
+//     reports that stratum is where the budget is exceeded.
 for (const s of SCENARIOS) {
+  const suppressed = BUDGETS.some((b) => decide(s.p, b) === 'suppress');
+  if (suppressed && s.truth.genuine) {
+    throw new Error(`nabzsentryScenarios: "${s.id}" is a genuine alarm and must not be suppressed.`);
+  }
   const noPulse = !s.channels.ABP.available && !s.channels.PPG.available;
-  if (noPulse && BUDGETS.some((b) => decide(s.p, b) === 'suppress')) {
+  if (suppressed && noPulse) {
     throw new Error(`nabzsentryScenarios: "${s.id}" has no pulse channel and must not be suppressed.`);
   }
 }

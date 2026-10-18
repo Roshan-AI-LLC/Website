@@ -1,5 +1,5 @@
-import { ArrowUpRight, FileText, Stethoscope } from 'lucide-react';
-import { PLATFORM_URL } from '../../lib/config';
+import { ArrowRight, FileText, Stethoscope } from 'lucide-react';
+import { REQUEST_ACCESS_URL } from '../../lib/config';
 import { pct, SHIFAMIND, TASK } from '../../data/shifamindPaper';
 import { VideoBlock } from './VideoBlock';
 import { SectionLabel } from '../SectionLabel';
@@ -35,16 +35,11 @@ export function ProductHero() {
 
             <div className="enter-fade-up enter-d-3 mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <a
-                href={PLATFORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={REQUEST_ACCESS_URL}
                 className="btn-primary group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
               >
-                Try ShifaMind
-                <ArrowUpRight
-                  size={15}
-                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
+                Request access
+                <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
               </a>
               <a
                 href="/contact"

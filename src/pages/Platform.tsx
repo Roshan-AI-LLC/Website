@@ -242,7 +242,7 @@ function Closing() {
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Build on the platform</div>
               <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">
-                Integrate ShifaMind today.{' '}
+                Integrate ShifaMind.{' '}
                 <span className="gradient-text">Build on what&apos;s next.</span>
               </h2>
               {/* Phones: heading and buttons carry the CTA; the supporting line returns at sm. */}

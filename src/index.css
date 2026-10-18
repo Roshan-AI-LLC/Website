@@ -410,15 +410,6 @@ html.dark .theme-nabz {
   }
   .pulse-dot { animation: pulse-dot 2s var(--ease-spring) infinite; }
 
-  /* Signal flowing along the keyword-to-code edges of the hero network. */
-  @keyframes nn-flow {
-    to { stroke-dashoffset: -16; }
-  }
-  .nn-flow {
-    stroke-dasharray: 3 5;
-    animation: nn-flow 1.4s linear infinite;
-  }
-
   /* CSS-driven entry animations for above-the-fold content. Independent of
      JS hydration so content is visible even if the JS bundle is delayed or
      blocked. Default state (post-animation) is the element's natural state,
@@ -709,17 +700,28 @@ html.dark .glass-strong {
 }
 
 /* Home hero on short screens (a 1366x768 laptop leaves ~657px of viewport).
-   The hero fills the first screen with the programs row at its bottom; these
-   tighten its spacing so the row still lands above the fold. Unlayered, so
-   they beat the Tailwind padding utilities; min-width keeps phones on the
-   mobile rules above. */
+   The hero fills the first screen with the band (#programs: marks and
+   marquee) at its bottom; these tighten its spacing and, from lg, the
+   headline, so the band still lands above the fold with air to spare.
+   Unlayered, so they beat the Tailwind utilities; min-width keeps phones on
+   the mobile rules above. Budget at 1366x657 (lg, two columns): 80 top +
+   ~380 text column + ~92 band + 12 bottom = ~565px. */
 @media (min-width: 640px) and (max-height: 720px) {
-  #top { padding-top: 5.5rem; padding-bottom: 1.5rem; }
-  #programs { margin-top: 1.5rem; }
+  #top { padding-top: 5.5rem; padding-bottom: 1.25rem; }
+  #top .hero-sub { margin-top: 1.1rem; }
+  #top .hero-ctas { margin-top: 1.5rem; }
+  #programs { margin-top: 1.25rem; }
+  #programs .hero-band-inner { padding-top: 1rem; }
+}
+@media (min-width: 1024px) and (max-height: 720px) {
+  #top .hero-h1 { font-size: 4.1rem; }
 }
 @media (min-width: 640px) and (max-height: 660px) {
   #top { padding-top: 5rem; padding-bottom: 0.75rem; }
+  #top .hero-sub { margin-top: 0.9rem; }
+  #top .hero-ctas { margin-top: 1.25rem; }
   #programs { margin-top: 0.75rem; }
+  #programs .hero-band-inner { padding-top: 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -748,4 +750,110 @@ html.dark .glass-strong {
     padding-top: 2rem !important;
     padding-bottom: 2rem !important;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Home hero: highlighted phrase, concept-network wave and the bottom band's
+   announcements marquee. Used by Hero.tsx, home/ConceptNetwork.tsx and
+   home/HeroBand.tsx. Short-screen spacing for the
+   hero lives with the other short-screen rules above.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* The hero's highlighted phrase: a highlighter stroke over the lower part of the line,
+   swept in once after the sentence lands. */
+.hero-mark {
+  --hero-mark-ink: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--text-primary);
+  font-weight: 500;
+  background-color: transparent;
+  background-image: linear-gradient(
+    transparent 58%,
+    var(--hero-mark-ink) 58%,
+    var(--hero-mark-ink) 90%,
+    transparent 90%
+  );
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin-inline: -0.1em;
+  padding-inline: 0.1em;
+  border-radius: 0.2em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: hero-mark-sweep 1s var(--ease-spring) 0.8s both;
+}
+html.dark .hero-mark {
+  --hero-mark-ink: color-mix(in oklab, var(--accent) 32%, transparent);
+}
+@keyframes hero-mark-sweep {
+  from { background-size: 0% 100%; }
+}
+
+/* Bottom band marquee: soft fade at both edges, one slow seamless loop.
+   Pauses on hover, while a link in it has keyboard focus, and (via
+   data-paused) offscreen or from its pause button. */
+.hero-marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+@keyframes hero-marquee {
+  to { transform: translateX(-50%); }
+}
+.hero-marquee-track {
+  animation: hero-marquee 56s linear infinite;
+}
+.hero-marquee:hover .hero-marquee-track,
+.hero-marquee:focus-within .hero-marquee-track,
+.hero-marquee[data-paused] .hero-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Reduced motion: static network (the SMIL layer is also dropped once React
+   knows), no sweep, no marquee. Every final state is the resting design. */
+@media (prefers-reduced-motion: reduce) {
+  .cn-anim { display: none; }
+  .hero-mark { animation: none; }
+  .hero-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  /* Static: the announcements wrap so every one stays visible. */
+  .hero-marquee-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-marquee-track > ul { flex-wrap: wrap; justify-content: center; }
+  .hero-marquee-track > ul[aria-hidden] { display: none; }
+}
+
+/* Nav links are px-2 below lg (so the full rail fits a 768px tablet), so the
+   hover underline insets to match. */
+@media (max-width: 1023px) {
+  .nav-link::after { left: 8px; right: 8px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Alternate band: a section on a slightly different surface from the page
+   (the home "fix" section), following the theme. Light: a deeper cream with
+   hairlines above and below. Dark: a lift off the black page. It redefines
+   --bg-base for its subtree so anything painted "page colour" inside (the
+   step nodes) matches the band, and sets the product-window shadow and the
+   negation coral for each theme.
+   ───────────────────────────────────────────────────────────────────────── */
+.band-alt {
+  --bg-base: #efe9dd;
+  --bg-elev: #fbf9f4;
+  --window-shadow: 0 24px 60px -36px rgba(11, 17, 32, 0.32);
+  --warm: var(--accent-warm);
+  background: var(--bg-base);
+  border-block: 1px solid var(--border-subtle);
+}
+html.dark .band-alt {
+  --bg-base: #080808;
+  --bg-elev: #111112;
+  --window-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.9);
+  /* --accent-warm lifted a little so small coral text keeps its contrast. */
+  --warm: color-mix(in oklab, var(--accent-warm) 84%, white);
 }

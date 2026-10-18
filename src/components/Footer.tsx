@@ -66,7 +66,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="col-span-2 text-[0.76rem] leading-relaxed text-muted sm:mt-3 sm:text-[0.78rem]">
-              AI infrastructure for clinical reasoning.
+              The next architecture of clinical AI.
             </p>
             <SocialLinks className="col-start-2 row-start-1 sm:mt-5" />
           </div>

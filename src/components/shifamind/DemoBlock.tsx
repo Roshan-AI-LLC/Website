@@ -6,7 +6,7 @@ import {
   type CodePrediction,
   type Scenario,
 } from '../../data/shifamindScenarios';
-import { PLATFORM_URL } from '../../lib/config';
+import { REQUEST_ACCESS_URL } from '../../lib/config';
 
 type DemoState = 'idle' | 'predicting' | 'results';
 
@@ -174,13 +174,13 @@ function NoteView({
       <div className="space-y-4 sm:mt-5 sm:space-y-5">
         {scenario.note.map((section) => (
           <div key={section.heading}>
-            <h4
+            <h3
               className={`text-[0.9rem] font-semibold tracking-[-0.01em] transition-colors duration-300 sm:text-[0.94rem] ${
                 state === 'predicting' ? 'text-muted' : 'text-primary'
               }`}
             >
               {section.heading}
-            </h4>
+            </h3>
             <p
               className={`mt-1 text-[0.86rem] leading-relaxed transition-colors duration-300 sm:mt-1.5 sm:text-[0.92rem] ${
                 state === 'predicting' ? 'text-muted' : 'text-secondary'
@@ -383,12 +383,10 @@ function ResultsPane({
                 <RotateCcw size={14} />
               </button>
               <a
-                href={PLATFORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={REQUEST_ACCESS_URL}
                 className="btn-primary group inline-flex flex-1 items-center justify-center gap-1.5 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5"
               >
-                Try with your note
+                Request access
                 <ArrowUpRight
                   size={14}
                   className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -396,7 +394,7 @@ function ResultsPane({
               </a>
             </div>
             <p className="mt-2 text-center text-[0.74rem] text-muted">
-              Unlock the full coder in the ShifaMind platform.
+              Access to the full coder is by request.
             </p>
           </motion.div>
         )}
