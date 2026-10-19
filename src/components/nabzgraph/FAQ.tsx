@@ -36,7 +36,7 @@ const items: { q: string; a: string }[] = [
 
 export function FAQ() {
   return (
-    <section className="relative py-10 sm:py-28">
+    <section className="relative py-7 sm:py-28">
       <div className="mx-auto max-w-4xl px-5 sm:px-8">
         <SectionLabel>FAQ</SectionLabel>
 
@@ -45,12 +45,12 @@ export function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]"
+          className="mt-2 font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:mt-3 sm:text-[2.4rem]"
         >
           Questions we get a lot.
         </motion.h2>
 
-        <div className="mt-5 divide-y divide-[color:var(--border-subtle)] border-y border-subtle sm:mt-10">
+        <div className="mt-4 divide-y divide-[color:var(--border-subtle)] border-y border-subtle sm:mt-10">
           {items.map((it, i) => (
             <FAQItem key={i} q={it.q} a={it.a} />
           ))}
@@ -67,7 +67,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-start justify-between gap-4 py-3.5 text-left transition hover:opacity-90 sm:py-5"
+        className="flex w-full items-start justify-between gap-4 py-3 text-left transition hover:opacity-90 sm:py-5"
         aria-expanded={open}
       >
         <span className="text-[0.92rem] font-medium leading-snug text-primary sm:text-[1rem]">{q}</span>

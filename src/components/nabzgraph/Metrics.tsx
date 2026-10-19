@@ -35,7 +35,7 @@ const metrics = [
 
 export function Metrics() {
   return (
-    <section className="relative py-10 sm:py-20">
+    <section className="relative py-7 sm:py-20">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-8">
           <div>
@@ -45,7 +45,7 @@ export function Metrics() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-2 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
             >
               Reliability you can{' '}
               <span className="gradient-text">measure.</span>
@@ -59,7 +59,7 @@ export function Metrics() {
 
         {/* Phones: a 2x2 grid of score, name and note; the code eyebrow is
             hidden. The three-column table returns at sm. */}
-        <div className="glass mt-5 grid grid-cols-2 overflow-hidden rounded-2xl sm:mt-9 sm:block sm:rounded-3xl">
+        <div className="glass mt-4 grid grid-cols-2 overflow-hidden rounded-2xl sm:mt-9 sm:block sm:rounded-3xl">
           <div className="hidden grid-cols-[76px_88px_1fr] gap-4 border-b border-subtle px-5 py-3 text-[0.62rem] font-semibold uppercase tracking-[0.13em] text-muted sm:grid">
             <span>Test</span>
             <span>Score</span>
@@ -72,7 +72,7 @@ export function Metrics() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-              className={`grid gap-1 border-b border-subtle px-4 py-3 last:border-b-0 sm:grid-cols-[76px_88px_1fr] sm:items-start sm:gap-4 sm:px-5 sm:py-4 max-sm:content-start ${
+              className={`grid gap-1 border-b border-subtle px-4 py-2.5 last:border-b-0 sm:grid-cols-[76px_88px_1fr] sm:items-start sm:gap-4 sm:px-5 sm:py-4 max-sm:content-start ${
                 // Phones: the left column draws the vertical divider and only
                 // the top row the horizontal one.
                 index % 2 === 0 ? 'max-sm:border-r' : ''
@@ -88,7 +88,7 @@ export function Metrics() {
           ))}
         </div>
 
-        <p className="mt-4 text-[0.72rem] leading-relaxed text-muted sm:mt-5 sm:text-[0.78rem]">
+        <p className="mt-3 text-[0.72rem] leading-relaxed text-muted sm:mt-5 sm:text-[0.78rem]">
           Research results on retrospective data. Not validated for clinical use.
         </p>
       </div>

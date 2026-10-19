@@ -183,16 +183,17 @@ function Leaderboard() {
         </div>
       </div>
 
-      {/* Phones: slimmer bars and tighter rows; every model and value stays. */}
+      {/* Phones: slimmer bars and the top three models (the lead line still
+          compares against the runner-up); all five from sm. */}
       <div className="mt-3 space-y-1.5 sm:mt-7 sm:space-y-2.5">
-        {rows.map((row) => {
+        {rows.map((row, i) => {
           const width = `${(value(row) / axisMax) * 100}%`;
           return (
             <motion.div
               key={row.model}
               layout={!reduced}
               transition={{ duration: 0.45, ease: EASE }}
-              className="grid grid-cols-[minmax(0,1fr)_3rem] items-center gap-3"
+              className={`grid-cols-[minmax(0,1fr)_3rem] items-center gap-3 ${i < 3 ? 'grid' : 'hidden sm:grid'}`}
             >
               <div
                 className="relative h-6 overflow-hidden rounded-lg sm:h-10"

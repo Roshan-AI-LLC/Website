@@ -23,7 +23,7 @@ export function HeroBand() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="hero-band-inner flex flex-col items-center gap-2.5 border-t border-subtle pt-3.5 sm:gap-4 sm:pt-6 lg:flex-row lg:gap-8">
           <div className="flex shrink-0 flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:flex-nowrap sm:gap-4">
-            <span className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted">
+            <span className="sr-only text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted sm:not-sr-only">
               Member of
             </span>
             <div className="flex items-center gap-3">

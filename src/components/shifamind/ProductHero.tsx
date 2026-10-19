@@ -17,7 +17,7 @@ export function ProductHero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         {/* Phones: a smaller H1 and tighter rhythm put the CTAs, video and stats
             in fewer screens; every sm: value is the desktop original. */}
-        <div className="grid items-center gap-5 sm:gap-10 lg:grid-cols-[1fr_0.92fr] lg:gap-12">
+        <div className="grid items-center gap-4 sm:gap-10 lg:grid-cols-[1fr_0.92fr] lg:gap-12">
           <div>
             <SectionLabel tone="muted" className="enter-fade-up">
               ShifaMind · A Roshan AI product
@@ -33,7 +33,7 @@ export function ProductHero() {
               concepts and quoted text behind it.
             </p>
 
-            <div className="enter-fade-up enter-d-3 mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+            <div className="enter-fade-up enter-d-3 mt-4 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
               <a
                 href={REQUEST_ACCESS_URL}
                 className="btn-primary group col-span-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:text-[0.92rem]"
@@ -65,7 +65,7 @@ export function ProductHero() {
           </div>
         </div>
 
-        <div className="enter-fade-up enter-d-4 mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
+        <div className="enter-fade-up enter-d-4 mt-4 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
           <Stat value={pct(SHIFAMIND.aucMicro)} label="Micro-AUROC" />
           <Stat value={pct(SHIFAMIND.aucMacro)} label="Macro-AUROC" />
           <Stat value={TASK.codes.toLocaleString('en-US')} label="ICD-10 codes" />
@@ -81,7 +81,7 @@ function Stat({ value, label }: { value: string; label: string }) {
     // under a variant, so `[&:not(:first-child)]:border-subtle` never applied
     // and the line fell back to currentColor. Phones get the hairline here;
     // the desktop divider is left as it renders today.
-    <div className="min-w-0 px-2.5 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
+    <div className="min-w-0 px-2.5 py-2.5 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
       <div className="font-mono text-[1.05rem] font-semibold tracking-tight text-accent sm:text-[1.55rem]">
         {value}
       </div>

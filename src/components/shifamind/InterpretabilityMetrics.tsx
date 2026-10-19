@@ -42,7 +42,7 @@ export function InterpretabilityMetrics() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: EASE }}
-          className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+          className="mt-3 max-w-2xl text-balance font-display text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
         >
           Every code, <span className="gradient-text">fully explained.</span>
         </motion.h2>
@@ -52,21 +52,22 @@ export function InterpretabilityMetrics() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl"
+          className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl"
         >
           {/* A 1px gap over the border colour draws the cell lines. Phones get
-              tighter cells so all eight figures sit in four short rows. */}
+              tighter cells and smaller figures so all eight sit in four short
+              rows (px-3 also keeps most labels on one line at 390px). */}
           <div className="grid grid-cols-2 gap-px bg-[color:var(--border-subtle)] lg:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.label} className="min-w-0 bg-glass px-3.5 py-3.5 sm:px-5 sm:py-6">
-                <div className="font-display text-[1.4rem] font-semibold leading-none tracking-[-0.03em] text-primary sm:text-[2rem]">
+              <div key={stat.label} className="min-w-0 bg-glass px-3 py-2.5 sm:px-5 sm:py-6">
+                <div className="font-display text-[1.25rem] font-semibold leading-none tracking-[-0.03em] text-primary sm:text-[2rem]">
                   {stat.value}
                 </div>
-                <div className="mt-1.5 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-accent sm:mt-2">
+                <div className="mt-1 text-[0.64rem] font-semibold uppercase leading-snug tracking-[0.12em] text-accent sm:mt-2 sm:leading-[inherit]">
                   {stat.label}
                 </div>
                 {stat.note && (
-                  <div className="mt-0.5 text-[0.72rem] text-muted sm:mt-1">{stat.note}</div>
+                  <div className="mt-0.5 text-[0.72rem] leading-snug text-muted sm:mt-1 sm:leading-[inherit]">{stat.note}</div>
                 )}
               </div>
             ))}

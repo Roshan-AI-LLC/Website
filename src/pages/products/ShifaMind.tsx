@@ -62,7 +62,7 @@ function DemoSection() {
           <div className="mb-4 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <SectionLabel>Try it</SectionLabel>
-              <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
+              <h2 className="mt-3 text-balance font-display text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
                 See ShifaMind code a clinical note.
               </h2>
             </div>

@@ -42,12 +42,12 @@ export function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-3 font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]"
+          className="mt-3 font-display text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.4rem]"
         >
           Questions we get a lot.
         </motion.h2>
 
-        <div className="mt-5 divide-y divide-[color:var(--border-subtle)] border-y border-subtle sm:mt-10">
+        <div className="mt-4 divide-y divide-[color:var(--border-subtle)] border-y border-subtle sm:mt-10">
           {items.map((it, i) => (
             <FAQItem key={i} q={it.q} a={it.a} />
           ))}
@@ -64,9 +64,9 @@ function FAQItem({ q, a }: { q: string; a: string }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        // Phones: shorter rows (still 48px+ tall) so all six questions fit on
+        // Phones: shorter rows (still 46px+ tall) so all six questions fit on
         // about one screen; sm restores the roomier desktop rhythm.
-        className="flex w-full items-start justify-between gap-4 py-3 text-left transition hover:opacity-90 sm:py-5"
+        className="flex w-full items-start justify-between gap-4 py-2.5 text-left transition hover:opacity-90 sm:py-5"
         aria-expanded={open}
       >
         <span className="text-[0.94rem] font-medium leading-snug text-primary sm:text-[1rem]">

@@ -53,7 +53,7 @@ export default function NabzGraphProduct() {
 
 function DemoSection() {
   return (
-    <section className="relative py-8 sm:py-14">
+    <section className="relative py-7 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -61,10 +61,10 @@ function DemoSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-4 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-3 flex flex-col items-start gap-2 sm:mb-7 sm:flex-row sm:items-end sm:justify-between sm:gap-2.5">
             <div>
               <SectionLabel>Try it</SectionLabel>
-              <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
+              <h2 className="mt-2 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.2rem]">
                 See NabzGraph build a patient graph.
               </h2>
             </div>

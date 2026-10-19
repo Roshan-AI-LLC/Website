@@ -47,7 +47,7 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
           >
             <SectionLabel>{eyebrow}</SectionLabel>
 
-            <h1 className="mt-3 font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[2.6rem]">
+            <h1 className="mt-2 font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[2.6rem]">
               {title}
             </h1>
 
@@ -55,8 +55,10 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               Effective {effectiveDate} · Roshan AI LLC, Arizona, USA
             </p>
 
+            {/* Phones: slightly tighter box and leading; at sm the py-3 and
+                the inherited body line-height (1.55) apply as before. */}
             <div
-              className="mt-4 rounded-2xl border px-4 py-3 text-[0.8rem] sm:mt-6 sm:text-[0.82rem]"
+              className="mt-3 rounded-2xl border px-4 py-2.5 text-[0.8rem] leading-[1.45] sm:mt-6 sm:py-3 sm:text-[0.82rem] sm:leading-[1.55]"
               style={{
                 borderColor: 'color-mix(in oklab, var(--accent-warm) 35%, transparent)',
                 background: 'color-mix(in oklab, var(--accent-warm) 8%, transparent)',
@@ -75,7 +77,7 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               .
             </div>
 
-            <div className="mt-5 text-[0.92rem] font-light leading-relaxed text-secondary sm:mt-8 sm:text-[1rem]">
+            <div className="mt-4 text-[0.9rem] font-light leading-[1.55] text-secondary sm:mt-8 sm:text-[1rem] sm:leading-relaxed">
               {intro}
             </div>
           </motion.div>
@@ -88,7 +90,7 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
               the document starts on screen one; always open from sm up. */}
           <nav
             aria-label="Table of contents"
-            className="glass mb-6 rounded-2xl sm:hidden"
+            className="glass mb-4 rounded-2xl sm:hidden"
           >
             <details className="group">
               <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary [&::-webkit-details-marker]:hidden">
@@ -138,7 +140,10 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
             </ol>
           </nav>
 
-          <div className="space-y-8 sm:space-y-12">
+          {/* Phones: every word of every section stays; tighter gaps, heading
+              leading and a slightly smaller body (0.86rem, 1.55) shorten the
+              document. Every sm: value is the desktop original. */}
+          <div className="space-y-6 sm:space-y-12">
             {sections.map((s, i) => (
               // Phones already reserve the nav height via html scroll-padding-top,
               // so the extra anchor offset only applies from sm up.
@@ -151,11 +156,11 @@ export function LegalLayout({ eyebrow, title, effectiveDate, intro, sections }: 
                   <span className="font-mono text-[0.78rem] text-muted">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <h2 className="text-[1.25rem] font-semibold tracking-[-0.015em] sm:text-[1.4rem]">
+                  <h2 className="text-[1.25rem] font-semibold leading-[1.25] tracking-[-0.015em] sm:text-[1.4rem] sm:leading-[1.55]">
                     {s.heading}
                   </h2>
                 </div>
-                <div className="mt-2 space-y-2.5 text-[0.9rem] font-light leading-[1.6] text-secondary sm:mt-3 sm:space-y-3 sm:text-[0.96rem] sm:leading-relaxed">
+                <div className="mt-1.5 space-y-2 text-[0.86rem] font-light leading-[1.55] text-secondary sm:mt-3 sm:space-y-3 sm:text-[0.96rem] sm:leading-relaxed">
                   {s.body}
                 </div>
               </article>

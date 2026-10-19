@@ -138,7 +138,7 @@ export function SentryDemoBlock() {
         <div className="flex flex-col border-b border-subtle p-3 sm:p-6 lg:border-b-0 lg:border-r">
           <WaveformPanel scenario={scenario} scanning={state === 'scanning'} fadeIn={switched} reduced={reduced} />
         </div>
-        <div className="flex flex-col p-4 sm:p-6">
+        <div className="flex flex-col px-4 py-3 sm:p-6">
           <TriagePane
             scenario={scenario}
             state={state}
@@ -235,7 +235,7 @@ function TabBar({
         })}
       </div>
       {/* Phones: the sub-label drops its eyebrow so it stays on one line. */}
-      <div className="flex items-center gap-2 px-6 pb-3 pt-2 text-[0.76rem] text-muted sm:px-8">
+      <div className="flex items-center gap-2 px-6 pb-2.5 pt-1.5 text-[0.76rem] text-muted sm:px-8 sm:pb-3 sm:pt-2">
         <span className="hidden font-mono uppercase tracking-[0.14em] sm:inline">alarm</span>
         <span aria-hidden className="hidden sm:inline">
           ·
@@ -274,7 +274,7 @@ function WaveformPanel({
       </div>
 
       <div
-        className="relative mt-3 flex flex-1 flex-col overflow-hidden rounded-2xl border border-subtle"
+        className="relative mt-2 flex flex-1 flex-col overflow-hidden rounded-2xl border border-subtle sm:mt-3"
         style={{
           background:
             'radial-gradient(ellipse 110% 80% at 50% 50%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 70%)',
@@ -341,7 +341,9 @@ function ChannelRow({
   const w = points ? points.length - 1 : 100;
 
   return (
-    <div className="grid h-[3.25rem] grid-cols-[3.25rem_minmax(0,1fr)] items-center sm:h-16 sm:grid-cols-[3.75rem_minmax(0,1fr)] lg:h-auto lg:min-h-16 lg:flex-1">
+    // Phones: 44px rows (four channels stacked) keep the traces readable
+    // while the panel stays short; 64px rows return at sm.
+    <div className="grid h-11 grid-cols-[3.25rem_minmax(0,1fr)] items-center sm:h-16 sm:grid-cols-[3.75rem_minmax(0,1fr)] lg:h-auto lg:min-h-16 lg:flex-1">
       <span
         className={`pl-3 font-mono text-[0.62rem] font-semibold uppercase tracking-[0.06em] sm:pl-4 ${
           points ? 'text-secondary' : 'text-muted'
@@ -423,7 +425,7 @@ function TriagePane({
     <div className="flex flex-1 flex-col">
       <BudgetControl budget={budget} onChange={onBudget} reduced={reduced} />
 
-      <div className="mt-4 grid flex-1 border-t border-subtle pt-4 sm:mt-5 sm:pt-5">
+      <div className="mt-3 grid flex-1 border-t border-subtle pt-3 sm:mt-5 sm:pt-5">
         {/* Desktop: an invisible copy of the results shares the cell and
             reserves their height, so the card keeps one height whether idle,
             scanning or showing results. visibility:hidden keeps it out of the
@@ -451,7 +453,7 @@ function TriagePane({
                   ref={claimFocus(focusNext, 'run')}
                   type="button"
                   onClick={onRun}
-                  className="btn-primary group mt-4 inline-flex min-h-10 items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:mt-5"
+                  className="btn-primary group mt-3 inline-flex min-h-10 items-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:mt-5"
                 >
                   <Play size={14} strokeWidth={2.2} />
                   Run Sentry

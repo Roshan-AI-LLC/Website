@@ -99,7 +99,9 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>Platform</SectionLabel>
-          <h1 className="mt-3 text-balance font-display text-[1.85rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          {/* Phones: 1.7rem keeps the headline to two lines at 390px (1.85rem broke it
+              onto three); the sm size is unchanged. */}
+          <h1 className="mt-3 text-balance font-display text-[1.7rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The platform under{' '}
             <span className="gradient-text">every Roshan AI product.</span>
           </h1>
@@ -131,7 +133,7 @@ function PlatformStack() {
           </p>
         </div>
 
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           {/* Phones: each layer is one tappable row, title and one-liner visible,
               body and capabilities on tap. The full rows return at sm. */}
           <div className="divide-y divide-[color:var(--border-subtle)] border-b border-subtle sm:hidden">
@@ -143,7 +145,7 @@ function PlatformStack() {
             <StackRow key={layer.index} layer={layer} index={index} />
           ))}
           {/* Phones: status and link share one row; the descriptor returns at sm. */}
-          <div className="flex items-center justify-between gap-3 bg-accent-soft/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+          <div className="flex items-center justify-between gap-3 bg-accent-soft/30 px-4 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
             <div>
               <div className="text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">Live today</div>
               <div className="mt-1 text-[0.9rem] font-semibold text-primary">ShifaMind</div>
@@ -179,7 +181,7 @@ function CompactLayerRow({ layer }: { layer: Layer }) {
   const Icon = layer.icon;
   return (
     <details className="group">
-      <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-2.5 [&::-webkit-details-marker]:hidden">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
           <Icon size={15} strokeWidth={1.8} />
         </span>
@@ -238,7 +240,7 @@ function Closing() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="glass relative overflow-hidden rounded-2xl px-4 py-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-3 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Build on the platform</div>
               <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">

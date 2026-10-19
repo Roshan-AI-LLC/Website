@@ -22,7 +22,7 @@ export function ComplianceStrip() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2rem]"
+              className="mt-3 max-w-2xl text-balance font-display text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2rem]"
             >
               Clinical AI you can deploy{' '}
               <span className="gradient-text">with confidence.</span>
@@ -35,8 +35,11 @@ export function ComplianceStrip() {
         </div>
 
         {/* Phones: a 2x2 grid of peer tiles (lines drawn by a 1px gap over the
-            border colour) instead of a swipe rail; sm restores the divided row. */}
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+            border colour) instead of a swipe rail; sm restores the divided row.
+            In each phone tile a small icon sits on the title's row and the
+            detail runs the full tile width below (the text wrapper is
+            display: contents), so fewer lines wrap. */}
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="grid grid-cols-2 gap-px divide-[color:var(--border-subtle)] bg-[color:var(--border-subtle)] sm:grid-cols-2 sm:gap-0 sm:divide-x sm:divide-y-0 sm:bg-transparent lg:grid-cols-4">
             {items.map((item, index) => {
               const Icon = item.icon;
@@ -47,14 +50,14 @@ export function ComplianceStrip() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.42, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex items-start gap-2.5 bg-[color:var(--bg-glass)] px-3.5 py-3 sm:block sm:bg-transparent sm:px-5 sm:py-5"
+                  className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-2 bg-[color:var(--bg-glass)] px-3 py-2.5 sm:block sm:bg-transparent sm:px-5 sm:py-5"
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent sm:h-8 sm:w-8 sm:rounded-xl">
-                    <Icon size={15} strokeWidth={1.9} />
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent sm:h-8 sm:w-8 sm:rounded-xl">
+                    <Icon size={15} strokeWidth={1.9} className="h-3.5 w-3.5 sm:h-[15px] sm:w-[15px]" />
                   </span>
-                  <div className="min-w-0 sm:mt-3">
-                    <div className="text-[0.86rem] font-semibold text-primary">{item.title}</div>
-                    <div className="mt-0.5 text-[0.72rem] leading-snug text-secondary sm:leading-relaxed">{item.detail}</div>
+                  <div className="contents min-w-0 sm:mt-3 sm:block">
+                    <div className="min-w-0 text-[0.86rem] font-semibold text-primary">{item.title}</div>
+                    <div className="col-span-2 mt-0.5 text-[0.72rem] leading-snug text-secondary sm:leading-relaxed">{item.detail}</div>
                   </div>
                 </motion.div>
               );

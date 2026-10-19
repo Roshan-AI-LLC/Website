@@ -29,13 +29,13 @@ const FAQ_JSON_LD = JSON.stringify({
  * while the questions scroll on the right. Phones and tablets: one column with
  * the contact link sharing the header row, and compact 48px rows.
  *
- * One answer open at a time keeps the list short on a phone. The first starts
- * open (also in the prerendered HTML) because it is the core difference.
+ * All answers start closed and one opens at a time, so the list stays short
+ * on a phone.
  * Visual language matches the ShifaMind page FAQ: hairlines, a ringed plus
  * that turns into an x.
  */
 export function HomeFAQ() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
   const reduced = useReducedMotion();
 
   return (

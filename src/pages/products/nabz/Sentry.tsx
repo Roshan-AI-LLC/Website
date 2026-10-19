@@ -57,7 +57,7 @@ export default function NabzSentryProduct() {
         <link rel="canonical" href="https://roshan-ai.com/products/nabz/sentry" />
       </Head>
 
-      <section className="relative isolate overflow-hidden pt-[5.5rem] pb-8 sm:pt-40 sm:pb-16">
+      <section className="relative isolate overflow-hidden pt-[5.25rem] pb-8 sm:pt-40 sm:pb-16">
         <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
           <div className="aurora h-[420px] w-[1100px] max-w-full opacity-60" />
         </div>
@@ -76,7 +76,7 @@ export default function NabzSentryProduct() {
             </span>
           </div>
 
-          <h1 className="enter-fade-up enter-d-1 mt-4 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
+          <h1 className="enter-fade-up enter-d-1 mt-3 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
             Fewer false alarms, with a limit{' '}
             <span className="gradient-text">you set on the real ones.</span>
           </h1>
@@ -86,13 +86,15 @@ export default function NabzSentryProduct() {
             error budget you set.
           </p>
 
-          {/* Phones: full-width stacked actions; the wrapping row returns at sm. */}
-          <div className="enter-fade-up enter-d-3 mt-5 grid flex-wrap items-center gap-2 sm:mt-8 sm:flex sm:gap-3">
+          {/* Phones: the two buttons share one row of a 2-col grid (leading
+              icons dropped so both labels fit at 360px), as on the NabzGraph
+              hero; the wrapping row returns at sm. */}
+          <div className="enter-fade-up enter-d-3 mt-4 grid grid-cols-2 flex-wrap items-center gap-2 sm:mt-8 sm:flex sm:gap-3">
             <Link
               to="/contact"
-              className="btn-primary group inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[0.88rem] font-semibold"
+              className="btn-primary group inline-flex items-center justify-center gap-2 rounded-full px-3 py-2.5 text-[0.88rem] font-semibold sm:px-5"
             >
-              <Stethoscope size={14} />
+              <Stethoscope size={14} className="hidden sm:block" />
               Talk to us
               <ArrowUpRight
                 size={15}
@@ -103,14 +105,14 @@ export default function NabzSentryProduct() {
               href={NABZSENTRY_PAPER_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-subtle bg-glass px-5 py-2.5 text-[0.88rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-subtle bg-glass px-3 py-2.5 text-[0.88rem] font-medium text-secondary backdrop-blur transition hover:border-strong hover:text-primary sm:px-5"
             >
-              <FileText size={14} />
+              <FileText size={14} className="hidden sm:block" />
               Read the paper
             </a>
           </div>
 
-          <div className="enter-fade-up enter-d-3 mt-6 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
+          <div className="enter-fade-up enter-d-3 mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
             <Stat
               value={`${fmt(NABZSENTRY.falseAlarmsSuppressedPct)}%`}
               label="False alarms suppressed"
@@ -130,7 +132,7 @@ export default function NabzSentryProduct() {
 
       <Divider />
 
-      <section className="relative py-10 sm:py-20">
+      <section className="relative py-7 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
             <div>
@@ -140,7 +142,7 @@ export default function NabzSentryProduct() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+                className="mt-2 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
               >
                 Three outcomes, because two{' '}
                 <span className="gradient-text">forces a guess.</span>
@@ -152,7 +154,7 @@ export default function NabzSentryProduct() {
             </p>
           </div>
 
-          <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          <div className="mobile-rail-shell glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
             <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
               {decisions.map((decision, index) => {
                 const Icon = decision.icon;
@@ -163,7 +165,7 @@ export default function NabzSentryProduct() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex gap-3 p-4 sm:p-6 md:block"
+                    className="flex gap-3 px-4 py-3 sm:p-6 md:block"
                   >
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
                       <Icon size={17} strokeWidth={1.8} />
@@ -189,7 +191,7 @@ export default function NabzSentryProduct() {
 
           {/* The model, in one row from sm. Phones: a two-column grid, the
               label on the left and both items stacked beside it. */}
-          <div className="mt-4 grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1.5 text-[0.8rem] text-secondary sm:mt-5 sm:flex sm:flex-wrap sm:gap-x-5 sm:text-[0.86rem]">
+          <div className="mt-3 grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1.5 text-[0.8rem] text-secondary sm:mt-5 sm:flex sm:flex-wrap sm:gap-x-5 sm:text-[0.86rem]">
             <span className="row-span-2 text-[0.66rem] font-semibold uppercase tracking-[0.14em] text-muted sm:row-span-1">
               Model
             </span>
@@ -208,7 +210,7 @@ export default function NabzSentryProduct() {
 
       <Divider />
 
-      <section className="relative py-10 sm:py-20">
+      <section className="relative py-7 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <SectionLabel>The guarantee</SectionLabel>
 
@@ -217,13 +219,13 @@ export default function NabzSentryProduct() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+            className="mt-2 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
           >
             You set the budget.{' '}
             <span className="gradient-text">Sentry certifies it.</span>
           </motion.h2>
 
-          <div className="glass mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          <div className="glass mt-4 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
             <Stat value={budget} label="Error budget" sub="Max genuine among suppressed" />
             <Stat value={`${NABZSENTRY.confidencePct}%`} label="Confidence" sub="Checked on labelled alarms" />
             <Stat
@@ -233,7 +235,7 @@ export default function NabzSentryProduct() {
             />
           </div>
 
-          <p className="mt-4 flex max-w-3xl gap-2 text-[0.84rem] leading-relaxed text-secondary sm:mt-5 sm:text-[0.92rem]">
+          <p className="mt-3 flex max-w-3xl gap-2 text-[0.84rem] leading-relaxed text-secondary sm:mt-5 sm:text-[0.92rem]">
             <ShieldCheck size={16} strokeWidth={1.8} className="mt-0.5 shrink-0 text-accent" />
             <span>
               If a budget can’t be certified, Sentry says so and estimates the
@@ -241,20 +243,20 @@ export default function NabzSentryProduct() {
             </span>
           </p>
 
-          <p className="mt-3 max-w-3xl text-[0.78rem] leading-relaxed text-muted sm:text-[0.82rem]">
+          <p className="mt-2 max-w-3xl text-[0.78rem] leading-relaxed text-muted sm:mt-3 sm:text-[0.82rem]">
             Research artifact, evaluated retrospectively. Not a medical device.
           </p>
         </div>
       </section>
 
-      <section className="relative py-8 sm:py-16">
+      <section className="relative py-7 sm:py-16">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-70px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="glass relative overflow-hidden rounded-2xl p-5 sm:rounded-3xl sm:p-9"
+            className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:p-9"
           >
             <div
               aria-hidden
@@ -270,7 +272,9 @@ export default function NabzSentryProduct() {
             <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">
               Alarm data to test this on?
             </h2>
-            <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
+            {/* Phones: heading and buttons carry the CTA, as on the NabzGraph
+                closing card; the supporting line returns at sm. */}
+            <p className="mt-2 hidden max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">
               We’re looking for alarm cohorts and research partners.
             </p>
             {/* Phones: full-width stacked actions; the wrapping row returns at sm. */}
@@ -301,7 +305,7 @@ export default function NabzSentryProduct() {
 
 function DemoSection() {
   return (
-    <section className="relative py-8 sm:py-14">
+    <section className="relative py-7 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -309,10 +313,10 @@ function DemoSection() {
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="mb-4 flex flex-col items-start gap-2.5 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-3 flex flex-col items-start gap-2 sm:mb-7 sm:flex-row sm:items-end sm:justify-between sm:gap-2.5">
             <div>
               <SectionLabel>Try it</SectionLabel>
-              <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.2rem]">
+              <h2 className="mt-2 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.2rem]">
                 See Sentry triage an alarm.
               </h2>
             </div>
@@ -335,7 +339,7 @@ function Stat({ value, label, sub }: { value: string; label: string; sub: string
     // Divider colour: `.border-subtle` is a plain class Tailwind cannot put
     // under a variant, so `[&:not(:first-child)]:border-subtle` never applied
     // and the line fell back to currentColor.
-    <div className="min-w-0 px-2 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
+    <div className="min-w-0 px-2 py-2.5 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
       <div className="font-mono text-[1.05rem] font-semibold tracking-tight text-accent sm:text-[1.55rem]">
         {value}
       </div>

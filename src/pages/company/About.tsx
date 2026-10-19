@@ -47,11 +47,11 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>About Roshan AI</SectionLabel>
-          <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          <h1 className="mt-2 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             Building clinical AI{' '}
             <span className="gradient-text">doctors can defend.</span>
           </h1>
-          <p className="mt-3 max-w-2xl text-pretty text-[0.9rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+          <p className="mt-2 max-w-2xl text-pretty text-[0.9rem] leading-[1.55] text-secondary sm:mt-5 sm:text-[1.05rem] sm:leading-relaxed">
             Roshan AI builds clinical intelligence around the concepts practitioners use, so every output remains auditable, explainable, and deployable in the workflows that matter.
           </p>
         </div>
@@ -78,7 +78,7 @@ function CompanyThesis() {
           </p>
         </div>
 
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           {/* Phones: the two cards collapse into tappable rows, title visible and
               body on tap. The side-by-side cards return at sm. */}
           <div className="divide-y divide-[color:var(--border-subtle)] sm:hidden">
@@ -86,14 +86,14 @@ function CompanyThesis() {
               const Icon = item.icon;
               return (
                 <details key={item.label} className="group">
-                  <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-start gap-3 px-4 py-2.5 [&::-webkit-details-marker]:hidden">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
                       <Icon size={15} strokeWidth={1.8} />
                     </span>
                     <span className="min-w-0 flex-1 pt-1 text-[0.92rem] font-semibold leading-snug tracking-[-0.01em] text-primary">{item.title}</span>
                     <ChevronDown size={16} className="mt-1.5 shrink-0 text-accent transition-transform duration-200 group-open:rotate-180" />
                   </summary>
-                  <p className="pb-3.5 pl-[3.75rem] pr-4 text-[0.8rem] leading-relaxed text-secondary">{item.body}</p>
+                  <p className="pb-3 pl-[3.75rem] pr-4 text-[0.8rem] leading-relaxed text-secondary">{item.body}</p>
                 </details>
               );
             })}
@@ -130,27 +130,30 @@ function PlatformAmbition() {
   return (
     <section className="mobile-native-section relative py-14 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="grid gap-4 sm:gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <div className="grid gap-3 sm:gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           <div>
             <SectionLabel>What we are building toward</SectionLabel>
-            <h2 className="mt-3 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]">
+            <h2 className="mt-2 text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]">
               One platform.{' '}
               <span className="gradient-text">A family of clinical products.</span>
             </h2>
           </div>
           <div>
-            <p className="text-[0.86rem] leading-relaxed text-secondary sm:text-[0.96rem]">
+            <p className="text-[0.86rem] leading-[1.55] text-secondary sm:text-[0.96rem] sm:leading-relaxed">
               Coding is the first application. The same evidence-first architecture can support risk stratification, decision support, longitudinal summaries, and documentation—with a common reasoning fabric and audit trail.
             </p>
-            <div className="glass mt-4 flex flex-col gap-3 rounded-2xl px-4 py-4 sm:mt-5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
-              <div>
-                <div className="text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">Live today</div>
-                <div className="mt-1 text-[0.92rem] font-semibold text-primary">ShifaMind</div>
-                <div className="mt-0.5 text-[0.78rem] text-secondary">Concept-grounded ICD-10 coding, built on the shared platform.</div>
+            {/* Phones: a two-column grid puts the button beside "Live today" and
+                the name, with the descriptor full width below (the text wrapper
+                is display: contents). The flex row returns at sm. */}
+            <div className="glass mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 rounded-2xl px-4 py-3.5 sm:mt-5 sm:flex sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-5 sm:py-4">
+              <div className="contents sm:block">
+                <div className="col-start-1 text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">Live today</div>
+                <div className="col-start-1 mt-1 text-[0.92rem] font-semibold text-primary">ShifaMind</div>
+                <div className="col-span-2 mt-1.5 text-[0.78rem] text-secondary sm:mt-0.5">Concept-grounded ICD-10 coding, built on the shared platform.</div>
               </div>
               <Link
                 to="/products/shifamind"
-                className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-4 text-[0.8rem] font-semibold text-secondary transition hover:border-strong hover:text-primary"
+                className="col-start-2 row-span-2 row-start-1 inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-full border border-subtle bg-glass px-4 text-[0.8rem] font-semibold text-secondary transition hover:border-strong hover:text-primary"
               >
                 Explore ShifaMind
                 <ArrowUpRight size={14} />
@@ -174,7 +177,7 @@ function Closing() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-3 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Work with Roshan AI</div>
               <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">Bring a clinical workflow worth defending.</h2>

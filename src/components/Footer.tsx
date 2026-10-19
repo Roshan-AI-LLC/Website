@@ -4,9 +4,14 @@ import { SocialLinks } from './SocialLinks';
 import { NvidiaLegalLine } from './InceptionBadge';
 import { AnthropicLegalLine } from './ClaudeStartupsMark';
 
+/**
+ * `phoneOnly` links show only below sm; `desktopOnly` columns only from sm.
+ * On phones "Sign in" joins the Platform row instead of taking a row of its own.
+ */
 const columns: {
   title: string;
-  links: { label: string; to?: string; href?: string }[];
+  desktopOnly?: boolean;
+  links: { label: string; to?: string; href?: string; phoneOnly?: boolean }[];
 }[] = [
   {
     title: 'Products',
@@ -21,6 +26,7 @@ const columns: {
     links: [
       { label: 'Platform overview', to: '/platform' },
       { label: 'Developers', to: '/developers' },
+      { label: 'Sign in', href: PLATFORM_URL, phoneOnly: true },
     ],
   },
   {
@@ -34,6 +40,7 @@ const columns: {
   },
   {
     title: 'Account',
+    desktopOnly: true,
     links: [
       { label: 'Sign in', href: PLATFORM_URL },
     ],
@@ -72,13 +79,13 @@ export function Footer() {
           </div>
 
           {columns.map((col) => (
-            <div key={col.title} className="flex items-center gap-3 sm:block">
+            <div key={col.title} className={`${col.desktopOnly ? 'hidden' : 'flex'} items-center gap-3 sm:block`}>
               <div className="w-[5.25rem] shrink-0 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-secondary sm:w-auto">
                 {col.title}
               </div>
               <ul className="flex min-w-0 flex-wrap gap-x-4 text-[0.8rem] sm:mt-3 sm:block sm:space-y-2 sm:text-[0.84rem]">
                 {col.links.map((l) => (
-                  <li key={l.label}>
+                  <li key={l.label} className={l.phoneOnly ? 'sm:hidden' : undefined}>
                     {l.to ? (
                       <Link
                         to={l.to}

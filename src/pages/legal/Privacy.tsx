@@ -58,7 +58,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>We use the information we collect to:</p>
-        <ul className="list-disc space-y-1.5 pl-5">
+        <ul className="list-disc space-y-1 pl-5 sm:space-y-1.5">
           <li>Operate, maintain, and secure our services;</li>
           <li>Respond to inquiries and provide support;</li>
           <li>
@@ -97,7 +97,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>We share information with:</p>
-        <ul className="list-disc space-y-1.5 pl-5">
+        <ul className="list-disc space-y-1 pl-5 sm:space-y-1.5">
           <li>
             <strong>Service providers.</strong> Vendors who help us operate
             (hosting, analytics, email). They are contractually bound to use

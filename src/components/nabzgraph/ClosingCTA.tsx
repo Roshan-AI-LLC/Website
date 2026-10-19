@@ -5,7 +5,7 @@ import { NABZGRAPH_PAPER_URL } from '../../data/nabzPapers';
 
 export function ClosingCTA() {
   return (
-    <section className="relative py-8 sm:py-16">
+    <section className="relative py-7 sm:py-16">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -14,7 +14,7 @@ export function ClosingCTA() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="glass relative overflow-hidden rounded-2xl px-4 py-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-3 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">
                 NabzGraph · Preprint

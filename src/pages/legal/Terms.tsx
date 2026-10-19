@@ -84,7 +84,7 @@ const sections: LegalSection[] = [
     body: (
       <>
         <p>You agree not to:</p>
-        <ul className="list-disc space-y-1.5 pl-5">
+        <ul className="list-disc space-y-1 pl-5 sm:space-y-1.5">
           <li>
             Use the Services to violate any law, regulation, or third-party
             right (including HIPAA, applicable data-protection laws, or other

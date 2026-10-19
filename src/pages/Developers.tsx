@@ -73,7 +73,8 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>Developers</SectionLabel>
-          <h1 className="mt-3 text-balance font-display text-[1.85rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          {/* Phones: 1.7rem matches the Platform hero; the sm size is unchanged. */}
+          <h1 className="mt-3 text-balance font-display text-[1.7rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             Clinical reasoning,{' '}
             <span className="gradient-text">in your product.</span>
           </h1>
@@ -82,7 +83,7 @@ function Hero() {
           </p>
           {/* Phones: the two buttons sit side by side in the 2-col grid; the
               wrapping flex row returns at sm. */}
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-7 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
             <a
               href="/developers#request-access"
               onClick={(event) => jumpToSection(event, 'request-access')}
@@ -98,7 +99,7 @@ function Hero() {
               See the platform
             </Link>
           </div>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.68rem] text-muted sm:mt-5 sm:text-[0.74rem]">
+          <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-subtle bg-glass px-3 py-1 text-[0.68rem] text-muted sm:mt-5 sm:text-[0.74rem]">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-violet-500)]" />
             Closed beta · partner access is gated
           </div>
@@ -112,7 +113,7 @@ function CodeShowcase() {
   return (
     <section className="relative py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <div className="mb-4 flex flex-col gap-2 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-3 flex flex-col gap-2 sm:mb-7 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Integration example</div>
             {/* Phones: tighter leading so a wrapped heading stays compact; at sm
@@ -154,13 +155,13 @@ function CodeBlock({
   collapseOnPhone?: boolean;
 }) {
   const header = (
-    <div className="flex items-center justify-between border-b border-subtle px-4 py-3 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-muted sm:px-5">
+    <div className="flex items-center justify-between border-b border-subtle px-4 py-2.5 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-muted sm:px-5 sm:py-3">
       <span className="truncate pr-3">{label}</span>
       <span className="shrink-0 font-mono">{language}</span>
     </div>
   );
   const body = (
-    <pre className="overflow-x-auto px-4 py-3 font-mono text-[0.7rem] leading-relaxed text-secondary sm:px-5 sm:py-4 sm:text-[0.76rem]">
+    <pre className="overflow-x-auto px-4 py-2.5 font-mono text-[0.7rem] leading-normal text-secondary sm:px-5 sm:py-4 sm:text-[0.76rem] sm:leading-relaxed">
       <code>{code}</code>
     </pre>
   );
@@ -179,7 +180,7 @@ function CodeBlock({
       {/* Phones: the 13-line response folds behind its label so the request
           stays in view; the open block returns at sm. */}
       <details className="group sm:hidden">
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 border-subtle px-4 py-3 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-accent group-open:border-b [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-10 cursor-pointer list-none items-center justify-between gap-3 border-subtle px-4 py-2.5 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-accent group-open:border-b [&::-webkit-details-marker]:hidden">
           <span className="truncate">{label}</span>
           <span className="flex shrink-0 items-center gap-2 font-mono text-muted">
             {language}
@@ -208,7 +209,7 @@ function Principles() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-2 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
             >
               Designed for production{' '}
               <span className="gradient-text">integration.</span>
@@ -219,7 +220,7 @@ function Principles() {
             The same response contract is designed to outlive any single product release.
           </p>
         </div>
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           {/* Phones: the three principles are compact rows, title with its
               one-line body beside the icon (the bodies are short enough to
               show in full, so nothing hides behind a tap). The cards return
@@ -228,7 +229,7 @@ function Principles() {
             {principles.map((principle) => {
               const Icon = principle.icon;
               return (
-                <div key={principle.title} className="flex items-start gap-3 px-4 py-3">
+                <div key={principle.title} className="flex items-start gap-3 px-4 py-2.5">
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
                     <Icon size={15} strokeWidth={1.8} />
                   </span>
@@ -280,7 +281,7 @@ function Closing() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="glass relative overflow-hidden rounded-2xl px-4 py-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-3 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">Request access</div>
               <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">

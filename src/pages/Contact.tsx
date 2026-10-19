@@ -64,7 +64,7 @@ export default function Contact() {
         </div>
 
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
-          <div className="grid gap-7 sm:gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+          <div className="grid gap-5 sm:gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
             <div className="enter-fade-up">
               <SectionLabel>Contact</SectionLabel>
 
@@ -79,7 +79,7 @@ export default function Contact() {
                 person.
               </p>
 
-              <div className="mt-5 space-y-4 sm:mt-10">
+              <div className="mt-4 space-y-4 sm:mt-10">
                 <ContactLink
                   icon={Mail}
                   label="Direct email"
@@ -88,7 +88,7 @@ export default function Contact() {
                 />
               </div>
 
-              <p className="mt-4 text-[0.78rem] text-muted sm:mt-10">
+              <p className="mt-3 text-[0.78rem] text-muted sm:mt-10">
                 We respond to legitimate inquiries within 2 business days.
                 Recruiters and unsolicited vendor pitches will not get a reply.
               </p>
@@ -105,7 +105,7 @@ export default function Contact() {
                     data-netlify="true"
                     data-netlify-honeypot="bot-field"
                     onSubmit={handleSubmit}
-                    className="space-y-4 sm:space-y-5"
+                    className="space-y-3 sm:space-y-5"
                   >
                     {/* Netlify required hidden inputs */}
                     <input type="hidden" name="form-name" value="contact" />
@@ -115,7 +115,8 @@ export default function Contact() {
                       </label>
                     </p>
 
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    {/* Phones: name and email share a row, as they do at sm. */}
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4">
                       <Field label="Name" required>
                         <input
                           name="name"
@@ -161,7 +162,7 @@ export default function Contact() {
                         name="message"
                         required
                         rows={5}
-                        className="form-input h-[7.5rem] resize-y sm:h-auto"
+                        className="form-input h-24 resize-y sm:h-auto"
                         placeholder="What are you trying to do? What stage are you at?"
                       />
                     </Field>
@@ -182,7 +183,7 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={status === 'submitting'}
-                      className="btn-primary group inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="btn-primary group inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[0.92rem] font-semibold transition will-change-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:py-3"
                     >
                       {status === 'submitting' ? 'Sending…' : 'Send message'}
                       {status !== 'submitting' && (
@@ -218,9 +219,10 @@ export default function Contact() {
               background 180ms var(--ease-spring);
           }
           .form-input::placeholder { color: var(--text-muted); }
-          /* Phones: 16px stops iOS Safari zooming the page on focus. */
+          /* Phones: 16px stops iOS Safari zooming the page on focus; a 1.25
+             line-height keeps each field ~41px tall (tap-safe) instead of 46px. */
           @media (max-width: 639px) {
-            .form-input { font-size: 16px; padding: 0.6rem 0.85rem; }
+            .form-input { font-size: 16px; padding: 0.6rem 0.85rem; line-height: 1.25; }
           }
           .form-input:focus {
             outline: none;
@@ -255,8 +257,8 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <label className="block">
-      <span className="block pb-1 text-[0.78rem] font-medium text-secondary sm:pb-1.5">
+    <label className="block min-w-0">
+      <span className="block pb-1 text-[0.78rem] font-medium leading-snug text-secondary sm:pb-1.5 sm:leading-[1.55]">
         {label}
         {required && (
           <span className="ml-1 text-accent" aria-hidden>
@@ -283,7 +285,7 @@ function ContactLink({
   return (
     <a
       href={href}
-      className="group flex items-center gap-3 rounded-2xl border border-subtle bg-glass p-3.5 transition hover:border-strong"
+      className="group flex items-center gap-3 rounded-2xl border border-subtle bg-glass p-3 transition hover:border-strong sm:p-3.5"
     >
       <span
         className="inline-flex h-9 w-9 items-center justify-center rounded-xl"

@@ -91,7 +91,7 @@ function Hero() {
         <div className="enter-fade-up">
           <SectionLabel>Products</SectionLabel>
 
-          <h1 className="mt-3 max-w-3xl text-balance font-display text-[2rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[3rem]">
+          <h1 className="mt-3 max-w-3xl text-balance font-display text-[1.75rem] font-bold leading-[1.05] tracking-[-0.025em] sm:mt-5 sm:text-[3rem]">
             One platform.{' '}
             <span className="gradient-text">A growing family of clinical products.</span>
           </h1>
@@ -150,13 +150,21 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
       <Wrap
         {...wrapProps}
         data-cursor={product.href ? 'hover' : undefined}
-        className={`glass group relative block overflow-hidden rounded-2xl p-4 transition will-change-transform sm:rounded-3xl sm:p-9 ${
+        className={`glass group relative block overflow-hidden rounded-2xl px-4 py-3.5 transition will-change-transform sm:rounded-3xl sm:p-9 ${
           product.href ? 'hover:-translate-y-0.5 hover:border-strong' : ''
         }`}
       >
-        <div className="grid gap-3 sm:gap-7 lg:grid-cols-[1fr_1.4fr] lg:items-start lg:gap-10">
-          <div>
-            <div className="flex items-center justify-between gap-4 lg:justify-start lg:gap-5">
+        <div className="grid gap-2.5 sm:gap-7 lg:grid-cols-[1fr_1.4fr] lg:items-start lg:gap-10">
+          {/* Phones: the status chip sits on the name's row (name left, chip
+              right) instead of its own line; sm restores the stacked block. On
+              the in-development card the chip repeats the name word for word,
+              so it returns at sm. */}
+          <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 sm:block">
+            <div
+              className={`${
+                product.status === 'next' ? 'hidden sm:flex' : 'flex'
+              } col-start-2 row-start-1 items-center justify-between gap-4 lg:justify-start lg:gap-5`}
+            >
               {/* Phones: the "soon" tile repeats the status chip beside it. */}
               {product.visual === 'placeholder' && (
                 <div
@@ -191,10 +199,10 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
               </span>
             </div>
 
-            <h2 className="mt-3 font-display text-[1.5rem] font-semibold tracking-[-0.02em] sm:mt-6 sm:text-[2.2rem]">
+            <h2 className="col-start-1 row-start-1 mt-0 font-display text-[1.5rem] font-semibold leading-tight tracking-[-0.02em] sm:mt-6 sm:text-[2.2rem] sm:leading-[inherit]">
               {product.name}
             </h2>
-            <div className="mt-1 text-[0.86rem] font-medium text-accent sm:text-[0.92rem]">
+            <div className="col-span-2 mt-1 text-[0.86rem] font-medium text-accent sm:text-[0.92rem]">
               {product.descriptor}
             </div>
           </div>
@@ -202,15 +210,15 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
           <div>
             {/* Phones: the body clamps to three lines (the card links to the
                 full product page); the highlights below stay in full. */}
-            <p className="mobile-compact-copy text-[0.88rem] font-light leading-relaxed text-secondary sm:text-[0.98rem]">
+            <p className="mobile-compact-copy text-[0.88rem] font-light leading-normal text-secondary sm:text-[0.98rem] sm:leading-relaxed">
               {product.body}
             </p>
 
-            <ul className="mt-3 grid gap-1 sm:mt-5 sm:grid-cols-2 sm:gap-1.5">
+            <ul className="mt-2.5 grid gap-1 sm:mt-5 sm:grid-cols-2 sm:gap-1.5">
               {product.highlights.map((h) => (
-                <li key={h} className="flex items-start gap-2 text-[0.82rem] text-secondary sm:text-[0.88rem]">
+                <li key={h} className="flex items-start gap-2 text-[0.82rem] leading-snug text-secondary sm:text-[0.88rem] sm:leading-[inherit]">
                   <span
-                    className="mt-1 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
+                    className="mt-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full sm:mt-1"
                     style={{ background: 'var(--accent-soft)', color: 'var(--accent)' }}
                   >
                     <Check size={10} strokeWidth={2.6} />
@@ -221,7 +229,7 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
             </ul>
 
             {product.href ? (
-              <div className="mt-3 inline-flex items-center gap-1.5 text-[0.9rem] font-medium text-accent sm:mt-6">
+              <div className="mt-2.5 inline-flex items-center gap-1.5 text-[0.9rem] font-medium text-accent sm:mt-6">
                 Open the product page
                 <ArrowUpRight
                   size={14}
@@ -229,7 +237,7 @@ function ProductRow({ product, delay }: { product: Product; delay: number }) {
                 />
               </div>
             ) : (
-              <div className="mt-3 inline-flex items-center gap-1.5 text-[0.86rem] text-muted sm:mt-6">
+              <div className="mt-2.5 inline-flex items-center gap-1.5 text-[0.86rem] text-muted sm:mt-6">
                 More info as it ships.
               </div>
             )}
@@ -257,17 +265,18 @@ function Closing() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="glass relative overflow-hidden rounded-2xl p-5 sm:rounded-3xl sm:p-14"
+          className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:p-14"
         >
           <div className="relative z-10 grid gap-4 sm:gap-8 lg:grid-cols-[1.3fr_auto] lg:items-center">
             <div>
               <div className="text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-accent">
                 Pilots · partnerships · integrations
               </div>
-              <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:mt-3 sm:text-[2.2rem]">
+              <h2 className="mt-2 text-balance font-display text-[1.35rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:mt-3 sm:text-[2.2rem]">
                 Don't see your workflow on the list?
               </h2>
-              <p className="mt-2 max-w-xl text-[0.86rem] font-light leading-relaxed text-secondary sm:mt-3 sm:text-[0.96rem]">
+              {/* Phones: heading and buttons carry the CTA; the line returns at sm. */}
+              <p className="mt-2 hidden max-w-xl text-[0.86rem] font-light leading-relaxed text-secondary sm:mt-3 sm:block sm:text-[0.96rem]">
                 Roshan AI's product roadmap is shaped by partner workflows.
                 Tell us where evidence-grounded reasoning would change your
                 clinical or operational outcome. We'll tell you what's

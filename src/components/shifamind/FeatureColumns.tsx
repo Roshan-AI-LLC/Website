@@ -33,7 +33,7 @@ export function FeatureColumns() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-2xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-3 max-w-2xl text-balance font-display text-[1.4rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
             >
               Three primitives, designed to be{' '}
               <span className="gradient-text">defended.</span>
@@ -43,7 +43,7 @@ export function FeatureColumns() {
 
         {/* Phones: one divided list instead of a swipe rail, so all three read
             at a glance; step numbers return at sm and the columns at md. */}
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {features.map((feature, index) => {
               const Icon = feature.icon;
@@ -54,7 +54,7 @@ export function FeatureColumns() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex gap-3 px-4 py-3 sm:px-5 sm:py-5 md:block"
+                  className="flex gap-3 px-4 py-2.5 sm:px-5 sm:py-5 md:block"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent sm:h-9 sm:w-9">
                     <Icon size={17} strokeWidth={1.8} />
@@ -62,7 +62,7 @@ export function FeatureColumns() {
                   <div className="min-w-0 md:mt-4">
                     <div className="flex items-center gap-2">
                       <span className="hidden font-mono text-[0.62rem] font-semibold tracking-[0.12em] text-muted sm:inline">0{index + 1}</span>
-                      <h3 className="text-[0.92rem] font-semibold tracking-[-0.01em] sm:text-[0.98rem]">{feature.title}</h3>
+                      <h3 className="text-[0.92rem] font-semibold leading-snug tracking-[-0.01em] sm:text-[0.98rem] sm:leading-[inherit]">{feature.title}</h3>
                     </div>
                     <p className="mt-0.5 text-[0.8rem] leading-snug text-secondary sm:mt-1 sm:text-[0.84rem] sm:leading-relaxed">
                       {feature.desc}

@@ -7,7 +7,7 @@ const evidencePct = Math.round((evidence.edgesWithPointers / evidence.edgesTotal
 
 export function ProductHero() {
   return (
-    <section className="relative isolate overflow-hidden pt-[5.5rem] pb-8 sm:pt-40 sm:pb-16">
+    <section className="relative isolate overflow-hidden pt-[5.25rem] pb-8 sm:pt-40 sm:pb-16">
       <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
         <div className="aurora h-[420px] w-[1100px] max-w-full opacity-60" />
       </div>
@@ -22,7 +22,7 @@ export function ProductHero() {
           </span>
         </div>
 
-        <h1 className="enter-fade-up enter-d-1 mt-4 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
+        <h1 className="enter-fade-up enter-d-1 mt-3 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
           Patient graphs that{' '}
           <span className="gradient-text">know who acted.</span>
         </h1>
@@ -35,7 +35,7 @@ export function ProductHero() {
         {/* Phones: the two buttons share one row of a 2-col grid (leading
             icons dropped so both labels fit at 360px); the status chip is
             shown from sm only (phones see it beside the eyebrow). */}
-        <div className="enter-fade-up enter-d-3 mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
+        <div className="enter-fade-up enter-d-3 mt-4 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           <a
             href="/contact"
             className="btn-primary group inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-3 py-3 text-[0.88rem] font-semibold transition will-change-transform hover:-translate-y-0.5 sm:col-auto sm:px-5 sm:text-[0.92rem]"
@@ -59,7 +59,7 @@ export function ProductHero() {
           </span>
         </div>
 
-        <div className="enter-fade-up enter-d-4 mt-6 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
+        <div className="enter-fade-up enter-d-4 mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
           <Stat
             value={fmt(falseRelations.ours.transplant, 2)}
             label="False concept links / graph"
@@ -87,7 +87,7 @@ function Stat({ value, label, sub }: { value: string; label: string; sub: string
     // under a variant, so `[&:not(:first-child)]:border-subtle` never applied
     // and the line fell back to currentColor. Phones get the hairline here;
     // the desktop divider is left as it renders today.
-    <div className="min-w-0 px-2 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
+    <div className="min-w-0 px-2 py-2.5 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
       <div className="font-mono text-[1.05rem] font-semibold tracking-tight text-accent sm:text-[1.55rem]">
         {value}
       </div>

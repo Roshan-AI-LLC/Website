@@ -57,11 +57,11 @@ function Hero() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="enter-fade-up max-w-3xl">
           <SectionLabel>Team</SectionLabel>
-          <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
+          <h1 className="mt-2 text-balance font-display text-[1.75rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-5 sm:text-[3rem]">
             The people building{' '}
             <span className="gradient-text">Roshan AI.</span>
           </h1>
-          <p className="mt-3 max-w-2xl text-pretty text-[0.9rem] leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+          <p className="mt-2 max-w-2xl text-pretty text-[0.9rem] leading-[1.55] text-secondary sm:mt-5 sm:text-[1.05rem] sm:leading-relaxed">
             We are early by design. The team works directly on the model, platform, and customer problems—without buffer layers.
           </p>
         </div>
@@ -81,12 +81,14 @@ function FounderBlock() {
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:px-7 sm:py-6"
         >
-          <div className="relative z-10 grid gap-4 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
+          <div className="relative z-10 grid gap-3 sm:gap-5 lg:grid-cols-[1.35fr_auto] lg:items-center lg:gap-8">
             <div>
               <div className="text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-accent">{founder.role}</div>
-              <h2 className="mt-2 font-display text-[1.45rem] font-semibold tracking-[-0.03em] sm:text-[1.85rem]">{founder.name}</h2>
+              {/* Phones: tight leading like the other card headings; at sm the
+                  inherited body line-height (1.55) applies as before. */}
+              <h2 className="mt-2 font-display text-[1.45rem] font-semibold leading-[1.15] tracking-[-0.03em] sm:text-[1.85rem] sm:leading-[1.55]">{founder.name}</h2>
               <div className="mt-1 text-[0.8rem] text-secondary sm:text-[0.9rem]">{founder.oneLiner}</div>
-              <p className="mt-3 max-w-2xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">{founder.bio}</p>
+              <p className="mt-2 max-w-2xl text-[0.84rem] leading-[1.55] text-secondary sm:mt-3 sm:text-[0.92rem] sm:leading-relaxed">{founder.bio}</p>
             </div>
             {/* Phones: the three links share one row; the wrapping pills return at sm. */}
             <div className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap sm:gap-2 lg:w-40 lg:flex-col">
@@ -128,7 +130,7 @@ function BuildingTeam() {
           <p className="hidden max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-right sm:text-[0.9rem]">No filler hires. Bring a clear point of view on what you would ship and where you would take the platform.</p>
         </div>
 
-        <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="mobile-rail-shell glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {opportunities.map((opportunity, index) => (
               <motion.div
@@ -137,11 +139,11 @@ function BuildingTeam() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                className="px-4 py-4 sm:px-5 sm:py-5"
+                className="px-4 py-3 sm:px-5 sm:py-5"
               >
                 <div className="text-[0.64rem] font-semibold uppercase tracking-[0.13em] text-muted">{opportunity.area}</div>
-                <div className="mt-2 text-[0.88rem] font-semibold text-primary">{opportunity.focus}</div>
-                <div className="mt-3 inline-flex items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent">
+                <div className="mt-1.5 text-[0.88rem] font-semibold leading-snug text-primary sm:mt-2 sm:leading-[1.55]">{opportunity.focus}</div>
+                <div className="mt-2 inline-flex items-center gap-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-accent sm:mt-3">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-current" />
                   Open to conversations
                 </div>
@@ -152,7 +154,7 @@ function BuildingTeam() {
 
         <a
           href={`mailto:${CONTACT_EMAIL}?subject=Joining%20Roshan%20AI`}
-          className="group mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border border-subtle bg-glass px-5 text-[0.84rem] sm:mt-5 font-medium text-secondary transition hover:border-strong hover:text-primary"
+          className="group mt-3 inline-flex min-h-11 items-center gap-2 rounded-full border border-subtle bg-glass px-5 text-[0.84rem] sm:mt-5 font-medium text-secondary transition hover:border-strong hover:text-primary"
         >
           Reach out: {CONTACT_EMAIL}
           <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

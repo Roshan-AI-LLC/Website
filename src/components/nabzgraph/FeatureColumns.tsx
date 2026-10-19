@@ -33,20 +33,22 @@ export function FeatureColumns() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-2 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
             >
               Three panels, one{' '}
               <span className="gradient-text">reasoning chain.</span>
             </motion.h2>
           </div>
-          <p className="max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:text-right sm:text-[0.9rem]">
+          {/* Phones: hidden, the rows carry the section (as in EdgeTypes and
+              Metrics); the line returns at sm. */}
+          <p className="hidden max-w-sm text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-right sm:text-[0.9rem]">
             From the graph down to the events behind each edge.
           </p>
         </div>
 
         {/* Phones: one card of divided rows (icon tile, title, line); step
             numbers hidden. BreadthGrid keeps this page's one swipe rail. */}
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
             {features.map((feature, index) => {
               const Icon = feature.icon;
@@ -57,7 +59,7 @@ export function FeatureColumns() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-60px' }}
                   transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex gap-3 px-4 py-3 sm:px-5 sm:py-5 md:block"
+                  className="flex gap-3 px-4 py-2.5 sm:px-5 sm:py-5 md:block"
                 >
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent sm:h-9 sm:w-9">
                     <Icon size={17} strokeWidth={1.8} />

@@ -16,7 +16,7 @@ const META: Record<RelationKey, { icon: ElementType; flow: string }> = {
 
 export function EdgeTypes() {
   return (
-    <section className="relative py-10 sm:py-20">
+    <section className="relative py-7 sm:py-20">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
@@ -26,7 +26,7 @@ export function EdgeTypes() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+              className="mt-2 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
             >
               Every relation{' '}
               <span className="gradient-text">knows its type.</span>
@@ -38,7 +38,7 @@ export function EdgeTypes() {
           </p>
         </div>
 
-        <div className="glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+        <div className="glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
           <div className="hidden grid-cols-[180px_1fr_1.2fr] gap-4 border-b border-subtle px-5 py-3 text-[0.62rem] font-semibold uppercase tracking-[0.13em] text-muted md:grid">
             <span>Relation</span>
             <span>Example</span>
@@ -53,7 +53,7 @@ export function EdgeTypes() {
               const Icon = META[relation.key].icon;
               return (
                 <details key={relation.key} className="group">
-                  <summary className="flex min-h-11 cursor-pointer list-none items-start gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-start gap-3 px-4 py-2.5 [&::-webkit-details-marker]:hidden">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
                       <Icon size={15} strokeWidth={1.8} />
                     </span>
@@ -63,7 +63,7 @@ export function EdgeTypes() {
                     </span>
                     <ChevronDown size={16} className="mt-1.5 shrink-0 text-accent transition-transform duration-200 group-open:rotate-180" />
                   </summary>
-                  <p className="pb-3.5 pl-[3.75rem] pr-4 text-[0.8rem] leading-relaxed text-secondary">{relation.line}</p>
+                  <p className="pb-3 pl-[3.75rem] pr-4 text-[0.8rem] leading-relaxed text-secondary">{relation.line}</p>
                 </details>
               );
             })}

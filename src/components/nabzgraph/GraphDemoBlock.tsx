@@ -207,7 +207,7 @@ function TabBar({
           );
         })}
       </div>
-      <div className="flex items-center gap-2 px-6 pb-3 pt-2 text-[0.76rem] text-muted sm:px-8">
+      <div className="flex items-center gap-2 px-6 pb-2.5 pt-1.5 text-[0.76rem] text-muted sm:px-8 sm:pb-3 sm:pt-2">
         <span className="font-mono uppercase tracking-[0.14em]">patient</span>
         <span aria-hidden>·</span>
         <span>{subLabel}</span>
@@ -329,9 +329,14 @@ function GraphCanvas({
 
       {/* Aspect classes mirror CANVAS in nabzgraphScenarios.ts (landscape
           760x470, portrait 410x680 on phones), so the box is the right shape
-          from the prerendered HTML on. */}
+          from the prerendered HTML on. Phones: until a graph is built the
+          canvas is an empty placeholder behind the Build button, so it waits
+          as a short box (SVG hidden) and opens to the portrait canvas on
+          Build, as the evidence pane waits for results. Unchanged from sm. */}
       <div
-        className="relative mt-3 aspect-[760/470] overflow-hidden rounded-2xl border border-subtle max-sm:aspect-[410/680]"
+        className={`relative mt-2 aspect-[760/470] overflow-hidden rounded-2xl border border-subtle sm:mt-3 ${
+          state === 'idle' ? 'max-sm:aspect-[410/260]' : 'max-sm:aspect-[410/680]'
+        }`}
         style={{
           background: 'radial-gradient(ellipse 110% 80% at 50% 50%, color-mix(in oklab, var(--accent) 6%, transparent), transparent 70%)',
         }}
@@ -339,7 +344,7 @@ function GraphCanvas({
         <svg
           ref={svgRef}
           viewBox={`0 0 ${canvas.w} ${canvas.h}`}
-          className="absolute inset-0 h-full w-full"
+          className={`absolute inset-0 h-full w-full ${state === 'idle' ? 'max-sm:hidden' : ''}`}
           preserveAspectRatio="xMidYMid meet"
           style={{ cursor: dragNodeId ? 'grabbing' : 'default' }}
           onPointerMove={handleSVGPointerMove}
@@ -599,7 +604,7 @@ function EdgeSwatch({ type, width = 22 }: { type: EdgeType; width?: number }) {
 
 function Legend({ enabled, onToggle }: { enabled: Set<EdgeType>; onToggle: (t: EdgeType) => void }) {
   return (
-    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.7rem] text-muted">
+    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[0.7rem] text-muted sm:mt-3 sm:gap-y-1.5">
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: 'var(--accent)' }} />
         Persistent
@@ -1554,7 +1559,7 @@ function TimelineStrip({
 
 function Controls({ state, onReset }: { state: DemoState; onReset: () => void }) {
   return (
-    <div className="flex items-center justify-between gap-3 border-t border-subtle px-4 py-3 sm:px-6 sm:py-4">
+    <div className="flex items-center justify-between gap-3 border-t border-subtle px-4 py-2 sm:px-6 sm:py-4">
       <button
         type="button"
         onClick={onReset}

@@ -33,9 +33,9 @@ export default function CompanyPressRelease() {
 
       <article>
         {/* This hero sits inside <article>, so the global phone rule for
-            `main > section` never reaches it; the base padding here matches
-            the other page heroes on phones. */}
-        <section className="relative isolate overflow-hidden pt-[5.5rem] pb-6 sm:pt-40 sm:pb-12">
+            `main > section` never reaches it; the base top padding here
+            matches the 5.25rem the other page heroes get on phones. */}
+        <section className="relative isolate overflow-hidden pt-[5.25rem] pb-5 sm:pt-40 sm:pb-12">
           <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
             <div className="aurora h-[420px] w-[1100px] max-w-full opacity-50" />
           </div>
@@ -53,7 +53,7 @@ export default function CompanyPressRelease() {
                 All announcements
               </Link>
 
-              <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.76rem] text-muted sm:mt-6">
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.76rem] text-muted sm:mt-6">
                 <time dateTime={release.date}>
                   {formatPressDate(release.date)}
                 </time>
@@ -63,12 +63,12 @@ export default function CompanyPressRelease() {
                 </span>
               </div>
 
-              <h1 className="mt-3 text-balance font-display text-[1.75rem] font-bold leading-[1.08] tracking-[-0.025em] sm:mt-4 sm:text-[2.6rem]">
+              <h1 className="mt-2 text-balance font-display text-[1.75rem] font-bold leading-[1.08] tracking-[-0.025em] sm:mt-4 sm:text-[2.6rem]">
                 {release.title}
               </h1>
 
               {release.dek && (
-                <p className="mt-3 text-pretty text-[0.98rem] font-light leading-relaxed text-secondary sm:mt-5 sm:text-[1.05rem]">
+                <p className="mt-2 text-pretty text-[0.94rem] font-light leading-[1.55] text-secondary sm:mt-5 sm:text-[1.05rem] sm:leading-relaxed">
                   {release.dek}
                 </p>
               )}
@@ -76,13 +76,13 @@ export default function CompanyPressRelease() {
           </div>
         </section>
 
-        <section className="relative pb-12 sm:pb-20">
+        <section className="relative pb-10 sm:pb-20">
           <div className="mx-auto max-w-3xl px-5 sm:px-8">
             {/* Phones: a smaller mark with its caption beside it; the full-size
                 stacked figure returns at sm. Both widths stay above the
                 badge's 110px legibility floor. */}
             {release.badge === 'nvidia-inception' && (
-              <figure className="mb-6 flex items-center gap-4 sm:mb-10 sm:block">
+              <figure className="mb-5 flex items-center gap-4 sm:mb-10 sm:block">
                 <InceptionBadge width={120} link={false} className="flex shrink-0 sm:hidden" />
                 <InceptionBadge width={220} link={false} className="hidden sm:inline" />
                 <figcaption className="text-[0.74rem] leading-relaxed text-muted sm:mt-3">
@@ -92,7 +92,7 @@ export default function CompanyPressRelease() {
             )}
 
             {release.badge === 'claude-startups' && (
-              <figure className="mb-6 flex items-center gap-4 sm:mb-10 sm:block">
+              <figure className="mb-5 flex items-center gap-4 sm:mb-10 sm:block">
                 <ClaudeStartupsMark width={120} link={false} className="flex shrink-0 sm:hidden" />
                 <ClaudeStartupsMark width={220} link={false} className="hidden sm:inline" />
                 <figcaption className="text-[0.74rem] leading-relaxed text-muted sm:mt-3">
@@ -101,7 +101,9 @@ export default function CompanyPressRelease() {
               </figure>
             )}
 
-            <div className="space-y-4 text-[0.94rem] font-light leading-[1.6] text-secondary sm:space-y-5 sm:text-[1rem] sm:leading-relaxed">
+            {/* Phones: every paragraph stays; slightly smaller type and the
+                site's 1.55 body leading shorten the column. sm restores both. */}
+            <div className="space-y-3 text-[0.9rem] font-light leading-[1.55] text-secondary sm:space-y-5 sm:text-[1rem] sm:leading-relaxed">
               {release.body.map((para, i) => (
                 <p key={i} className="text-pretty">
                   {para}
@@ -110,18 +112,18 @@ export default function CompanyPressRelease() {
             </div>
 
             {release.quote && (
-              <figure className="glass mt-7 rounded-2xl p-4 sm:mt-10 sm:p-8">
-                <blockquote className="text-pretty font-display text-[1rem] font-medium leading-[1.5] tracking-[-0.015em] sm:text-[1.25rem]">
+              <figure className="glass mt-6 rounded-2xl p-4 sm:mt-10 sm:p-8">
+                <blockquote className="text-pretty font-display text-[0.94rem] font-medium leading-[1.45] tracking-[-0.015em] sm:text-[1.25rem] sm:leading-[1.5]">
                   “{release.quote.text}”
                 </blockquote>
-                <figcaption className="mt-3 text-[0.82rem] text-muted sm:mt-4">
+                <figcaption className="mt-2 text-[0.82rem] text-muted sm:mt-4">
                   {release.quote.attribution}
                 </figcaption>
               </figure>
             )}
 
             {release.links && release.links.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-3 sm:mt-10">
+              <div className="mt-5 flex flex-wrap gap-2 sm:mt-10 sm:gap-3">
                 {release.links.map((l) => (
                   <a
                     key={l.href}
@@ -137,7 +139,7 @@ export default function CompanyPressRelease() {
               </div>
             )}
 
-            <div className="mt-8 border-t border-subtle pt-3 sm:mt-12 sm:pt-8">
+            <div className="mt-6 border-t border-subtle pt-3 sm:mt-12 sm:pt-8">
               {/* Phones: the boilerplate folds behind its own label, as on
                   /company/press (every word kept, one tap away); it is always
                   open from sm up. */}

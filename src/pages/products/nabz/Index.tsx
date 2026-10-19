@@ -81,7 +81,7 @@ export default function NabzFamily() {
         <link rel="canonical" href="https://roshan-ai.com/products/nabz" />
       </Head>
 
-      <section className="relative isolate overflow-hidden pt-[5.5rem] pb-8 sm:pt-40 sm:pb-16">
+      <section className="relative isolate overflow-hidden pt-[5.25rem] pb-8 sm:pt-40 sm:pb-16">
         <div className="pointer-events-none absolute inset-x-0 top-12 -z-[5] flex justify-center">
           <div className="aurora h-[420px] w-[1100px] max-w-full opacity-60" />
         </div>
@@ -91,7 +91,7 @@ export default function NabzFamily() {
             Nabz · A Roshan AI model family
           </SectionLabel>
 
-          <h1 className="enter-fade-up enter-d-1 mt-4 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
+          <h1 className="enter-fade-up enter-d-1 mt-3 max-w-4xl text-balance font-display text-[2rem] font-bold leading-[1.06] tracking-[-0.035em] sm:mt-6 sm:text-[3rem] lg:text-[3.5rem]">
             Clinical reasoning on the{' '}
             <span className="gradient-text">signals themselves.</span>
           </h1>
@@ -106,7 +106,7 @@ export default function NabzFamily() {
             </span>
           </p>
 
-          <div className="enter-fade-up enter-d-3 mt-6 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
+          <div className="enter-fade-up enter-d-3 mt-5 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-subtle bg-glass sm:mt-12">
             <Stat
               value={NABZGRAPH.data.surgicalCases.toLocaleString('en-US')}
               label="Surgical cases"
@@ -124,7 +124,7 @@ export default function NabzFamily() {
 
       <Divider />
 
-      <section className="relative py-10 sm:py-20">
+      <section className="relative py-7 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <SectionLabel>The models</SectionLabel>
 
@@ -133,13 +133,13 @@ export default function NabzFamily() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+            className="mt-2 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
           >
             Two models today, one{' '}
             <span className="gradient-text">shared commitment.</span>
           </motion.h2>
 
-          <div className="mt-5 grid gap-3 sm:mt-9 sm:gap-4 lg:grid-cols-2">
+          <div className="mt-4 grid gap-3 sm:mt-9 sm:gap-4 lg:grid-cols-2">
             {members.map((member, index) => (
               <MemberCard key={member.name} member={member} delay={index * 0.08} />
             ))}
@@ -149,7 +149,7 @@ export default function NabzFamily() {
 
       <Divider />
 
-      <section className="relative py-10 sm:py-20">
+      <section className="relative py-7 sm:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <SectionLabel>What makes it a family</SectionLabel>
 
@@ -158,12 +158,12 @@ export default function NabzFamily() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-3 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[2.25rem]"
+            className="mt-2 max-w-3xl text-balance font-display text-[1.5rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:mt-3 sm:text-[2.25rem]"
           >
             Three rules every Nabz model follows.
           </motion.h2>
 
-          <div className="mobile-rail-shell glass mt-5 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
+          <div className="mobile-rail-shell glass mt-4 overflow-hidden rounded-2xl sm:mt-9 sm:rounded-3xl">
             <div className="mobile-snap-rail grid divide-y divide-[color:var(--border-subtle)] md:grid-cols-3 md:divide-x md:divide-y-0">
               {principles.map((principle, index) => {
                 const Icon = principle.icon;
@@ -174,7 +174,7 @@ export default function NabzFamily() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.45, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex gap-3 p-4 sm:p-6 md:block"
+                    className="flex gap-3 px-4 py-3 sm:p-6 md:block"
                   >
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
                       <Icon size={17} strokeWidth={1.8} />
@@ -193,21 +193,21 @@ export default function NabzFamily() {
             </div>
           </div>
 
-          <p className="mt-4 max-w-3xl text-[0.78rem] leading-relaxed text-muted sm:mt-5 sm:text-[0.82rem]">
+          <p className="mt-3 max-w-3xl text-[0.78rem] leading-relaxed text-muted sm:mt-5 sm:text-[0.82rem]">
             Both models are research artifacts built on retrospective data, not
             validated for clinical use.
           </p>
         </div>
       </section>
 
-      <section className="relative py-8 sm:py-16">
+      <section className="relative py-7 sm:py-16">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-70px' }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="glass relative overflow-hidden rounded-2xl p-5 sm:rounded-3xl sm:p-9"
+            className="glass relative overflow-hidden rounded-2xl p-4 sm:rounded-3xl sm:p-9"
           >
             <div
               aria-hidden
@@ -223,9 +223,10 @@ export default function NabzFamily() {
             <h2 className="mt-2 text-balance font-display text-[1.45rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[1.85rem]">
               Bring your signals.
             </h2>
-            {/* Phones: the second sentence repeats the eyebrow above; it
-                returns at sm. */}
-            <p className="mt-2 max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:text-[0.92rem]">
+            {/* Phones: heading and button carry the CTA, as on the NabzGraph
+                closing card; the line returns at sm (its second sentence
+                repeats the eyebrow above). */}
+            <p className="mt-2 hidden max-w-xl text-[0.84rem] leading-relaxed text-secondary sm:block sm:text-[0.92rem]">
               We are looking for retrospective cohorts to validate against.
               <span className="hidden sm:inline">
                 {' '}Research collaboration is welcome on every model.
@@ -261,35 +262,39 @@ function MemberCard({ member, delay }: { member: Member; delay: number }) {
       {/* The card is a <div>, not a <Link>, so the paper link can sit beside
           the page link without nesting anchors. The "Explore" link stretches
           over the whole card (after:inset-0); the paper link sits above it. */}
+      {/* Phones: a grid whose first row is icon, name and status (the icon
+          row's wrapper is display:contents there), so the name no longer
+          sits on a line of its own below the icon. From sm the card is a
+          block again and the stacked layout returns unchanged. */}
       <div
         data-cursor={member.href ? 'hover' : undefined}
-        className={`glass group relative h-full rounded-2xl p-4 transition sm:rounded-3xl sm:p-8 ${
+        className={`glass group relative grid h-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 rounded-2xl p-4 transition sm:block sm:rounded-3xl sm:p-8 ${
           member.href ? 'hover:-translate-y-0.5 hover:border-strong' : ''
         }`}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="contents items-start justify-between gap-4 sm:flex">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
             <Icon size={19} strokeWidth={1.8} />
           </span>
-          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.1em] text-accent">
+          <span className="col-start-3 row-start-1 rounded-full bg-accent-soft px-2.5 py-1 text-[0.66rem] font-semibold uppercase tracking-[0.1em] text-accent">
             {member.status}
           </span>
         </div>
 
-        <h3 className="mt-3 font-display text-[1.35rem] font-semibold tracking-[-0.025em] sm:mt-4 sm:text-[1.6rem]">
+        <h3 className="col-start-2 row-start-1 mt-0 min-w-0 font-display text-[1.35rem] font-semibold tracking-[-0.025em] sm:mt-4 sm:text-[1.6rem]">
           {member.name}
         </h3>
-        <div className="mt-1 text-[0.84rem] font-medium text-accent sm:text-[0.88rem]">
+        <div className="col-span-full mt-2 text-[0.84rem] font-medium text-accent sm:mt-1 sm:text-[0.88rem]">
           {member.descriptor}
         </div>
         {/* Phones: clamped to three lines; the card opens the model's page,
             which carries the full account. */}
-        <p className="mobile-compact-copy mt-2 text-[0.84rem] leading-relaxed text-secondary sm:mt-3 sm:text-[0.88rem]">
+        <p className="mobile-compact-copy col-span-full mt-2 text-[0.84rem] leading-relaxed text-secondary sm:mt-3 sm:text-[0.88rem]">
           {member.longDesc}
         </p>
 
         {/* Both links are at least 40px tall for touch. */}
-        <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 sm:mt-3">
+        <div className="col-span-full mt-1 flex flex-wrap items-center justify-between gap-x-4 sm:mt-3">
           {member.href && (
             <Link
               to={member.href}
@@ -323,7 +328,7 @@ function Stat({ value, label, sub }: { value: string; label: string; sub: string
     // under a variant, so `[&:not(:first-child)]:border-subtle` never applied
     // and the line fell back to currentColor. Phones get the hairline here;
     // the desktop divider is left as it renders today.
-    <div className="min-w-0 px-2 py-3 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
+    <div className="min-w-0 px-2 py-2.5 sm:px-5 sm:py-4 [&:not(:first-child)]:border-l [&:not(:first-child)]:border-[color:var(--border-subtle)]">
       <div className="font-mono text-[1.05rem] font-semibold tracking-tight text-accent sm:text-[1.55rem]">
         {value}
       </div>

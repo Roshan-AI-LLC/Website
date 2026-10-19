@@ -675,8 +675,8 @@ html.dark .glass-strong {
   }
 
   .mobile-native-section {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
   }
 
   .mobile-native-hero {
@@ -733,12 +733,12 @@ html.dark .glass-strong {
 @media (max-width: 639px) {
   /* Every route composes its content as direct main sections. This establishes a
      phone-specific cadence instead of inheriting the desktop landing-page gaps.
-     Tight on purpose: ~72px between sections reads as a pause on a phone, and
-     the old 96px gaps added a screen of empty scroll to every page. The first
-     section clears the fixed nav (~70px tall) with a small margin. */
+     Tight on purpose: ~48-56px between sections still reads as a pause on a
+     phone, and the old 96px gaps added a screen of empty scroll to every page.
+     The first section clears the fixed nav (~70px tall) with a small margin. */
   main > section {
-    padding-top: 2.25rem !important;
-    padding-bottom: 2.25rem !important;
+    padding-top: 1.75rem !important;
+    padding-bottom: 1.75rem !important;
   }
 
   main > section:first-child {
@@ -747,8 +747,8 @@ html.dark .glass-strong {
   }
 
   main > section.mobile-native-section {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
   }
 }
 
