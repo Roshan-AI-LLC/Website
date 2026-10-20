@@ -16,10 +16,13 @@ html.mz-reveal-fallback [style*='opacity:0;transform:translateY'] {
   transform: none !important;
 }
 
-/* Self-hosted brand faces */
+/* Self-hosted brand faces. WOFF2 files are subset to Latin, Latin-1, general
+   punctuation, arrows and math symbols with fontTools pyftsubset; the
+   original TTFs stay as fallbacks. */
 @font-face {
   font-family: 'Inter';
-  src: url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations'),
+  src: url('/fonts/Inter/Inter-Variable.woff2') format('woff2-variations'),
+       url('/fonts/Inter/Inter-Variable.woff2') format('woff2'),
        url('/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
   font-weight: 100 900;
   font-style: normal;
@@ -27,7 +30,8 @@ html.mz-reveal-fallback [style*='opacity:0;transform:translateY'] {
 }
 @font-face {
   font-family: 'Inter';
-  src: url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations'),
+  src: url('/fonts/Inter/Inter-Italic-Variable.woff2') format('woff2-variations'),
+       url('/fonts/Inter/Inter-Italic-Variable.woff2') format('woff2'),
        url('/fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
   font-weight: 100 900;
   font-style: italic;
@@ -36,28 +40,32 @@ html.mz-reveal-fallback [style*='opacity:0;transform:translateY'] {
 
 @font-face {
   font-family: 'Tomorrow';
-  src: url('/fonts/Tomorrow/Tomorrow-Regular.ttf') format('truetype');
+  src: url('/fonts/Tomorrow/Tomorrow-Regular.woff2') format('woff2'),
+       url('/fonts/Tomorrow/Tomorrow-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Tomorrow';
-  src: url('/fonts/Tomorrow/Tomorrow-Medium.ttf') format('truetype');
+  src: url('/fonts/Tomorrow/Tomorrow-Medium.woff2') format('woff2'),
+       url('/fonts/Tomorrow/Tomorrow-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Tomorrow';
-  src: url('/fonts/Tomorrow/Tomorrow-SemiBold.ttf') format('truetype');
+  src: url('/fonts/Tomorrow/Tomorrow-SemiBold.woff2') format('woff2'),
+       url('/fonts/Tomorrow/Tomorrow-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Tomorrow';
-  src: url('/fonts/Tomorrow/Tomorrow-Bold.ttf') format('truetype');
+  src: url('/fonts/Tomorrow/Tomorrow-Bold.woff2') format('woff2'),
+       url('/fonts/Tomorrow/Tomorrow-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

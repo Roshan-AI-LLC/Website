@@ -120,7 +120,7 @@ export function Footer() {
 
         {/* Program trademark lines, once for the whole site: the home page and press pages name both programs.
             Phones get the 0.72rem reading floor; desktop keeps the original fine print. */}
-        <div className="mt-3 space-y-0.5 text-[0.72rem] leading-relaxed text-muted opacity-70 sm:mt-4 sm:text-[0.62rem]">
+        <div className="mt-3 space-y-0.5 text-[0.72rem] leading-relaxed text-muted sm:mt-4 sm:text-[0.62rem]">
           <NvidiaLegalLine />
           <AnthropicLegalLine />
         </div>

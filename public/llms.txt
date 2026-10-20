@@ -1,0 +1,25 @@
+# Roshan AI
+
+> Roshan AI builds sovereign clinical AI models that reason in medical terms: interpretable by architecture, with human-in-the-loop auditability. Its flagship, ShifaMind, predicts ICD-10 codes from clinical notes, and every code's score is an exact sum of named clinical concepts. Access is by request.
+
+Roshan AI LLC is based in Arizona, USA. Contact: mohammed@roshan-ai.com.
+
+## Products
+
+- [ShifaMind](https://roshan-ai.com/products/shifamind): concept-grounded ICD-10 coding. 99.2 micro-AUROC and 96.7 macro-AUROC on the full 7,940-code MIMIC-IV benchmark; every prediction traced to named clinical concepts and the words behind them.
+- [Nabz](https://roshan-ai.com/products/nabz): research models for bedside-monitor signals.
+- [NabzGraph](https://roshan-ai.com/products/nabz/graph): feedback-robust patient knowledge graphs (preprint: https://arxiv.org/abs/2609.33248).
+- [NabzSentry](https://roshan-ai.com/products/nabz/sentry): certified three-way triage of ICU ventricular-tachycardia (VT) alarms (preprint: https://arxiv.org/abs/2609.12365).
+- [All products](https://roshan-ai.com/products)
+
+## Platform and developers
+
+- [Platform](https://roshan-ai.com/platform): the shared clinical reasoning stack behind every Roshan AI model.
+- [Developers](https://roshan-ai.com/developers): the ShifaMind API (access by request).
+
+## Company
+
+- [About](https://roshan-ai.com/company/about)
+- [Team](https://roshan-ai.com/company/team)
+- [Press](https://roshan-ai.com/company/press): announcements, including Claude Startups and NVIDIA Inception membership and Lambda GPU credits.
+- [Contact](https://roshan-ai.com/contact)
