@@ -8,10 +8,14 @@ import { InceptionBadge } from '../InceptionBadge';
 /** Width shared by both marks so their plates match. NVIDIA's minimum is 110. */
 const MARK_WIDTH = 120;
 
+/** Must match the transform transition on `.hero-ticker-list` in index.css. */
+const SLIDE_MS = 700;
+
 /**
  * The band pinned to the bottom of the hero's first screen (rendered as the
- * hero's children): programs on the left, a slow marquee of the company's
- * announcements (the press releases, newest first) on the right. Below lg the marks sit centred with the marquee beneath.
+ * hero's children): programs on the left, the company's announcements (the
+ * press releases, newest first) on the right, one at a time, sliding up. Below
+ * lg the marks sit centred with the announcements beneath.
  * Both trademark lines live in the footer. The marks are never animated.
  *
  * `#programs` and `.hero-band-inner` are tightened on short screens in
@@ -38,7 +42,7 @@ export function HeroBand() {
             style={{ background: 'var(--border-strong)' }}
           />
 
-          <Marquee />
+          <Ticker />
         </div>
       </div>
     </div>
@@ -46,15 +50,34 @@ export function HeroBand() {
 }
 
 /**
- * Two identical lists side by side, the track sliding left by exactly one of
- * them, so the loop is seamless. The copy is aria-hidden. Pauses on hover,
- * offscreen and from its own pause button (moving text needs a way to stop
- * it); static, with no button, under reduced motion (index.css).
+ * One announcement at a time, holding still to be read, then sliding up to the
+ * next. A copy of the first sits after the last, so the loop always moves up:
+ * after sliding onto the copy the list jumps back to the real first without a
+ * transition. The ring on the pause button is the clock: each lap of it
+ * advances one announcement, so pausing (hover, keyboard focus, offscreen, the
+ * button) freezes the ring and the list together. Keyboard focus on a hidden
+ * announcement brings it into view. Under reduced motion it starts paused and
+ * swaps without sliding (index.css).
  */
-function Marquee() {
+function Ticker() {
+  const n = ANNOUNCEMENTS.length;
   const ref = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const [instant, setInstant] = useState(false);
   const [inView, setInView] = useState(true);
   const [stopped, setStopped] = useState(false);
+  // The clock only runs once React is live, so the server render and the first
+  // client render agree and no lap can end before its handler is attached.
+  const [mounted, setMounted] = useState(false);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      setReduced(true);
+      setStopped(true);
+    }
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -64,26 +87,112 @@ function Marquee() {
     return () => io.disconnect();
   }, []);
 
+  // Landed on the copy of the first: once the slide ends, jump to the real one.
+  useEffect(() => {
+    if (index !== n) return;
+    const t = window.setTimeout(() => {
+      setInstant(true);
+      setIndex(0);
+    }, SLIDE_MS);
+    return () => window.clearTimeout(t);
+  }, [index, n]);
+
+  // Turn transitions back on once the jump has painted.
+  useEffect(() => {
+    if (!instant) return;
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => setInstant(false));
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [instant]);
+
+  const advance = () => setIndex((i) => (reduced ? (i + 1) % n : Math.min(i + 1, n)));
+
+  if (n === 0) return null;
+  const many = n > 1;
+  const items = many ? [...ANNOUNCEMENTS, ANNOUNCEMENTS[0]] : ANNOUNCEMENTS;
+
   return (
-    <div className="flex w-full min-w-0 items-center gap-2 lg:flex-1">
-      <div
-        ref={ref}
-        data-paused={inView && !stopped ? undefined : ''}
-        className="hero-marquee min-w-0 flex-1 overflow-hidden"
-      >
-        <div className="hero-marquee-track flex w-max">
-          <MarqueeList />
-          <MarqueeList copy />
-        </div>
+    <div
+      data-paused={inView && !stopped ? undefined : ''}
+      className="hero-ticker-wrap flex w-full min-w-0 items-center gap-2 lg:flex-1"
+    >
+      <div ref={ref} className="hero-ticker h-9 min-w-0 flex-1 overflow-hidden">
+        <ul
+          aria-label="Announcements"
+          data-instant={instant ? '' : undefined}
+          className="hero-ticker-list"
+          style={{ transform: `translateY(${-index * 2.25}rem)` }}
+        >
+          {items.map((a, i) => {
+            const copy = i === n;
+            return (
+              <li
+                key={copy ? 'copy' : a.href}
+                aria-hidden={copy || undefined}
+                className="flex h-9 items-center justify-center lg:justify-start"
+              >
+                <Link
+                  to={a.href}
+                  tabIndex={copy ? -1 : undefined}
+                  onFocus={() => {
+                    setInstant(false);
+                    setIndex(i);
+                  }}
+                  className="group inline-flex min-w-0 max-w-full items-center gap-2.5 rounded-full py-1 text-[0.82rem] font-medium text-secondary transition-colors hover:text-primary focus-visible:outline-offset-2 max-[374px]:text-[0.78rem] sm:text-[0.86rem]"
+                >
+                  {/* A fixed slot from lg, so every title starts at the same x as it slides in.
+                      Phones keep the New chip but drop the month, so the titles fit whole. */}
+                  {i % n === 0 ? (
+                    <span className="flex shrink-0 lg:w-[4.75rem]">
+                      <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-accent">
+                        New
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="hidden shrink-0 font-mono text-[0.68rem] uppercase tracking-[0.06em] text-muted sm:flex lg:w-[4.75rem]">
+                      {monthYear(a.date)}
+                    </span>
+                  )}
+                  <span className="truncate text-primary">{a.text}</span>
+                  <ArrowUpRight
+                    size={13}
+                    aria-hidden
+                    className="shrink-0 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  />
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
-      <button
-        type="button"
-        onClick={() => setStopped((s) => !s)}
-        aria-label={stopped ? 'Play scrolling announcements' : 'Pause scrolling announcements'}
-        className="relative grid h-7 w-7 shrink-0 cursor-pointer place-items-center rounded-full border border-subtle text-muted transition before:absolute before:-inset-1.5 hover:border-strong hover:text-primary motion-reduce:hidden"
-      >
-        {stopped ? <Play size={11} aria-hidden /> : <Pause size={11} aria-hidden />}
-      </button>
+      {many && (
+        <button
+          type="button"
+          onClick={() => setStopped((s) => !s)}
+          aria-label={stopped ? 'Play rotating announcements' : 'Pause rotating announcements'}
+          className="hero-ticker-btn relative grid h-7 w-7 shrink-0 cursor-pointer place-items-center rounded-full border border-subtle text-muted transition before:absolute before:-inset-1.5 hover:border-strong hover:text-primary"
+        >
+          {mounted && !stopped && (
+            <svg aria-hidden viewBox="0 0 28 28" className="pointer-events-none absolute -inset-px -rotate-90">
+              <circle
+                key={index % n}
+                cx="14"
+                cy="14"
+                r="13"
+                pathLength={1}
+                className="hero-ticker-clock"
+                onAnimationEnd={advance}
+              />
+            </svg>
+          )}
+          {stopped ? <Play size={11} aria-hidden /> : <Pause size={11} aria-hidden />}
+        </button>
+      )}
     </div>
   );
 }
@@ -94,45 +203,4 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 function monthYear(iso: string) {
   const [y, m] = iso.split('-');
   return `${MONTHS[Number(m) - 1]} ${y}`;
-}
-
-/**
- * One pass of the announcements. The copy is hidden from screen readers and
- * its links leave the tab order, so each announcement is read and reached once.
- */
-function MarqueeList({ copy = false }: { copy?: boolean }) {
-  return (
-    <ul aria-hidden={copy || undefined} className="flex shrink-0 items-center py-1">
-      {ANNOUNCEMENTS.map((a, i) => (
-        <li key={a.href} className="flex shrink-0 items-center whitespace-nowrap">
-          <Link
-            to={a.href}
-            tabIndex={copy ? -1 : undefined}
-            className="group inline-flex items-center gap-2.5 rounded-full py-1 text-[0.82rem] font-medium text-secondary transition-colors hover:text-primary sm:text-[0.86rem]"
-          >
-            {i === 0 ? (
-              <span className="rounded-full bg-accent-soft px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-accent">
-                New
-              </span>
-            ) : (
-              <span className="font-mono text-[0.68rem] uppercase tracking-[0.06em] text-muted">
-                {monthYear(a.date)}
-              </span>
-            )}
-            <span className="text-primary">{a.text}</span>
-            <ArrowUpRight
-              size={13}
-              aria-hidden
-              className="text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            />
-          </Link>
-          <span
-            aria-hidden
-            className="mx-6 size-[5px] shrink-0 rotate-45 rounded-[1px] sm:mx-8"
-            style={{ background: 'var(--accent)', opacity: 0.55 }}
-          />
-        </li>
-      ))}
-    </ul>
-  );
 }

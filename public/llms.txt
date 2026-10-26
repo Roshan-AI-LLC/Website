@@ -22,4 +22,5 @@ Roshan AI LLC is based in Arizona, USA. Contact: mohammed@roshan-ai.com.
 - [About](https://roshan-ai.com/company/about)
 - [Team](https://roshan-ai.com/company/team)
 - [Press](https://roshan-ai.com/company/press): announcements, including Claude Startups and NVIDIA Inception membership and Lambda GPU credits.
+- [AfyaCore at ML4H 2026](https://roshan-ai.com/company/press/afyacore-ml4h-2026): open-source, on-device speech-to-structured clinical records for facilities without reliable connectivity (https://github.com/SyedMohammedSameer/AfyaCore).
 - [Contact](https://roshan-ai.com/contact)

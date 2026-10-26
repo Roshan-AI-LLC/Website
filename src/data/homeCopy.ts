@@ -37,6 +37,7 @@ export const HERO = {
  * A release without one here shows its full title.
  */
 const ANNOUNCEMENT_TITLES: Record<string, string> = {
+  'afyacore-ml4h-2026': 'AfyaCore accepted at ML4H 2026',
   'lambda-gpu-credits': 'Lambda backs ShifaMind with GPU credits',
   'nvidia-inception': 'Roshan AI joins NVIDIA Inception',
 };

@@ -709,7 +709,7 @@ html.dark .glass-strong {
 
 /* Home hero on short screens (a 1366x768 laptop leaves ~657px of viewport).
    The hero fills the first screen with the band (#programs: marks and
-   marquee) at its bottom; these tighten its spacing and, from lg, the
+   announcements) at its bottom; these tighten its spacing and, from lg, the
    headline, so the band still lands above the fold with air to spare.
    Unlayered, so they beat the Tailwind utilities; min-width keeps phones on
    the mobile rules above. Budget at 1366x657 (lg, two columns): 80 top +
@@ -762,7 +762,7 @@ html.dark .glass-strong {
 
 /* ─────────────────────────────────────────────────────────────────────────
    Home hero: highlighted phrase, concept-network wave and the bottom band's
-   announcements marquee. Used by Hero.tsx, home/ConceptNetwork.tsx and
+   rotating announcements. Used by Hero.tsx, home/ConceptNetwork.tsx and
    home/HeroBand.tsx. Short-screen spacing for the
    hero lives with the other short-screen rules above.
    ───────────────────────────────────────────────────────────────────────── */
@@ -797,43 +797,53 @@ html.dark .hero-mark {
   from { background-size: 0% 100%; }
 }
 
-/* Bottom band marquee: soft fade at both edges, one slow seamless loop.
-   Pauses on hover, while a link in it has keyboard focus, and (via
-   data-paused) offscreen or from its pause button. */
-.hero-marquee {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+/* Bottom band announcements: one at a time, sliding up (HeroBand.tsx). A
+   soft fade at the top and bottom edges of the window; dropped while a link
+   has keyboard focus so its focus ring shows whole. The ring on the pause
+   button is the clock: each lap advances one announcement, so it pauses on
+   hover, while a link has keyboard focus, and (via data-paused) offscreen or
+   from the button. */
+.hero-ticker {
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
 }
-@keyframes hero-marquee {
-  to { transform: translateX(-50%); }
+.hero-ticker:focus-within {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
-.hero-marquee-track {
-  animation: hero-marquee 56s linear infinite;
+.hero-ticker-list {
+  transition: transform 700ms var(--ease-spring);
 }
-.hero-marquee:hover .hero-marquee-track,
-.hero-marquee:focus-within .hero-marquee-track,
-.hero-marquee[data-paused] .hero-marquee-track {
+.hero-ticker-list[data-instant] {
+  transition: none;
+}
+@keyframes hero-ticker-clock {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+.hero-ticker-clock {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.7;
+  animation: hero-ticker-clock 5s linear forwards;
+}
+.hero-ticker:hover ~ .hero-ticker-btn .hero-ticker-clock,
+.hero-ticker:focus-within ~ .hero-ticker-btn .hero-ticker-clock,
+.hero-ticker-wrap[data-paused] .hero-ticker-clock {
   animation-play-state: paused;
 }
 
 /* Reduced motion: static network (the SMIL layer is also dropped once React
-   knows), no sweep, no marquee. Every final state is the resting design. */
+   knows), no sweep, no sliding announcements. Every final state is the resting design. */
 @media (prefers-reduced-motion: reduce) {
   .cn-anim { display: none; }
   .hero-mark { animation: none; }
-  .hero-marquee {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  /* Static: the announcements wrap so every one stays visible. */
-  .hero-marquee-track {
-    animation: none;
-    width: auto;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .hero-marquee-track > ul { flex-wrap: wrap; justify-content: center; }
-  .hero-marquee-track > ul[aria-hidden] { display: none; }
+  /* Starts paused (HeroBand.tsx); if played, announcements swap without sliding. */
+  .hero-ticker-list { transition: none; }
 }
 
 /* Nav links are px-2 below lg (so the full rail fits a 768px tablet), so the

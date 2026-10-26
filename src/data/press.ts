@@ -27,6 +27,36 @@ export type PressRelease = {
 
 export const PRESS_RELEASES: PressRelease[] = [
   {
+    slug: 'afyacore-ml4h-2026',
+    date: '2026-10-26',
+    kind: 'Announcement',
+    title: 'AfyaCore, our open-source initiative for offline clinical records, is accepted at ML4H 2026',
+    summary:
+      'AfyaCore, an open-source app that turns a dictated consultation into a structured clinical record on the phone itself, with no connectivity, has been accepted to the ML4H 2026 Demo Track for poster presentation.',
+    dek: 'Built for primary-care facilities in sub-Saharan Africa that work without reliable connectivity. MIT-licensed, on-device, and confirmed by a human before anything is saved.',
+    body: [
+      'Roshan AI LLC today announced that AfyaCore, an open-source tool for capturing clinical records without reliable connectivity, has been accepted to the Machine Learning for Health (ML4H) 2026 Demo Track for poster presentation. The work is by Mohammed Sameer Syed of Roshan AI and Rozhin Yasaei of the University of Arizona, and the full system is public under the MIT license.',
+      'Primary-care facilities across sub-Saharan Africa still record most consultations on paper. Digital tools tend to fail on the setting rather than the software: intermittent connectivity, shared low-end phones, and clinicians who cannot spend a consultation typing. AfyaCore is built for exactly those conditions. A nurse, midwife or clinical officer dictates the consultation in French or English, or photographs a page of the paper register, and the phone turns it into a structured record of vital signs, diagnosis and prescriptions, with no network and no account.',
+      'Everything runs on the device. Speech is transcribed by Whisper in the browser, so audio never leaves the phone; paper is read with on-device text recognition; and a deliberately rule-based extractor, rather than a generative model, turns the text into typed fields. Every machine-entered value is shown with the phrase it came from and must be confirmed by a human, one by one, before the record is saved. Records are encrypted on the device and export as FHIR R4 and DHIS2 monthly returns.',
+      'In technical validation on 22 synthetic consultations, fields are extracted perfectly from written transcripts. With on-device speech in the loop, 91% of fields come through correctly in English and 67% in French, and nearly every wrong value is flagged for the clinician\u2019s review: 100% in English and 91% in French. The app installs from a 154 kB initial download, ships nine country profiles, and prints patient instructions in ten languages, including Kiswahili, Wolof, Hausa and Malagasy. AfyaCore has not yet been piloted in a facility; the next step is a usability study at a primary-care facility with real dictation and register photographs.',
+      'AfyaCore follows the principle behind everything Roshan AI builds: a clinician should be able to check the work. Roshan AI LLC is based in Arizona, USA.',
+    ],
+    quote: {
+      text: 'The clinics that most need better records are the ones with the least connectivity. AfyaCore is open source so that anyone working in those settings can run it, check it and improve it.',
+      attribution: 'Mohammed Sameer Syed, Founder, Roshan AI',
+    },
+    links: [
+      {
+        label: 'AfyaCore on GitHub',
+        href: 'https://github.com/SyedMohammedSameer/AfyaCore',
+      },
+      {
+        label: 'Try the public demo (synthetic data)',
+        href: 'https://afya-core.netlify.app/',
+      },
+    ],
+  },
+  {
     slug: 'claude-startups',
     date: '2026-10-13',
     kind: 'Announcement',
