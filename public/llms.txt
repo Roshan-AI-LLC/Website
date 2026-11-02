@@ -6,7 +6,7 @@ Roshan AI LLC is based in Arizona, USA. Contact: mohammed@roshan-ai.com.
 
 ## Products
 
-- [ShifaMind](https://roshan-ai.com/products/shifamind): concept-grounded ICD-10 coding. 99.2 micro-AUROC and 96.7 macro-AUROC on the full 7,940-code MIMIC-IV benchmark; every prediction traced to named clinical concepts and the words behind them.
+- [ShifaMind](https://roshan-ai.com/products/shifamind): concept-grounded ICD-10 coding with state-of-the-art accuracy and best-in-class explainability. 99.2 micro-AUROC and 96.7 macro-AUROC on the full 7,940-code MIMIC-IV benchmark; every prediction traced to named clinical concepts and the words behind them.
 - [Nabz](https://roshan-ai.com/products/nabz): research models for bedside-monitor signals.
 - [NabzGraph](https://roshan-ai.com/products/nabz/graph): feedback-robust patient knowledge graphs (preprint: https://arxiv.org/abs/2609.33248).
 - [NabzSentry](https://roshan-ai.com/products/nabz/sentry): certified three-way triage of ICU ventricular-tachycardia (VT) alarms (preprint: https://arxiv.org/abs/2609.12365).
@@ -24,5 +24,5 @@ Roshan AI LLC is based in Arizona, USA. Contact: mohammed@roshan-ai.com.
 - [Press](https://roshan-ai.com/company/press): announcements, including Claude Startups and NVIDIA Inception membership and Lambda GPU credits.
 - [AfyaCore at ML4H 2026](https://roshan-ai.com/company/press/afyacore-ml4h-2026): open-source, on-device speech-to-structured clinical records for facilities without reliable connectivity (https://github.com/SyedMohammedSameer/AfyaCore).
 - [Blog](https://roshan-ai.com/company/blog)
-- [Best Medical Coding AI Models in 2026: A Benchmark Review](https://roshan-ai.com/company/blog/best-medical-coding-models-2026): published results on the MIMIC-IV ICD-10 full-code benchmark, LLMs as coders, and explainable coding.
+- [Best Medical Coding AI Models in 2026: A Benchmark Review](https://roshan-ai.com/company/blog/best-medical-coding-models-2026): published results on the MIMIC-IV ICD-10 full-code benchmark, LLMs as coders, and explainable coding. ShifaMind ranks #1 by micro-F1 among the ranked models, with best-in-class explainability.
 - [Contact](https://roshan-ai.com/contact)

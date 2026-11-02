@@ -13,8 +13,8 @@ export const BEST_MEDICAL_CODING_MODELS_2026: BlogPost = {
   slug: 'best-medical-coding-models-2026',
   title: 'Best Medical Coding AI Models in 2026: A Benchmark Review',
   seoTitle: 'Best Medical Coding AI 2026: ICD-10 Benchmark',
-  description: `The best medical coding AI models of 2026 on the MIMIC-IV ICD-10 full-code benchmark: who leads each metric, how LLMs fare, and a model that shows its math.`,
-  dek: `The medical coding model that shows its math. ShifaMind posts the top micro-F1 among the models ranked here on the MIMIC-IV ICD-10 full-code benchmark, and it is the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note. Here is the field, including where others lead.`,
+  description: `The best medical coding AI models of 2026 on the MIMIC-IV ICD-10 full-code benchmark: who leads each metric, how LLMs fare, and the best explainable model.`,
+  dek: `The medical coding model that shows its math. ShifaMind posts the top micro-F1 among the models ranked here on the MIMIC-IV ICD-10 full-code benchmark, and it is the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note. State-of-the-art accuracy, best-in-class explainability. Here is the field, including where others lead.`,
   date: '2026-11-01',
   author: { name: 'Mohammed Sameer Syed', role: 'Founder, Roshan AI', href: '/company/team' },
   kind: 'Research',
@@ -23,7 +23,7 @@ export const BEST_MEDICAL_CODING_MODELS_2026: BlogPost = {
   takeaways: [
     `As of November 2026, ShifaMind ranks #1 by micro-F1 among the [models ranked here](#inclusion-criteria) on the MIMIC-IV ICD-10 full-code benchmark: 60.6 (trained with extra MIMIC-IV ICD-9 notes), ahead of TraceCoder (60.0) and JAMS + PLM-ICD (59.8) [^shifamind2026][^ren2025][^jeong2024].`,
     `No model leads every metric: DualLAAT has the best macro-F1 (29.9, the rare-code measure), PLANT and DualLAAT the best AUROC, and PLANT the best precision at 8 [^liu2026][^sahaRoy2025].`,
-    `ShifaMind is the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note.`,
+    `ShifaMind is also the best explainable model on this benchmark: the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note.`,
     `Prompted small LLMs score 0.1 to 3.0 micro-F1 on this benchmark; the post-trained 4B PHI reaches 58.7, and the 7B PLANT, used as a classifier, 59.2 [^wang2026phi][^sahaRoy2025].`,
     `No commercial vendor publishes results on this benchmark, so vendor-reported 95% to 98% accuracy figures cannot be ranked against these models or each other.`,
   ],
@@ -35,7 +35,7 @@ export const BEST_MEDICAL_CODING_MODELS_2026: BlogPost = {
     },
     {
       type: 'p',
-      text: `ShifaMind, built by Roshan AI, ranks #1 by micro-F1 (60.6) among the models ranked here on MIMIC-IV ICD-10 full-code, and also leads on R-precision and MAP [^shifamind2026]. It is the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note. Like JAMS and DualLAAT, its headline run adds MIMIC-IV ICD-9 training notes, and its paper is under review.`,
+      text: `ShifaMind, built by Roshan AI, ranks #1 by micro-F1 (60.6) among the models ranked here on MIMIC-IV ICD-10 full-code, and also leads on R-precision and MAP [^shifamind2026]. It is the only published ICD coding model whose every predicted code is an exact sum of contributions from named clinical concepts found in the note, which makes it the best explainable model on this benchmark. Like JAMS and DualLAAT, its headline run adds MIMIC-IV ICD-9 training notes, and its paper is under review.`,
     },
 
     { type: 'h2', id: 'benchmark', text: 'The benchmark' },
@@ -574,7 +574,7 @@ export const BEST_MEDICAL_CODING_MODELS_2026: BlogPost = {
   faq: [
     {
       q: 'What is the best medical coding AI model in 2026?',
-      a: `ShifaMind, by Roshan AI, ranks #1 by micro-F1 among the models ranked here on the MIMIC-IV ICD-10 full-code benchmark: 60.6, ahead of TraceCoder (60.0) and JAMS + PLM-ICD (59.8). No model leads every metric: DualLAAT leads macro-F1, and PLANT and DualLAAT lead AUROC. Commercial products publish no results on this benchmark, so they are not ranked.`,
+      a: `ShifaMind, by Roshan AI, ranks #1 by micro-F1 among the models ranked here on the MIMIC-IV ICD-10 full-code benchmark, and is the best explainable model on it: 60.6, ahead of TraceCoder (60.0) and JAMS + PLM-ICD (59.8). No model leads every metric: DualLAAT leads macro-F1, and PLANT and DualLAAT lead AUROC. Commercial products publish no results on this benchmark, so they are not ranked.`,
     },
     {
       q: 'How accurate is AI medical coding?',
@@ -594,7 +594,7 @@ export const BEST_MEDICAL_CODING_MODELS_2026: BlogPost = {
     },
     {
       q: 'What is explainable medical coding?',
-      a: 'It means a coder can see why a code was assigned, but the term covers audit trails, highlighted text, attention weights, LLM-written rationales and concept-mediated models. In ShifaMind, each code’s score is its bias plus an exact sum of signed contributions from named clinical concepts found in the note.',
+      a: 'It means a coder can see why a code was assigned, but the term covers audit trails, highlighted text, attention weights, LLM-written rationales and concept-mediated models. In ShifaMind, the best explainable model on MIMIC-IV ICD-10 full-code, each code’s score is its bias plus an exact sum of signed contributions from named clinical concepts found in the note.',
     },
   ],
   references: [
