@@ -26,6 +26,7 @@ const companyItems: DropdownItem[] = [
   { label: 'About', href: '/company/about' },
   { label: 'Team', href: '/company/team' },
   { label: 'Press', href: '/company/press' },
+  { label: 'Blog', href: '/company/blog' },
 ];
 
 const flatLinks = [

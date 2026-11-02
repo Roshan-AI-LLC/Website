@@ -797,19 +797,32 @@ html.dark .hero-mark {
   from { background-size: 0% 100%; }
 }
 
-/* Bottom band announcements: one at a time, sliding up (HeroBand.tsx). A
-   soft fade at the top and bottom edges of the window; dropped while a link
-   has keyboard focus so its focus ring shows whole. The ring on the pause
-   button is the clock: each lap advances one announcement, so it pauses on
-   hover, while a link has keyboard focus, and (via data-paused) offscreen or
-   from the button. */
+/* Bottom band announcements: one at a time, sliding up (HeroBand.tsx), in a
+   window one row (--tick-h) tall; two-line rows below 360px. The window
+   clips rather than hides: a hidden overflow is still a scroll container, and
+   keyboard focus would scroll it out of step with the slide. A soft fade at
+   its top and bottom edges, dropped while a link has keyboard focus so the
+   ring (pulled in to fit the row) shows whole. The ring on the pause button
+   is the clock: each lap advances one announcement, so it pauses on hover,
+   while a link has keyboard focus, and (via data-paused) offscreen or from
+   the button. */
+.hero-ticker-wrap {
+  --tick-h: 2.25rem;
+}
+@media (max-width: 359px) {
+  .hero-ticker-wrap { --tick-h: 3.5rem; }
+}
 .hero-ticker {
+  overflow: clip;
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
   mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
 }
 .hero-ticker:focus-within {
   -webkit-mask-image: none;
   mask-image: none;
+}
+.hero-ticker a:focus-visible {
+  outline-offset: 1px;
 }
 .hero-ticker-list {
   transition: transform 700ms var(--ease-spring);
@@ -842,8 +855,11 @@ html.dark .hero-mark {
 @media (prefers-reduced-motion: reduce) {
   .cn-anim { display: none; }
   .hero-mark { animation: none; }
-  /* Starts paused (HeroBand.tsx); if played, announcements swap without sliding. */
+  /* Starts paused (HeroBand.tsx); if played, announcements swap without sliding.
+     The clock keeps its real lap: the global rule above cuts every animation
+     to 0.001ms, which would flip through the announcements every frame. */
   .hero-ticker-list { transition: none; }
+  .hero-ticker-clock { animation-duration: 5s !important; }
 }
 
 /* Nav links are px-2 below lg (so the full rail fits a 768px tablet), so the

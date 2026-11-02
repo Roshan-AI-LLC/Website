@@ -121,12 +121,14 @@ function Ticker() {
       data-paused={inView && !stopped ? undefined : ''}
       className="hero-ticker-wrap flex w-full min-w-0 items-center gap-2 lg:flex-1"
     >
-      <div ref={ref} className="hero-ticker h-9 min-w-0 flex-1 overflow-hidden">
+      {/* Padded out past its slot (and pulled back by the negative margin) so a
+          focus ring at either end of a link stays inside the clip. */}
+      <div ref={ref} className="hero-ticker -mx-1.5 h-(--tick-h) min-w-0 flex-1 px-1.5">
         <ul
           aria-label="Announcements"
           data-instant={instant ? '' : undefined}
           className="hero-ticker-list"
-          style={{ transform: `translateY(${-index * 2.25}rem)` }}
+          style={{ transform: `translateY(calc(${-index} * var(--tick-h)))` }}
         >
           {items.map((a, i) => {
             const copy = i === n;
@@ -134,16 +136,17 @@ function Ticker() {
               <li
                 key={copy ? 'copy' : a.href}
                 aria-hidden={copy || undefined}
-                className="flex h-9 items-center justify-center lg:justify-start"
+                className="flex h-(--tick-h) items-center justify-center lg:justify-start"
               >
                 <Link
                   to={a.href}
                   tabIndex={copy ? -1 : undefined}
                   onFocus={() => {
-                    setInstant(false);
+                    // Leaving the copy of the first is a jump, never a slide back through the list.
+                    setInstant(index === n);
                     setIndex(i);
                   }}
-                  className="group inline-flex min-w-0 max-w-full items-center gap-2.5 rounded-full py-1 text-[0.82rem] font-medium text-secondary transition-colors hover:text-primary focus-visible:outline-offset-2 max-[374px]:text-[0.78rem] sm:text-[0.86rem]"
+                  className="group inline-flex min-w-0 max-w-full items-center gap-2.5 rounded-full py-1 text-[0.82rem] font-medium text-secondary transition-colors hover:text-primary max-[374px]:text-[0.78rem] sm:text-[0.86rem]"
                 >
                   {/* A fixed slot from lg, so every title starts at the same x as it slides in.
                       Phones keep the New chip but drop the month, so the titles fit whole. */}
@@ -158,7 +161,10 @@ function Ticker() {
                       {monthYear(a.date)}
                     </span>
                   )}
-                  <span className="truncate text-primary">{a.text}</span>
+                  {/* One line; below 360px (small phones, 400% zoom) two, in a taller row. */}
+                  <span className="truncate text-primary max-[359px]:line-clamp-2 max-[359px]:whitespace-normal">
+                    {a.text}
+                  </span>
                   <ArrowUpRight
                     size={13}
                     aria-hidden

@@ -60,6 +60,32 @@ export const routes: RouteRecord[] = [
               },
             ],
           },
+          {
+            // Lazy: the blog pages, their components and the post data load
+            // only on blog URLs, not with every page. On first load
+            // vite-react-ssg resolves the matched lazy route before hydrating,
+            // and each `entry` makes the prerendered HTML modulepreload that
+            // module's chunk: the page's own, plus (from this parent) the
+            // shared post-data chunk, so hydration does not wait on a second
+            // round trip. Nothing here may import ./data/blog statically, or
+            // the posts land back in the main chunk.
+            path: 'blog',
+            entry: 'src/data/blog.ts',
+            children: [
+              {
+                index: true,
+                lazy: async () => ({ Component: (await import('./pages/company/Blog')).default }),
+                entry: 'src/pages/company/Blog.tsx',
+              },
+              {
+                path: ':slug',
+                lazy: async () => ({ Component: (await import('./pages/company/BlogPost')).default }),
+                entry: 'src/pages/company/BlogPost.tsx',
+                // Prerenders one static page per post (runs only at build time).
+                getStaticPaths: async () => (await import('./data/blog')).BLOG_POSTS.map((p) => p.slug),
+              },
+            ],
+          },
         ],
       },
       { path: 'contact', Component: Contact, entry: 'src/pages/Contact.tsx' },

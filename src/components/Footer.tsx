@@ -35,6 +35,7 @@ const columns: {
       { label: 'About', to: '/company/about' },
       { label: 'Team', to: '/company/team' },
       { label: 'Press', to: '/company/press' },
+      { label: 'Blog', to: '/company/blog' },
       { label: 'Contact', to: '/contact' },
     ],
   },

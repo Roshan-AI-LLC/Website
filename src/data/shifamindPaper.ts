@@ -4,8 +4,9 @@
  * import from here so no number is typed in the UI.
  *
  * GoM-ICD is deliberately absent from the leaderboard: it is a three-model
- * ensemble with thresholds tuned on the test split, not a fair single-model
- * comparison. Do not add it back.
+ * ensemble (its headline threshold protocol is unstated; its ablation tunes
+ * thresholds on the test split). Do not add it back. The blog lists it once,
+ * in its closing ensembles section (codingLeaderboard.ts).
  */
 
 export const TASK = {

@@ -4,8 +4,8 @@ import { pct, SHIFAMIND, TASK } from '../../data/shifamindPaper';
 import { VideoBlock } from './VideoBlock';
 import { SectionLabel } from '../SectionLabel';
 
-// The published preprint. Update when the full-code paper is public.
-const PAPER_URL = 'https://arxiv.org/abs/2605.08482';
+// The full-code paper, hosted on this site until the public version is posted.
+const PAPER_URL = '/papers/shifamind.pdf';
 
 export function ProductHero() {
   return (
